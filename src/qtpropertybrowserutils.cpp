@@ -39,25 +39,25 @@
 ****************************************************************************/
 
 
-#include "qtpropertybrowserutils.h"
 #include <QApplication>
-#include <QPainter>
-#include <QHBoxLayout>
-#include <QMouseEvent>
 #include <QCheckBox>
+#include <QColorDialog>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QLineEdit>
 #include <QMenu>
+#include <QMouseEvent>
+#include <QPainter>
 #include <QStyleOption>
-#include <QLabel>
 #include <QToolButton>
-#include <QColorDialog>
+
+#include "qtpropertybrowserutils.h"
 
 #if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
 #endif
 
-QtCursorDatabase::QtCursorDatabase()
-{
+QtCursorDatabase::QtCursorDatabase() {
     appendCursor(Qt::ArrowCursor, QCoreApplication::translate("QtCursorDatabase", "Arrow"),
                  QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-arrow.png")));
     appendCursor(Qt::UpArrowCursor, QCoreApplication::translate("QtCursorDatabase", "Up Arrow"),
@@ -98,18 +98,19 @@ QtCursorDatabase::QtCursorDatabase()
                  QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-busy.png")));
 }
 
-void QtCursorDatabase::clear()
-{
+
+void QtCursorDatabase::clear() {
     cursorNames_.clear();
     cursorIcons_.clear();
     valueToCursorShape_.clear();
     cursorShapeToValue_.clear();
 }
 
-void QtCursorDatabase::appendCursor(Qt::CursorShape shape, const QString &name, const QIcon &icon)
-{
-    if (cursorShapeToValue_.contains(shape))
+
+void QtCursorDatabase::appendCursor(Qt::CursorShape shape, const QString &name, const QIcon &icon) {
+    if(cursorShapeToValue_.contains(shape)) {
         return;
+    }
     const int value = cursorNames_.count();
     cursorNames_.append(name);
     cursorIcons_.insert(value, icon);
@@ -117,51 +118,55 @@ void QtCursorDatabase::appendCursor(Qt::CursorShape shape, const QString &name, 
     cursorShapeToValue_.insert(shape, value);
 }
 
-QStringList QtCursorDatabase::cursorShapeNames() const
-{
+
+QStringList QtCursorDatabase::cursorShapeNames() const {
     return cursorNames_;
 }
 
-QMap<int, QIcon> QtCursorDatabase::cursorShapeIcons() const
-{
+
+QMap<int, QIcon> QtCursorDatabase::cursorShapeIcons() const {
     return cursorIcons_;
 }
 
-QString QtCursorDatabase::cursorToShapeName(const QCursor &cursor) const
-{
+
+QString QtCursorDatabase::cursorToShapeName(const QCursor &cursor) const {
     int val = cursorToValue(cursor);
-    if (val >= 0)
+    if(val >= 0) {
         return cursorNames_.at(val);
+    }
     return QString();
 }
 
-QIcon QtCursorDatabase::cursorToShapeIcon(const QCursor &cursor) const
-{
+
+QIcon QtCursorDatabase::cursorToShapeIcon(const QCursor &cursor) const {
     int val = cursorToValue(cursor);
     return cursorIcons_.value(val);
 }
 
-int QtCursorDatabase::cursorToValue(const QCursor &cursor) const
-{
+
+int QtCursorDatabase::cursorToValue(const QCursor &cursor) const {
 #ifndef QT_NO_CURSOR
     Qt::CursorShape shape = cursor.shape();
-    if (cursorShapeToValue_.contains(shape))
+    if(cursorShapeToValue_.contains(shape)) {
         return cursorShapeToValue_[shape];
+    }
 #endif
     return -1;
 }
 
+
 #ifndef QT_NO_CURSOR
-QCursor QtCursorDatabase::valueToCursor(int value) const
-{
-    if (valueToCursorShape_.contains(value))
+QCursor QtCursorDatabase::valueToCursor(int value) const {
+    if(valueToCursorShape_.contains(value)) {
         return QCursor(valueToCursorShape_[value]);
+    }
     return QCursor();
 }
+
+
 #endif
 
-QPixmap QtPropertyBrowserUtils::brushValuePixmap(const QBrush &b)
-{
+QPixmap QtPropertyBrowserUtils::brushValuePixmap(const QBrush &b) {
     QImage img(16, 16, QImage::Format_ARGB32_Premultiplied);
     img.fill(0);
 
@@ -169,8 +174,8 @@ QPixmap QtPropertyBrowserUtils::brushValuePixmap(const QBrush &b)
     painter.setCompositionMode(QPainter::CompositionMode_Source);
     painter.fillRect(0, 0, img.width(), img.height(), b);
     QColor color = b.color();
-    if (color.alpha() != 255) { // indicate alpha by an inset
-        QBrush  opaqueBrush = b;
+    if(color.alpha() != 255) {  // indicate alpha by an inset
+        QBrush opaqueBrush = b;
         color.setAlpha(255);
         opaqueBrush.setColor(color);
         painter.fillRect(img.width() / 4, img.height() / 4,
@@ -180,19 +185,19 @@ QPixmap QtPropertyBrowserUtils::brushValuePixmap(const QBrush &b)
     return QPixmap::fromImage(img);
 }
 
-QIcon QtPropertyBrowserUtils::brushValueIcon(const QBrush &b)
-{
+
+QIcon QtPropertyBrowserUtils::brushValueIcon(const QBrush &b) {
     return QIcon(brushValuePixmap(b));
 }
 
-QString QtPropertyBrowserUtils::colorValueText(const QColor &c)
-{
+
+QString QtPropertyBrowserUtils::colorValueText(const QColor &c) {
     return QCoreApplication::translate("QtPropertyBrowserUtils", "[%1, %2, %3] (%4)")
            .arg(c.red()).arg(c.green()).arg(c.blue()).arg(c.alpha());
 }
 
-QPixmap QtPropertyBrowserUtils::fontValuePixmap(const QFont &font)
-{
+
+QPixmap QtPropertyBrowserUtils::fontValuePixmap(const QFont &font) {
     QFont f = font;
     QImage img(16, 16, QImage::Format_ARGB32_Premultiplied);
     img.fill(0);
@@ -207,19 +212,19 @@ QPixmap QtPropertyBrowserUtils::fontValuePixmap(const QFont &font)
     return QPixmap::fromImage(img);
 }
 
-QIcon QtPropertyBrowserUtils::fontValueIcon(const QFont &f)
-{
+
+QIcon QtPropertyBrowserUtils::fontValueIcon(const QFont &f) {
     return QIcon(fontValuePixmap(f));
 }
 
-QString QtPropertyBrowserUtils::fontValueText(const QFont &f)
-{
+
+QString QtPropertyBrowserUtils::fontValueText(const QFont &f) {
     return QCoreApplication::translate("QtPropertyBrowserUtils", "[%1, %2]")
            .arg(f.family()).arg(f.pointSize());
 }
 
-QIcon QtPropertyBrowserUtils::drawCheckBox(bool value)
-{
+
+QIcon QtPropertyBrowserUtils::drawCheckBox(bool value) {
     QStyleOptionButton opt;
     opt.state |= value ? QStyle::State_On : QStyle::State_Off;
     opt.state |= QStyle::State_Enabled;
@@ -238,7 +243,7 @@ QIcon QtPropertyBrowserUtils::drawCheckBox(bool value)
     pixmap.fill(Qt::transparent);
     {
         // Center?
-        const int xoff = (pixmapWidth  > indicatorWidth)  ? (pixmapWidth  - indicatorWidth)  / 2 : 0;
+        const int xoff = (pixmapWidth  > indicatorWidth)  ? (pixmapWidth - indicatorWidth) / 2 : 0;
         const int yoff = (pixmapHeight > indicatorHeight) ? (pixmapHeight - indicatorHeight) / 2 : 0;
         QPainter painter(&pixmap);
         painter.translate(xoff, yoff);
@@ -247,14 +252,14 @@ QIcon QtPropertyBrowserUtils::drawCheckBox(bool value)
     return QIcon(pixmap);
 }
 
+
 // Draw an icon indicating opened/closing branches
-QIcon QtPropertyBrowserUtils::drawIndicatorIcon(const QPalette &palette, QStyle *style)
-{
+QIcon QtPropertyBrowserUtils::drawIndicatorIcon(const QPalette &palette, QStyle *style) {
     QPixmap pix(14, 14);
     pix.fill(Qt::transparent);
     QStyleOption branchOption;
     QRect r(QPoint(0, 0), pix.size());
-    branchOption.rect = QRect(2, 2, 9, 9); // ### hardcoded in qcommonstyle.cpp
+    branchOption.rect = QRect(2, 2, 9, 9);  // ### hardcoded in qcommonstyle.cpp
     branchOption.palette = palette;
     branchOption.state = QStyle::State_Children;
 
@@ -277,29 +282,25 @@ QIcon QtPropertyBrowserUtils::drawIndicatorIcon(const QPalette &palette, QStyle 
     return rc;
 }
 
-QColor QtPropertyBrowserUtils::variant2color(const QVariant &value)
-{
-    if(value.type() == QVariant::Color)
-    {
+
+QColor QtPropertyBrowserUtils::variant2color(const QVariant &value) {
+    if(value.type() == QVariant::Color) {
         return value.value<QColor>();
-    }
-    else if(value.type() == QVariant::List)
-    {
+    } else if(value.type() == QVariant::List) {
         QVariantList val = value.toList();
-        if(val.size() == 4)
-        {
-            return QColor( val[0].toInt(),
-                    val[1].toInt(),
-                    val[2].toInt(),
-                    val[3].toInt()
-                    );
+        if(val.size() == 4) {
+            return QColor(val[0].toInt(),
+                          val[1].toInt(),
+                          val[2].toInt(),
+                          val[3].toInt()
+                          );
         }
     }
     return QColor(0, 0, 0);
 }
 
-QVariant QtPropertyBrowserUtils::color2variant(const QColor &color)
-{
+
+QVariant QtPropertyBrowserUtils::color2variant(const QColor &color) {
     QVariantList val;
     val.push_back(color.red());
     val.push_back(color.green());
@@ -308,11 +309,10 @@ QVariant QtPropertyBrowserUtils::color2variant(const QColor &color)
     return val;
 }
 
-QtBoolEdit::QtBoolEdit(QWidget *parent) :
-    QWidget(parent),
+
+QtBoolEdit::QtBoolEdit(QWidget *parent) : QWidget(parent),
     checkBox_(new QCheckBox(this)),
-    textVisible_(true)
-{
+    textVisible_(true) {
     QHBoxLayout *lt = new QHBoxLayout;
     lt->addWidget(checkBox_);
     lt->setContentsMargins(8, 1, 0, 1);
@@ -323,49 +323,52 @@ QtBoolEdit::QtBoolEdit(QWidget *parent) :
     checkBox_->setText(tr("True"));
 }
 
-void QtBoolEdit::setTextVisible(bool textVisible)
-{
-    if (textVisible_ == textVisible)
+
+void QtBoolEdit::setTextVisible(bool textVisible) {
+    if(textVisible_ == textVisible) {
         return;
+    }
 
     textVisible_ = textVisible;
-    if (textVisible_)
+    if(textVisible_) {
         checkBox_->setText(isChecked() ? tr("True") : tr("False"));
-    else
+    } else {
         checkBox_->setText(QString());
+    }
 }
 
-Qt::CheckState QtBoolEdit::checkState() const
-{
+
+Qt::CheckState QtBoolEdit::checkState() const {
     return checkBox_->checkState();
 }
 
-void QtBoolEdit::setCheckState(Qt::CheckState state)
-{
+
+void QtBoolEdit::setCheckState(Qt::CheckState state) {
     checkBox_->setCheckState(state);
 }
 
-bool QtBoolEdit::isChecked() const
-{
+
+bool QtBoolEdit::isChecked() const {
     return checkBox_->isChecked();
 }
 
-void QtBoolEdit::setChecked(bool c)
-{
+
+void QtBoolEdit::setChecked(bool c) {
     checkBox_->setChecked(c);
-    if (!textVisible_)
+    if(!textVisible_) {
         return;
+    }
     checkBox_->setText(isChecked() ? tr("True") : tr("False"));
 }
 
-bool QtBoolEdit::blockCheckBoxSignals(bool block)
-{
+
+bool QtBoolEdit::blockCheckBoxSignals(bool block) {
     return checkBox_->blockSignals(block);
 }
 
-void QtBoolEdit::mousePressEvent(QMouseEvent *event)
-{
-    if (event->buttons() == Qt::LeftButton) {
+
+void QtBoolEdit::mousePressEvent(QMouseEvent *event) {
+    if(event->buttons() == Qt::LeftButton) {
         checkBox_->click();
         event->accept();
     } else {
@@ -373,28 +376,25 @@ void QtBoolEdit::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void QtBoolEdit::slotToggle(bool checked)
-{
+
+void QtBoolEdit::slotToggle(bool checked) {
     checkBox_->setText(isChecked() ? tr("True") : tr("False"));
     emit toggled(checked);
 }
 
-void QtBoolEdit::paintEvent(QPaintEvent *)
-{
+
+void QtBoolEdit::paintEvent(QPaintEvent *) {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 
-
-QtKeySequenceEdit::QtKeySequenceEdit(QWidget *parent)
-    : QWidget(parent), num_(0), lineEdit_(new QLineEdit(this))
-{
+QtKeySequenceEdit::QtKeySequenceEdit(QWidget *parent) : QWidget(parent), num_(0), lineEdit_(new QLineEdit(this)) {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(lineEdit_);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     lineEdit_->installEventFilter(this);
     lineEdit_->setReadOnly(true);
     lineEdit_->setFocusProxy(this);
@@ -402,25 +402,27 @@ QtKeySequenceEdit::QtKeySequenceEdit(QWidget *parent)
     setAttribute(Qt::WA_InputMethodEnabled);
 }
 
-bool QtKeySequenceEdit::eventFilter(QObject *o, QEvent *e)
-{
-    if (o == lineEdit_ && e->type() == QEvent::ContextMenu) {
+
+bool QtKeySequenceEdit::eventFilter(QObject *o, QEvent *e) {
+    if((o == lineEdit_) && (e->type() == QEvent::ContextMenu)) {
         QContextMenuEvent *c = static_cast<QContextMenuEvent *>(e);
         QMenu *menu = lineEdit_->createStandardContextMenu();
         const QList<QAction *> actions = menu->actions();
         QListIterator<QAction *> itAction(actions);
-        while (itAction.hasNext()) {
+        while(itAction.hasNext()) {
             QAction *action = itAction.next();
             action->setShortcut(QKeySequence());
             QString actionString = action->text();
             const int pos = actionString.lastIndexOf(QLatin1Char('\t'));
-            if (pos > 0)
+            if(pos > 0) {
                 actionString.remove(pos, actionString.length() - pos);
+            }
             action->setText(actionString);
         }
         QAction *actionBefore = 0;
-        if (actions.count() > 0)
+        if(actions.count() > 0) {
             actionBefore = actions[0];
+        }
         QAction *clearAction = new QAction(tr("Clear Shortcut"), menu);
         menu->insertAction(actionBefore, clearAction);
         menu->insertSeparator(actionBefore);
@@ -435,109 +437,117 @@ bool QtKeySequenceEdit::eventFilter(QObject *o, QEvent *e)
     return QWidget::eventFilter(o, e);
 }
 
-void QtKeySequenceEdit::slotClearShortcut()
-{
-    if (keySequence_.isEmpty())
+
+void QtKeySequenceEdit::slotClearShortcut() {
+    if(keySequence_.isEmpty()) {
         return;
+    }
     setKeySequence(QKeySequence());
     emit keySequenceChanged(keySequence_);
 }
 
-void QtKeySequenceEdit::handleKeyEvent(QKeyEvent *e)
-{
+
+void QtKeySequenceEdit::handleKeyEvent(QKeyEvent *e) {
     int nextKey = e->key();
-    if (nextKey == Qt::Key_Control || nextKey == Qt::Key_Shift ||
-            nextKey == Qt::Key_Meta || nextKey == Qt::Key_Alt ||
-            nextKey == Qt::Key_Super_L || nextKey == Qt::Key_AltGr)
+    if((nextKey == Qt::Key_Control) || (nextKey == Qt::Key_Shift) ||
+       (nextKey == Qt::Key_Meta) || (nextKey == Qt::Key_Alt) ||
+       (nextKey == Qt::Key_Super_L) || (nextKey == Qt::Key_AltGr)) {
         return;
+    }
 
     nextKey |= translateModifiers(e->modifiers(), e->text());
     int k0 = keySequence_[0];
     int k1 = keySequence_[1];
     int k2 = keySequence_[2];
     int k3 = keySequence_[3];
-    switch (num_) {
-        case 0: k0 = nextKey; k1 = 0; k2 = 0; k3 = 0; break;
-        case 1: k1 = nextKey; k2 = 0; k3 = 0; break;
-        case 2: k2 = nextKey; k3 = 0; break;
-        case 3: k3 = nextKey; break;
-        default: break;
+    switch(num_) {
+    case 0: k0 = nextKey; k1 = 0; k2 = 0; k3 = 0; break;
+    case 1: k1 = nextKey; k2 = 0; k3 = 0; break;
+    case 2: k2 = nextKey; k3 = 0; break;
+    case 3: k3 = nextKey; break;
+    default: break;
     }
     ++num_;
-    if (num_ > 3)
+    if(num_ > 3) {
         num_ = 0;
+    }
     keySequence_ = QKeySequence(k0, k1, k2, k3);
     lineEdit_->setText(keySequence_.toString(QKeySequence::NativeText));
     e->accept();
     emit keySequenceChanged(keySequence_);
 }
 
-void QtKeySequenceEdit::setKeySequence(const QKeySequence &sequence)
-{
-    if (sequence == keySequence_)
+
+void QtKeySequenceEdit::setKeySequence(const QKeySequence &sequence) {
+    if(sequence == keySequence_) {
         return;
+    }
     num_ = 0;
     keySequence_ = sequence;
     lineEdit_->setText(keySequence_.toString(QKeySequence::NativeText));
 }
 
-QKeySequence QtKeySequenceEdit::keySequence() const
-{
+
+QKeySequence QtKeySequenceEdit::keySequence() const {
     return keySequence_;
 }
 
-int QtKeySequenceEdit::translateModifiers(Qt::KeyboardModifiers state, const QString &text) const
-{
+
+int QtKeySequenceEdit::translateModifiers(Qt::KeyboardModifiers state, const QString &text) const {
     int result = 0;
-    if ((state & Qt::ShiftModifier) && (text.size() == 0 || !text.at(0).isPrint() || text.at(0).isLetter() || text.at(0).isSpace()))
+    if((state & Qt::ShiftModifier) && ((text.size() == 0) || !text.at(0).isPrint() || text.at(0).isLetter() || text.at(0).isSpace())) {
         result |= Qt::SHIFT;
-    if (state & Qt::ControlModifier)
+    }
+    if(state & Qt::ControlModifier) {
         result |= Qt::CTRL;
-    if (state & Qt::MetaModifier)
+    }
+    if(state & Qt::MetaModifier) {
         result |= Qt::META;
-    if (state & Qt::AltModifier)
+    }
+    if(state & Qt::AltModifier) {
         result |= Qt::ALT;
+    }
     return result;
 }
 
-void QtKeySequenceEdit::focusInEvent(QFocusEvent *e)
-{
+
+void QtKeySequenceEdit::focusInEvent(QFocusEvent *e) {
     lineEdit_->event(e);
     lineEdit_->selectAll();
     QWidget::focusInEvent(e);
 }
 
-void QtKeySequenceEdit::focusOutEvent(QFocusEvent *e)
-{
+
+void QtKeySequenceEdit::focusOutEvent(QFocusEvent *e) {
     num_ = 0;
     lineEdit_->event(e);
     QWidget::focusOutEvent(e);
 }
 
-void QtKeySequenceEdit::keyPressEvent(QKeyEvent *e)
-{
+
+void QtKeySequenceEdit::keyPressEvent(QKeyEvent *e) {
     handleKeyEvent(e);
     e->accept();
 }
 
-void QtKeySequenceEdit::keyReleaseEvent(QKeyEvent *e)
-{
+
+void QtKeySequenceEdit::keyReleaseEvent(QKeyEvent *e) {
     lineEdit_->event(e);
 }
 
-void QtKeySequenceEdit::paintEvent(QPaintEvent *)
-{
+
+void QtKeySequenceEdit::paintEvent(QPaintEvent *) {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-bool QtKeySequenceEdit::event(QEvent *e)
-{
-    if (e->type() == QEvent::Shortcut ||
-            e->type() == QEvent::ShortcutOverride  ||
-            e->type() == QEvent::KeyRelease) {
+
+bool QtKeySequenceEdit::event(QEvent *e) {
+    if((e->type() == QEvent::Shortcut) ||
+       (e->type() == QEvent::ShortcutOverride) ||
+       (e->type() == QEvent::KeyRelease)) {
         e->accept();
         return true;
     }
@@ -545,21 +555,21 @@ bool QtKeySequenceEdit::event(QEvent *e)
 }
 
 
-/*static*/ void QtPropertyBrowserUtils::setupTreeViewEditorMargin(QLayout *lt)
-{
-    enum { DecorationMargin = 4 };
-    if (QApplication::layoutDirection() == Qt::LeftToRight)
+/*static*/ void QtPropertyBrowserUtils::setupTreeViewEditorMargin(QLayout *lt) {
+    enum {DecorationMargin = 4};
+
+    if(QApplication::layoutDirection() == Qt::LeftToRight) {
         lt->setContentsMargins(DecorationMargin, 0, 0, 0);
-    else
+    } else {
         lt->setContentsMargins(0, 0, DecorationMargin, 0);
+    }
 }
 
-QtColorEditWidget::QtColorEditWidget(QWidget *parent) :
-    QWidget(parent),
+
+QtColorEditWidget::QtColorEditWidget(QWidget *parent) : QWidget(parent),
     pixmapLabel_(new QLabel),
     label_(new QLabel),
-    button_(new QToolButton)
-{
+    button_(new QToolButton) {
     QHBoxLayout *lt = new QHBoxLayout(this);
     QtPropertyBrowserUtils::setupTreeViewEditorMargin(lt);
     lt->setSpacing(0);
@@ -579,34 +589,31 @@ QtColorEditWidget::QtColorEditWidget(QWidget *parent) :
     label_->setText(QtPropertyBrowserUtils::colorValueText(color_));
 }
 
-void QtColorEditWidget::setValue(const QColor &c)
-{
-    if (color_ != c) {
+
+void QtColorEditWidget::setValue(const QColor &c) {
+    if(color_ != c) {
         color_ = c;
         pixmapLabel_->setPixmap(QtPropertyBrowserUtils::brushValuePixmap(QBrush(c)));
         label_->setText(QtPropertyBrowserUtils::colorValueText(c));
     }
 }
 
-void QtColorEditWidget::buttonClicked()
-{
-    bool ok = false;
-    QRgb oldRgba = color_.rgba();
-    QRgb newRgba = QColorDialog::getRgba(oldRgba, &ok, this);
-    if (ok && newRgba != oldRgba)
-    {
-        setValue(QColor::fromRgba(newRgba));
+
+void QtColorEditWidget::buttonClicked() {
+    QColor newColor = QColorDialog::getColor(color_, this, QString(), QColorDialog::ShowAlphaChannel);
+    if(newColor.isValid() && (newColor != color_)) {
+        setValue(newColor);
         emit valueChanged(color_);
     }
 }
 
-bool QtColorEditWidget::eventFilter(QObject *obj, QEvent *ev)
-{
-    if (obj == button_) {
-        switch (ev->type()) {
+
+bool QtColorEditWidget::eventFilter(QObject *obj, QEvent *ev) {
+    if(obj == button_) {
+        switch(ev->type()) {
         case QEvent::KeyPress:
-        case QEvent::KeyRelease: { // Prevent the QToolButton from handling Enter/Escape meant control the delegate
-            switch (static_cast<const QKeyEvent*>(ev)->key()) {
+        case QEvent::KeyRelease: {  // Prevent the QToolButton from handling Enter/Escape meant control the delegate
+            switch(static_cast<const QKeyEvent *>(ev)->key()) {
             case Qt::Key_Escape:
             case Qt::Key_Enter:
             case Qt::Key_Return:
@@ -616,7 +623,7 @@ bool QtColorEditWidget::eventFilter(QObject *obj, QEvent *ev)
                 break;
             }
         }
-            break;
+        break;
         default:
             break;
         }
@@ -624,10 +631,10 @@ bool QtColorEditWidget::eventFilter(QObject *obj, QEvent *ev)
     return QWidget::eventFilter(obj, ev);
 }
 
-void QtColorEditWidget::paintEvent(QPaintEvent *)
-{
+
+void QtColorEditWidget::paintEvent(QPaintEvent *) {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter p(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }

@@ -6,29 +6,14 @@
 #include "qtproperty.h"
 #include "qtpropertyeditorfactory.h"
 
-QtButtonPropertyItem::QtButtonPropertyItem() : property_(NULL)
-    , label_(NULL)
-    , editor_(NULL)
-    , valueLabel_(NULL)
-    , titleButton_(NULL)
-    , titleMenu_(NULL)
-    , container_(NULL)
-    , layout_(NULL)
-    , parent_(NULL)
-    , bExpand_(true) {
+QtButtonPropertyItem::QtButtonPropertyItem() : property_(NULL), label_(NULL), editor_(NULL), valueLabel_(NULL),
+    titleButton_(NULL), titleMenu_(NULL), container_(NULL), layout_(NULL), parent_(NULL), bExpand_(true) {
 }
 
 
-QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyItem *parent, QtPropertyEditorFactory *editorFactory) : property_(prop)
-    , label_(NULL)
-    , editor_(NULL)
-    , valueLabel_(NULL)
-    , titleButton_(NULL)
-    , titleMenu_(NULL)
-    , container_(NULL)
-    , layout_(NULL)
-    , parent_(parent)
-    , bExpand_(true) {
+QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyItem *parent, QtPropertyEditorFactory *editorFactory) : property_(prop),
+    label_(NULL), editor_(NULL), valueLabel_(NULL), titleButton_(NULL), titleMenu_(NULL)
+    , container_(NULL), layout_(NULL), parent_(parent), bExpand_(true) {
     layout_ = parent->layout_;
 
     if(!property_->getChildren().empty()) {
@@ -53,7 +38,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
             titleMenu_->setText("...");
             layout_->addWidget(titleMenu_, row, 1, Qt::AlignRight);
             connect(titleMenu_, SIGNAL(clicked(bool)), this, SLOT(onBtnMenu()));
-        } else   {
+        } else {
             QFont font = titleButton_->font();
             font.setBold(true);
             titleButton_->setFont(font);
@@ -74,7 +59,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
         layout_->setSpacing(4);
         layout_->setContentsMargins(8, 8, 8, 8);
         container_->setLayout(layout_);
-    } else   {
+    } else {
         int row = layout_->rowCount();
 
         label_ = new QLabel(property_->getTitle());
@@ -84,7 +69,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
         editor_ = editorFactory->createEditor(prop, NULL);
         if(editor_) {
             layout_->addWidget(editor_, row, 1);
-        } else   {
+        } else {
             valueLabel_ = new QLabel(property_->getValueString());
             valueLabel_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
             layout_->addWidget(valueLabel_, row, 1, Qt::AlignLeft);

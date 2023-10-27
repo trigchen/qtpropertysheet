@@ -40,8 +40,8 @@
 
 
 //
-//  W A R N I N G
-//  -------------
+// W A R N I N G
+// -------------
 //
 // This file is not part of the Qt API.  It exists for the convenience
 // of Qt Designer.  This header
@@ -50,14 +50,14 @@
 // We mean it.
 //
 
-#ifndef QTPROPERTYBROWSERUTILS_H
-#define QTPROPERTYBROWSERUTILS_H
+#pragma once
+
+#include <QIcon>
+#include <QMap>
+#include <QStringList>
+#include <QWidget>
 
 #include "qtpropertyconfig.h"
-#include <QMap>
-#include <QIcon>
-#include <QWidget>
-#include <QStringList>
 
 #if QT_VERSION >= 0x040400
 QT_BEGIN_NAMESPACE
@@ -72,98 +72,134 @@ class QPalette;
 class QStyle;
 class QLayout;
 
-class QtCursorDatabase
-{
-public:
+class QtCursorDatabase {
+  public:
     QtCursorDatabase();
+
     void clear();
 
     QStringList cursorShapeNames() const;
+
     QMap<int, QIcon> cursorShapeIcons() const;
+
     QString cursorToShapeName(const QCursor &cursor) const;
+
     QIcon cursorToShapeIcon(const QCursor &cursor) const;
+
     int cursorToValue(const QCursor &cursor) const;
+
 #ifndef QT_NO_CURSOR
     QCursor valueToCursor(int value) const;
+
 #endif
-private:
+  private:
     void appendCursor(Qt::CursorShape shape, const QString &name, const QIcon &icon);
+
     QStringList cursorNames_;
     QMap<int, QIcon> cursorIcons_;
     QMap<int, Qt::CursorShape> valueToCursorShape_;
     QMap<Qt::CursorShape, int> cursorShapeToValue_;
 };
 
-class QtPropertyBrowserUtils
-{
-public:
+
+class QtPropertyBrowserUtils {
+  public:
     static QPixmap brushValuePixmap(const QBrush &b);
+
     static QIcon brushValueIcon(const QBrush &b);
+
     static QString colorValueText(const QColor &c);
+
     static QPixmap fontValuePixmap(const QFont &f);
+
     static QIcon fontValueIcon(const QFont &f);
+
     static QString fontValueText(const QFont &f);
+
     static QIcon drawCheckBox(bool value);
+
     static QIcon drawIndicatorIcon(const QPalette &palette, QStyle *style);
+
     static QColor variant2color(const QVariant &value);
+
     static QVariant color2variant(const QColor &color);
+
     static void setupTreeViewEditorMargin(QLayout *lt);
 };
 
+
 class QTPROPERTYSHEET_DLL QtBoolEdit : public QWidget {
     Q_OBJECT
-public:
+  public:
     QtBoolEdit(QWidget *parent = 0);
 
-    bool textVisible() const { return textVisible_; }
+    bool textVisible() const {
+        return textVisible_;
+    }
+
+
     void setTextVisible(bool textVisible);
 
     Qt::CheckState checkState() const;
+
     void setCheckState(Qt::CheckState state);
 
     bool isChecked() const;
+
     void setChecked(bool c);
 
     bool blockCheckBoxSignals(bool block);
 
-Q_SIGNALS:
+  Q_SIGNALS:
     void toggled(bool);
 
-public Q_SLOTS:
+  public Q_SLOTS:
     void slotToggle(bool checked);
 
-protected:
-    void mousePressEvent(QMouseEvent * event);
+  protected:
+    void mousePressEvent(QMouseEvent *event);
+
     void paintEvent(QPaintEvent *);
 
-private:
+  private:
     QCheckBox *checkBox_;
     bool textVisible_;
 };
 
-class QTPROPERTYSHEET_DLL QtKeySequenceEdit : public QWidget
-{
+class QTPROPERTYSHEET_DLL QtKeySequenceEdit : public QWidget {
     Q_OBJECT
-public:
+  public:
     QtKeySequenceEdit(QWidget *parent = 0);
 
     QKeySequence keySequence() const;
+
     bool eventFilter(QObject *o, QEvent *e);
-public Q_SLOTS:
+
+  public Q_SLOTS:
     void setKeySequence(const QKeySequence &sequence);
-Q_SIGNALS:
+
+  Q_SIGNALS:
     void keySequenceChanged(const QKeySequence &sequence);
-protected:
+
+  protected:
     void focusInEvent(QFocusEvent *e);
+
     void focusOutEvent(QFocusEvent *e);
+
     void keyPressEvent(QKeyEvent *e);
+
     void keyReleaseEvent(QKeyEvent *e);
+
     void paintEvent(QPaintEvent *);
+
     bool event(QEvent *e);
-private slots:
+
+  private slots:
     void slotClearShortcut();
-private:
+
+  private:
     void handleKeyEvent(QKeyEvent *e);
+
     int translateModifiers(Qt::KeyboardModifiers state, const QString &text) const;
 
     int num_;
@@ -171,36 +207,33 @@ private:
     QLineEdit *lineEdit_;
 };
 
-class QTPROPERTYSHEET_DLL QtColorEditWidget : public QWidget
-{
+class QTPROPERTYSHEET_DLL QtColorEditWidget : public QWidget {
     Q_OBJECT
 
-public:
+  public:
     QtColorEditWidget(QWidget *parent);
 
     bool eventFilter(QObject *obj, QEvent *ev);
 
-public Q_SLOTS:
+  public Q_SLOTS:
     void setValue(const QColor &value);
 
-Q_SIGNALS:
+  Q_SIGNALS:
     void valueChanged(const QColor &value);
 
-protected:
+  protected:
     void paintEvent(QPaintEvent *);
 
-private Q_SLOTS:
+  private Q_SLOTS:
     void buttonClicked();
 
-private:
-    QColor          color_;
-    QLabel*         pixmapLabel_;
-    QLabel*         label_;
-    QToolButton*    button_;
+  private:
+    QColor color_;
+    QLabel *pixmapLabel_;
+    QLabel *label_;
+    QToolButton *button_;
 };
 
 #if QT_VERSION >= 0x040400
 QT_END_NAMESPACE
-#endif
-
 #endif

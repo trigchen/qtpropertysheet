@@ -1,14 +1,12 @@
-﻿#include "qtpropertyeditorfactory.h"
+﻿#include <QWidget>
+
 #include "qtproperty.h"
 #include "qtpropertyeditor.h"
+#include "qtpropertyeditorfactory.h"
 
-#include <QWidget>
-
-QtPropertyEditorFactory::QtPropertyEditorFactory(QObject *parent)
-    : QObject(parent)
-{
+QtPropertyEditorFactory::QtPropertyEditorFactory(QObject *parent) : QObject(parent) {
 #define REGISTER_CREATOR(TYPE, CLASS) \
-    registerCreator<CLASS>(TYPE)
+        registerCreator<CLASS>(TYPE)
 
     REGISTER_CREATOR(QtPropertyType::INT, QtIntSpinBoxEditor);
     REGISTER_CREATOR(QtPropertyType::FLOAT, QtDoubleSpinBoxEditor);
@@ -25,37 +23,33 @@ QtPropertyEditorFactory::QtPropertyEditorFactory(QObject *parent)
 #undef QtSpinBoxEditor
 }
 
-QWidget* QtPropertyEditorFactory::createEditor(QtProperty *property, QWidget *parent)
-{
+
+QWidget *QtPropertyEditorFactory::createEditor(QtProperty *property, QWidget *parent) {
     QtPropertyEditor *propertyEditor = createPropertyEditor(property, property->getType());
-    if(propertyEditor != NULL)
-    {
+    if(propertyEditor != NULL) {
         QWidget *widget = propertyEditor->createEditor(parent, this);
-        if(widget != NULL)
-        {
-             QObject::connect(widget, SIGNAL(destroyed(QObject*)), propertyEditor, SLOT(slotEditorDestory(QObject*)));
+        if(widget != NULL) {
+            QObject::connect(widget, SIGNAL(destroyed(QObject*)), propertyEditor, SLOT(slotEditorDestory(QObject*)));
         }
         return widget;
     }
     return NULL;
 }
 
-QtPropertyEditor* QtPropertyEditorFactory::createPropertyEditor(QtProperty *property, QtPropertyType::Type type)
-{
-    if(type == QtPropertyType::NONE)
-    {
+
+QtPropertyEditor *QtPropertyEditorFactory::createPropertyEditor(QtProperty *property, QtPropertyType::Type type) {
+    if(type == QtPropertyType::NONE) {
         type = property->getType();
     }
 
     QtPropertyEditorCreator method = creators_.value(type);
-    if(method != NULL)
-    {
+    if(method != NULL) {
         return method(property);
     }
     return NULL;
 }
 
-void QtPropertyEditorFactory::registerCreator(QtPropertyType::Type type, QtPropertyEditorCreator method)
-{
+
+void QtPropertyEditorFactory::registerCreator(QtPropertyType::Type type, QtPropertyEditorCreator method) {
     creators_[type] = method;
 }

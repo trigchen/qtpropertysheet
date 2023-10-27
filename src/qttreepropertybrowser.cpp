@@ -21,9 +21,7 @@ namespace {
 }
 
 QtTreePropertyBrowser::QtTreePropertyBrowser(QObject *parent) : QtPropertyBrowser(parent)
-    , editorFactory_(NULL)
-    , treeWidget_(NULL)
-    , delegate_(NULL) {
+    , editorFactory_(NULL), treeWidget_(NULL), delegate_(NULL) {
 }
 
 
@@ -141,14 +139,14 @@ void QtTreePropertyBrowser::addProperty(QtProperty *property, QTreeWidgetItem *p
 
         if(parentItem != NULL) {
             parentItem->addChild(item);
-        } else   {
+        } else {
             treeWidget_->addTopLevelItem(item);
         }
 
         if(property->hasValue()) {
             item->setIcon(1, property->getValueIcon());
             item->setText(1, property->getValueString());
-        } else   {
+        } else {
             item->setFirstColumnSpanned(true);
         }
 

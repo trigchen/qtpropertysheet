@@ -1,11 +1,10 @@
-﻿#ifndef QTATTRIBUTENAME_H
-#define QTATTRIBUTENAME_H
+﻿#pragma once
 
-#include "qtpropertyconfig.h"
 #include <QString>
 
-namespace QtAttributeName
-{
+#include "qtpropertyconfig.h"
+
+namespace QtAttributeName {
     QTPROPERTYSHEET_DLL extern const QString Size;
     QTPROPERTYSHEET_DLL extern const QString MinValue;
     QTPROPERTYSHEET_DLL extern const QString MaxValue;
@@ -18,5 +17,3 @@ namespace QtAttributeName
     QTPROPERTYSHEET_DLL extern const QString FileDialogFilter;
     QTPROPERTYSHEET_DLL extern const QString FileRelativePath;
 }
-
-#endif // QTATTRIBUTENAME_H

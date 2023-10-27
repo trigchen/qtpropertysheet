@@ -1,12 +1,10 @@
-﻿#include "qtpropertyfactory.h"
-#include "qtproperty.h"
+﻿#include "qtproperty.h"
+#include "qtpropertyfactory.h"
 
 
-QtPropertyFactory::QtPropertyFactory(QObject *parent)
-    : QObject(parent)
-{
+QtPropertyFactory::QtPropertyFactory(QObject *parent) : QObject(parent) {
 #define REGISTER_PROPERTY(TYPE, CLASS) \
-    registerCreator(TYPE, new QtSimplePropertyCreator<CLASS>(TYPE, this))
+        registerCreator(TYPE, new QtSimplePropertyCreator<CLASS>(TYPE, this))
 
     REGISTER_PROPERTY(QtPropertyType::LIST, QtListProperty);
     REGISTER_PROPERTY(QtPropertyType::DICT, QtDictProperty);
@@ -23,31 +21,28 @@ QtPropertyFactory::QtPropertyFactory(QObject *parent)
 #undef REGISTER_PROPERTY
 }
 
-QtPropertyFactory::~QtPropertyFactory()
-{
-    for(CreatorMap::iterator it = propertyCreator_.begin(); it != propertyCreator_.end(); ++it)
-    {
+
+QtPropertyFactory::~QtPropertyFactory() {
+    for(CreatorMap::iterator it = propertyCreator_.begin(); it != propertyCreator_.end(); ++it) {
         delete it.value();
     }
 }
 
-QtProperty* QtPropertyFactory::createProperty(QtPropertyType::Type type)
-{
+
+QtProperty *QtPropertyFactory::createProperty(QtPropertyType::Type type) {
     QtPropertyCreator *method = propertyCreator_.value(type);
-    if(method != NULL)
-    {
+    if(method != NULL) {
         return method->create();
     }
-    
+
     // use default QtProperty
     return new QtProperty(type, this);
 }
 
-void QtPropertyFactory::registerCreator(QtPropertyType::Type type, QtPropertyCreator *method)
-{
+
+void QtPropertyFactory::registerCreator(QtPropertyType::Type type, QtPropertyCreator *method) {
     QtPropertyCreator *p = propertyCreator_.value(type);
-    if(p != NULL)
-    {
+    if(p != NULL) {
         delete p;
     }
     propertyCreator_[type] = method;

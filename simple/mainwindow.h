@@ -4,29 +4,30 @@
 #include <QMainWindow>
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class QtProperty;
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-public:
+  public:
     explicit MainWindow(QWidget *parent = 0);
+
     ~MainWindow();
 
-private slots:
+  private slots:
     void onValueChanged(QtProperty *property);
+
     void onPopupMenu(QtProperty *property);
 
-private:
+  private:
     void createProperties();
 
-    Ui::MainWindow*     ui;
-    QtProperty*         root_;
-    QMenu*              popupMenu_;
+    Ui::MainWindow *ui;
+    QtProperty *root_;
+    QMenu *popupMenu_;
 };
 
 #endif // MAINWINDOW_H

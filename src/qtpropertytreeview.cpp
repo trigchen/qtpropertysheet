@@ -14,8 +14,7 @@ namespace {
     }
 }
 
-QtPropertyTreeView::QtPropertyTreeView(QWidget *parent) : QTreeWidget(parent)
-    , editorPrivate_(0) {
+QtPropertyTreeView::QtPropertyTreeView(QWidget *parent) : QTreeWidget(parent), editorPrivate_(0) {
     connect(header(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(resizeColumnToContents(int)));
 }
 
@@ -83,7 +82,7 @@ void QtPropertyTreeView::mousePressEvent(QMouseEvent *event) {
            (header()->logicalIndexAt(event->pos().x()) == 1) &&
            isItemEditable(item->flags())) {
             editItem(item, 1);
-        } else if(property && !property->hasValue() && editorPrivate_->markPropertiesWithoutValue() && !rootIsDecorated())   {
+        } else if(property && !property->hasValue() && editorPrivate_->markPropertiesWithoutValue() && !rootIsDecorated()) {
             if(event->pos().x() + header()->offset() < 20) {
                 item->setExpanded(!item->isExpanded());
             }

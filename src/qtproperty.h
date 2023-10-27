@@ -1,52 +1,88 @@
-﻿#ifndef QTPROPERTY_H
-#define QTPROPERTY_H
+﻿#pragma once
+
+#include <QIcon>
+#include <QMap>
+#include <QObject>
+#include <QVariant>
+#include <QVector>
 
 #include "qtpropertyconfig.h"
-#include <QObject>
-#include <QVector>
-#include <QVariant>
-#include <QMap>
-#include <QIcon>
 
 class QtProperty;
 class QtPropertyFactory;
 
-typedef QVector<QtProperty*>    QtPropertyList;
+typedef QVector<QtProperty *>    QtPropertyList;
 typedef QMap<QString, QVariant> QtPropertyAttributes;
 
-class QTPROPERTYSHEET_DLL QtProperty : public QObject
-{
+class QTPROPERTYSHEET_DLL QtProperty : public QObject {
     Q_OBJECT
-public:
+  public:
     typedef QString Type;
 
     QtProperty(Type type, QtPropertyFactory *factory);
+
     virtual ~QtProperty();
 
-    Type getType() const { return type_; }
-    QtProperty* getParent() { return parent_; }
+    Type getType() const {
+        return type_;
+    }
+
+
+    QtProperty *getParent() {
+        return parent_;
+    }
+
 
     void setName(const QString &name);
-    const QString& getName() const { return name_; }
+
+    const QString &getName() const {
+        return name_;
+    }
+
 
     void setTitle(const QString &title);
-    const QString& getTitle() const;
 
-    void setToolTip(const QString &tip){ tips_ = tip; }
-    const QString& getToolTip() const {return tips_; }
+    const QString &getTitle() const;
 
-    void setBackgroundColor(const QColor &cr){ bgColor_ = cr; }
-    const QColor& getBackgroundColor() const { return bgColor_; }
+    void setToolTip(const QString &tip) {
+        tips_ = tip;
+    }
+
+
+    const QString &getToolTip() const {
+        return tips_;
+    }
+
+
+    void setBackgroundColor(const QColor &cr) {
+        bgColor_ = cr;
+    }
+
+
+    const QColor &getBackgroundColor() const {
+        return bgColor_;
+    }
+
 
     virtual void setValue(const QVariant &value);
-    virtual const QVariant& getValue() const { return value_; }
+
+    virtual const QVariant &getValue() const {
+        return value_;
+    }
+
 
     virtual QString getValueString() const;
+
     virtual QIcon getValueIcon() const;
 
     virtual void setAttribute(const QString &name, const QVariant &value);
+
     QVariant getAttribute(const QString &name) const;
-    QtPropertyAttributes& getAttributes(){ return attributes_; }
+
+    QtPropertyAttributes &getAttributes() {
+        return attributes_;
+    }
+
 
     /** 添加子属性，由属性树负责delete child。*/
     void addChild(QtProperty *child);
@@ -62,98 +98,134 @@ public:
      */
     void removeAllChildren(bool clean);
 
-    QtPropertyList& getChildren(){ return children_; }
-    const QtPropertyList& getChildren() const { return children_; }
+    QtPropertyList &getChildren() {
+        return children_;
+    }
+
+
+    const QtPropertyList &getChildren() const {
+        return children_;
+    }
+
+
     int indexChild(const QtProperty *child) const;
-    virtual QtProperty* findChild(const QString &name);
+
+    virtual QtProperty *findChild(const QString &name);
 
     virtual void setChildValue(const QString &name, const QVariant &value);
 
-    virtual bool hasValue() const { return true; }
-    virtual bool isModified() const { return false; }
+    virtual bool hasValue() const {
+        return true;
+    }
+
+
+    virtual bool isModified() const {
+        return false;
+    }
+
 
     void setVisible(bool visible);
-    bool isVisible() const { return visible_; }
 
-    void setSelfVisible(bool visible){ selfVisible_ = visible; }
-    bool isSelfVisible() const { return selfVisible_; }
+    bool isVisible() const {
+        return visible_;
+    }
 
-    void setMenuVisible(bool visible){ menuVisible_ = visible; }
-    bool isMenuVisible() const { return menuVisible_; }
 
-signals:
+    void setSelfVisible(bool visible) {
+        selfVisible_ = visible;
+    }
+
+
+    bool isSelfVisible() const {
+        return selfVisible_;
+    }
+
+
+    void setMenuVisible(bool visible) {
+        menuVisible_ = visible;
+    }
+
+
+    bool isMenuVisible() const {
+        return menuVisible_;
+    }
+
+
+  signals:
     void signalValueChange(QtProperty *property);
+
     void signalPropertyInserted(QtProperty *property, QtProperty *parent);
+
     void signalPropertyRemoved(QtProperty *property, QtProperty *parent);
+
     void signalPropertyReordered(QtProperty *property);
+
     void signalAttributeChange(QtProperty *property, const QString &name);
+
     void signalPropertyChange(QtProperty *property);
+
     void signalPopupMenu(QtProperty *property);
 
-protected:
+  protected:
     virtual void onChildAdd(QtProperty *child);
+
     virtual void onChildRemove(QtProperty *child);
 
-    QtPropertyFactory*  factory_;
-
-    Type                type_;
-    QString             name_;
-    QString             title_;
-    QString             tips_;
-    QVariant            value_;
-    QColor              bgColor_;
-
-    QtProperty*         parent_;
-    QtPropertyList      children_;
-
+    QtPropertyFactory *factory_;
+    Type type_;
+    QString name_;
+    QString title_;
+    QString tips_;
+    QVariant value_;
+    QColor bgColor_;
+    QtProperty *parent_;
+    QtPropertyList children_;
     QMap<QString, QVariant> attributes_;
-
-    bool                visible_;
-    bool                selfVisible_;
-    bool                menuVisible_;
+    bool visible_;
+    bool selfVisible_;
+    bool menuVisible_;
 };
 
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtContainerProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtContainerProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtContainerProperty(Type type, QtPropertyFactory *factory);
 
-protected slots:
+  protected slots:
     virtual void slotChildValueChange(QtProperty *property) = 0;
 
-protected:
+  protected:
     virtual void onChildAdd(QtProperty *child);
+
     virtual void onChildRemove(QtProperty *child);
 };
 
 
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtListProperty : public QtContainerProperty
-{
+class QTPROPERTYSHEET_DLL QtListProperty : public QtContainerProperty {
     Q_OBJECT
-public:
+  public:
     QtListProperty(Type type, QtPropertyFactory *factory);
 
     virtual void setValue(const QVariant &value);
+
     virtual QString getValueString() const;
 
-protected slots:
+  protected slots:
     virtual void slotChildValueChange(QtProperty *property);
 };
 
 
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtDictProperty : public QtContainerProperty
-{
+class QTPROPERTYSHEET_DLL QtDictProperty : public QtContainerProperty {
     Q_OBJECT
-public:
+  public:
     QtDictProperty(Type type, QtPropertyFactory *factory);
 
     virtual void setValue(const QVariant &value);
 
-protected slots:
+  protected slots:
     virtual void slotChildValueChange(QtProperty *property);
 };
 
@@ -167,139 +239,164 @@ protected slots:
  * NOTICE: QtGroupProperty can only be root or child of another QtGroupProperty,
  * Adding QtGroupProperty as child of any other property, will cause unexpected problem.
  */
-class QTPROPERTYSHEET_DLL QtGroupProperty : public QtContainerProperty
-{
+class QTPROPERTYSHEET_DLL QtGroupProperty : public QtContainerProperty {
     Q_OBJECT
-public:
+  public:
     QtGroupProperty(Type type, QtPropertyFactory *factory);
 
-    virtual bool hasValue() const { return false; }
+    virtual bool hasValue() const {
+        return false;
+    }
+
+
     virtual void setValue(const QVariant &value);
 
-    virtual QtProperty* findChild(const QString &name);
+    virtual QtProperty *findChild(const QString &name);
+
     virtual void setChildValue(const QString &name, const QVariant &value);
 
-protected slots:
+  protected slots:
     virtual void slotChildValueChange(QtProperty *property);
 };
 
 
-
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtEnumProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtEnumProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtEnumProperty(Type type, QtPropertyFactory *factory);
+
     virtual QString getValueString() const;
 };
 
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtFlagProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtFlagProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtFlagProperty(Type type, QtPropertyFactory *factory);
+
     virtual QString getValueString() const;
 };
 
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtBoolProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtBoolProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtBoolProperty(Type type, QtPropertyFactory *factory);
+
     virtual QString getValueString() const;
+
     virtual QIcon getValueIcon() const;
 };
 
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtDoubleProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtDoubleProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtDoubleProperty(Type type, QtPropertyFactory *factory);
+
     virtual QString getValueString() const;
 };
 
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtColorProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtColorProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtColorProperty(Type type, QtPropertyFactory *factory);
 
     virtual QString getValueString() const;
+
     virtual QIcon getValueIcon() const;
 };
+
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtDynamicListProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtDynamicListProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtDynamicListProperty(Type type, QtPropertyFactory *factory);
+
     ~QtDynamicListProperty();
 
     virtual void setValue(const QVariant &value);
+
     virtual QString getValueString() const;
 
-protected slots:
+  protected slots:
     void slotItemValueChange(QtProperty *item);
+
     void slotItemMoveUp(QtProperty *item);
+
     void slotItemMoveDown(QtProperty *item);
+
     void slotItemDelete(QtProperty *item);
 
     void slotLengthChange(QtProperty *property);
 
-protected:
+  protected:
     void setLength(int length);
-    QtProperty* appendItem();
+
+    QtProperty *appendItem();
+
     void popItem();
 
-    int 			length_;
-    QtProperty* 	propLength_;
-    QtPropertyList  items_;
-
-    QVariantList    valueList_;
+    int length_;
+    QtProperty *propLength_;
+    QtPropertyList items_;
+    QVariantList valueList_;
 };
 
-class QTPROPERTYSHEET_DLL QtDynamicItemProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtDynamicItemProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtDynamicItemProperty(Type type, QtPropertyFactory *factory);
+
     ~QtDynamicItemProperty();
 
     void setValueType(Type type);
-    QtProperty* getImpl(){ return impl_; }
+
+    QtProperty *getImpl() {
+        return impl_;
+    }
+
 
     virtual void setValue(const QVariant &value) override;
-    virtual const QVariant& getValue() const override { return impl_->getValue(); }
 
-    virtual QString getValueString() const override { return impl_->getValueString(); }
-    virtual QIcon getValueIcon() const override{ return impl_->getValueIcon(); }
+    virtual const QVariant &getValue() const override {
+        return impl_->getValue();
+    }
 
-signals:
+
+    virtual QString getValueString() const override {
+        return impl_->getValueString();
+    }
+
+
+    virtual QIcon getValueIcon() const override {
+        return impl_->getValueIcon();
+    }
+
+
+  signals:
     void signalMoveUp(QtProperty *property);
+
     void signalMoveDown(QtProperty *property);
+
     void signalDelete(QtProperty *property);
 
-protected slots:
+  protected slots:
     void onImplValueChange(QtProperty *property);
 
-protected:
-    QtProperty*     impl_;
+  protected:
+    QtProperty *impl_;
 };
 
 /********************************************************************/
-class QTPROPERTYSHEET_DLL QtFloatListProperty : public QtProperty
-{
+class QTPROPERTYSHEET_DLL QtFloatListProperty : public QtProperty {
     Q_OBJECT
-public:
+  public:
     QtFloatListProperty(Type type, QtPropertyFactory *factory);
+
     ~QtFloatListProperty();
 
     virtual QString getValueString() const;
 };
-
-#endif // QTPROPERTY_H

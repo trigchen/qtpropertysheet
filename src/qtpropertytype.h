@@ -1,12 +1,11 @@
-﻿#ifndef QTPROPERTYTYPE_H
-#define QTPROPERTYTYPE_H
+﻿#pragma once
 
-#include "qtpropertyconfig.h"
 #include <QString>
 
-namespace QtPropertyType
-{
-	typedef QString Type;
+#include "qtpropertyconfig.h"
+
+namespace QtPropertyType {
+    typedef QString Type;
     QTPROPERTYSHEET_DLL extern const Type NONE;
     QTPROPERTYSHEET_DLL extern const Type BOOL;
     QTPROPERTYSHEET_DLL extern const Type INT;
@@ -24,5 +23,3 @@ namespace QtPropertyType
     QTPROPERTYSHEET_DLL extern const Type ENUM_PAIR;
     QTPROPERTYSHEET_DLL extern const Type FLOAT_LIST;
 }
-
-#endif // QTPROPERTYTYPE_H

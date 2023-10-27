@@ -1,7 +1,6 @@
 ﻿#include "qtattributename.h"
 
-namespace QtAttributeName
-{
+namespace QtAttributeName {
     const QString Size = "size";
     const QString MinValue = "minValue";
     const QString MaxValue = "maxValue";

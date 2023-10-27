@@ -1,23 +1,21 @@
-﻿#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "qttreepropertybrowser.h"
-#include "qtproperty.h"
-#include "qtpropertyfactory.h"
-#include "qtpropertyeditorfactory.h"
-#include "qtattributename.h"
-#include "qtbuttonpropertybrowser.h"
-
-#include <QTreeWidget>
+﻿#include <QDir>
 #include <QHBoxLayout>
-#include <QDir>
 #include <QScrollArea>
 #include <QSplitter>
+#include <QTreeWidget>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
+#include "mainwindow.h"
+#include "qtattributename.h"
+#include "qtbuttonpropertybrowser.h"
+#include "qtproperty.h"
+#include "qtpropertyeditorfactory.h"
+#include "qtpropertyfactory.h"
+#include "qttreepropertybrowser.h"
+#include "ui_mainwindow.h"
+
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
     ui(new Ui::MainWindow),
-    root_(NULL)
-{
+    root_(NULL) {
     ui->setupUi(this);
 
     createProperties();
@@ -59,17 +57,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // test set property value
 
-    //1. set child value by name.
+    // 1. set child value by name.
     root_->setChildValue("name", "Jack");
 
-    //2. find property, then set value directly.
+    // 2. find property, then set value directly.
     QtProperty *addressProperty = root_->findChild("age");
-    if(addressProperty != NULL)
-    {
+    if(addressProperty != NULL) {
         addressProperty->setValue(18);
     }
 
-    //3. set list value
+    // 3. set list value
     QVariantList values;
     values.push_back(QVariant(8.0f));
     values.push_back(QVariant(9.0f));
@@ -84,14 +81,13 @@ MainWindow::MainWindow(QWidget *parent) :
     browser->addProperty(root_);
 #endif
 
-    //test delete
+    // test delete
     // delete root
 }
 
-void MainWindow::createProperties()
-{
-    QtPropertyFactory *manager = new QtPropertyFactory(this);
 
+void MainWindow::createProperties() {
+    QtPropertyFactory *manager = new QtPropertyFactory(this);
     QtProperty *root = manager->createProperty(QtPropertyType::GROUP);
     root->setName("root");
     root->setSelfVisible(false);
@@ -210,30 +206,29 @@ void MainWindow::createProperties()
     connect(root, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(onValueChanged(QtProperty*)));
 }
 
-MainWindow::~MainWindow()
-{
+
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::onValueChanged(QtProperty *property)
-{
+
+void MainWindow::onValueChanged(QtProperty *property) {
     printf("property change: %s = %s\n",
            property->getName().toUtf8().data(),
            property->getValueString().toUtf8().data());
 
     fflush(stdout);
 
-    if(property->getName() == "show geometry")
-    {
+    if(property->getName() == "show geometry") {
         QtProperty *geometry = root_->findChild("geometry");
-        if(geometry != NULL)
-        {
+        if(geometry != NULL) {
             geometry->setVisible(property->getValue().toBool());
         }
     }
 }
 
-void MainWindow::onPopupMenu(QtProperty *property)
-{
+
+void MainWindow::onPopupMenu(QtProperty *property) {
+    Q_UNUSED(property)
     popupMenu_->popup(QCursor::pos());
 }

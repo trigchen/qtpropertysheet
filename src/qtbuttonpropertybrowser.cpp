@@ -10,9 +10,7 @@
 #include "qtpropertyeditorfactory.h"
 
 QtButtonPropertyBrowser::QtButtonPropertyBrowser(QObject *parent) : QtPropertyBrowser(parent)
-    , editorFactory_(NULL)
-    , rootItem_(NULL)
-    , mainView_(NULL) {
+    , editorFactory_(NULL), rootItem_(NULL), mainView_(NULL) {
 }
 
 

@@ -1,4 +1,5 @@
-﻿#include <QGridLayout>
+﻿#include <QFrame>
+#include <QGridLayout>
 #include <QLabel>
 #include <QToolButton>
 
@@ -48,10 +49,10 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
             layout_->addWidget(valueLabel_, row, 1, Qt::AlignLeft);
         }
 
-        QFrame *frame2 = new QFrame();
-        frame2->setFrameShape(QFrame::Panel);
-        frame2->setFrameShadow(QFrame::Raised);
-        container_ = frame2;  // new QWidget();
+        QFrame *frame = new QFrame();
+        frame->setFrameShape(QFrame::Panel);
+        frame->setFrameShadow(QFrame::Raised);
+        container_ = frame;
         container_->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding));
         layout_->addWidget(container_, layout_->rowCount(), 0, 1, 2);
 

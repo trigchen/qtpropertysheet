@@ -1,7 +1,7 @@
-﻿#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+﻿#pragma once
 
 #include <QMainWindow>
+#include <QPlainTextEdit>
 
 namespace Ui {
     class MainWindow;
@@ -13,7 +13,7 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
   public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
 
     ~MainWindow();
 
@@ -25,9 +25,8 @@ class MainWindow : public QMainWindow {
   private:
     void createProperties();
 
-    Ui::MainWindow *ui;
-    QtProperty *root_;
-    QMenu *popupMenu_;
+    Ui::MainWindow *ui = nullptr;
+    QtProperty *root_ = nullptr;
+    QMenu *popupMenu_ = nullptr;
+    QPlainTextEdit *txtOutput = nullptr;
 };
-
-#endif // MAINWINDOW_H

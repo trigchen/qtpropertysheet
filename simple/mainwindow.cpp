@@ -1,4 +1,5 @@
 ﻿#include <QDir>
+#include <QGroupBox>
 #include <QHBoxLayout>
 #include <QScrollArea>
 #include <QSplitter>
@@ -13,9 +14,7 @@
 #include "qttreepropertybrowser.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    root_(NULL) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), root_(NULL) {
     ui->setupUi(this);
 
     createProperties();
@@ -38,21 +37,35 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),
         scrollArea->setWidgetResizable(true);
         splitter->addWidget(scrollArea);
 
-        QWidget *widget = new QWidget();
-        scrollArea->setWidget(widget);
+        QGroupBox *grpBtnPropBrowser = new QGroupBox();
+        grpBtnPropBrowser->setTitle("Button Property Browser");
+        grpBtnPropBrowser->setAlignment(Qt::AlignHCenter);
+        scrollArea->setWidget(grpBtnPropBrowser);
 
         QtButtonPropertyBrowser *browser = new QtButtonPropertyBrowser(this);
-        browser->init(widget, editorFactory);
-
+        browser->init(grpBtnPropBrowser, editorFactory);
         browser->addProperty(root_);
     }
+    QSplitter *vsplitter = new QSplitter(Qt::Vertical, this);
+    splitter->addWidget(vsplitter);
     {
-        QWidget *treeWidget = new QWidget(this);
-        splitter->addWidget(treeWidget);
+        QGroupBox *grpTreePropBrowser = new QGroupBox();
+        grpTreePropBrowser->setTitle("Tree Property Browser");
+        grpTreePropBrowser->setAlignment(Qt::AlignHCenter);
+        vsplitter->addWidget(grpTreePropBrowser);
 
         QtTreePropertyBrowser *treeBrowser = new QtTreePropertyBrowser(this);
-        treeBrowser->init(treeWidget, editorFactory);
+        treeBrowser->init(grpTreePropBrowser, editorFactory);
         treeBrowser->addProperty(root_);
+    }
+    {
+        QGroupBox *grpMessage = new QGroupBox();
+        QVBoxLayout *vlyt = new QVBoxLayout(grpMessage);
+        vlyt->setContentsMargins(0, 0, 0, 0);
+        grpMessage->setTitle("Message");
+        txtOutput = new QPlainTextEdit();
+        vlyt->addWidget(txtOutput);
+        vsplitter->addWidget(grpMessage);
     }
 
     // test set property value
@@ -213,11 +226,8 @@ MainWindow::~MainWindow() {
 
 
 void MainWindow::onValueChanged(QtProperty *property) {
-    printf("property change: %s = %s\n",
-           property->getName().toUtf8().data(),
-           property->getValueString().toUtf8().data());
-
-    fflush(stdout);
+    QString msg = QString("property change: %1 = %2").arg(property->getName(), property->getValueString());
+    txtOutput->appendPlainText(msg);
 
     if(property->getName() == "show geometry") {
         QtProperty *geometry = root_->findChild("geometry");

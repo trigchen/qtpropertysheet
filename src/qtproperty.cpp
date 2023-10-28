@@ -332,7 +332,7 @@ QString QtFlagProperty::getValueString() const {
             selected.push_back(enumNames[i]);
         }
     }
-    return selected.join('|');
+    return selected.join(separator);
 }
 
 
@@ -416,7 +416,7 @@ QString QtDynamicListProperty::getValueString() const {
     QString ret = "[";
     foreach(QtProperty *item, items_) {
         ret += item->getValueString();
-        ret += ",";
+        ret += separator;
     }
     ret += "]";
     return ret;
@@ -584,7 +584,7 @@ QString QtFloatListProperty::getValueString() const {
     QVariantList lst = value_.toList();
     for(int i = 0; i < size; ++i) {
         if(i != 0) {
-            ret += ", ";
+            ret += separator;
         }
 
         double v = 0.0;

@@ -276,6 +276,9 @@ class QTPROPERTYSHEET_DLL QtFlagProperty : public QtProperty {
     QtFlagProperty(Type type, QtPropertyFactory *factory);
 
     virtual QString getValueString() const;
+
+  private:
+    const QString separator = " | ";
 };
 
 /********************************************************************/
@@ -343,6 +346,9 @@ class QTPROPERTYSHEET_DLL QtDynamicListProperty : public QtProperty {
     QtProperty *propLength_ = nullptr;
     QtPropertyList items_;
     QVariantList valueList_;
+
+  private:
+    const QString separator = ", ";
 };
 
 class QTPROPERTYSHEET_DLL QtDynamicItemProperty : public QtProperty {
@@ -399,4 +405,7 @@ class QTPROPERTYSHEET_DLL QtFloatListProperty : public QtProperty {
     ~QtFloatListProperty();
 
     virtual QString getValueString() const;
+
+  private:
+    const QString separator = ", ";
 };

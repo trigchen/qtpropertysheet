@@ -161,6 +161,7 @@ class QTPROPERTYSHEET_DLL QtFlagEditor : public QtPropertyEditor {
     int value_ = 0;
     QxtCheckComboBox *editor_ = nullptr;
     QStringList flagNames_;
+    const QString separator = " | ";
 };
 
 class QTPROPERTYSHEET_DLL QtBoolEditor : public QtPropertyEditor {

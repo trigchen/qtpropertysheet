@@ -357,7 +357,7 @@ QWidget *QtFlagEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
         editor_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
         editor_->setMinimumContentsLength(1);
         editor_->view()->setTextElideMode(Qt::ElideRight);
-        editor_->setSeparator("|");
+        editor_->setSeparator(separator);
 
         slotSetAttribute(property_, QtAttributeName::FlagName);
         setValueToEditor(value_);

@@ -270,7 +270,7 @@ void QxtCheckComboBox::setDefaultText(const QString &text) {
     \brief the default separator.
 
     The checked items are joined together with the separator string.
-    The default value is a comma (",").
+    The default value is a comma (", ").
  */
 QString QxtCheckComboBox::separator() const {
     return qxt_d().separator;

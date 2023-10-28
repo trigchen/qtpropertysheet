@@ -53,7 +53,7 @@ class QxtCheckComboBoxPrivate : public QObject, public QxtPrivate<QxtCheckComboB
 
     bool eventFilter(QObject *receiver, QEvent *event);
 
-    QString separator = QLatin1String(",");
+    QString separator = QLatin1String(", ");
     QString defaultText;
     bool containerMousePress = false;
 

@@ -25,7 +25,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
         titleButton_->setArrowType(Qt::UpArrow);
         titleButton_->setIconSize(QSize(16, 16));
         layout_->addWidget(titleButton_, row, 0);
-        connect(titleButton_, SIGNAL(clicked(bool)), this, SLOT(onBtnExpand()));
+        connect(titleButton_, &QToolButton::clicked, this, &QtButtonPropertyItem::onBtnExpand);
 
         if(property_->isMenuVisible()) {
             QFont font = titleButton_->font();
@@ -37,7 +37,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
             titleMenu_ = new QToolButton();
             titleMenu_->setText("...");
             layout_->addWidget(titleMenu_, row, 1, Qt::AlignRight);
-            connect(titleMenu_, SIGNAL(clicked(bool)), this, SLOT(onBtnMenu()));
+            connect(titleMenu_, &QToolButton::clicked, this, &QtButtonPropertyItem::onBtnMenu);
         } else {
             QFont font = titleButton_->font();
             font.setBold(true);
@@ -77,7 +77,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
     }
 
     if(valueLabel_ != nullptr) {
-        connect(property_, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(onPropertyValueChange(QtProperty*)));
+        connect(property_, &QtProperty::signalValueChange, this, &QtButtonPropertyItem::onPropertyValueChange);
     }
 }
 

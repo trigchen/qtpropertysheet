@@ -63,7 +63,7 @@ QWidget *QtPropertyTreeDelegate::createEditor(QWidget *parent, const QStyleOptio
             if(editor) {
                 editor->setAutoFillBackground(true);
                 editor->installEventFilter(const_cast<QtPropertyTreeDelegate *>(this));
-                connect(editor, SIGNAL(destroyed(QObject*)), this, SLOT(slotEditorDestroyed(QObject*)));
+                connect(editor, &QWidget::destroyed, this, &QtPropertyTreeDelegate::slotEditorDestroyed);
 
                 propertyToEditor_[property] = editor;
                 editorToProperty_[editor] = property;

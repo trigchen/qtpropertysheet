@@ -20,8 +20,8 @@
 #include "qxtcheckcombobox.h"
 
 QtPropertyEditor::QtPropertyEditor(QtProperty *property) : property_(property) {
-    connect(property, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(onPropertyValueChange(QtProperty*)));
-    connect(property, SIGNAL(destroyed(QObject*)), this, SLOT(onPropertyDestory(QObject*)));
+    connect(property, &QtProperty::signalValueChange, this, &QtPropertyEditor::onPropertyValueChange);
+    connect(property, &QtProperty::destroyed, this, &QtPropertyEditor::onPropertyDestory);
 }
 
 
@@ -43,7 +43,7 @@ void QtPropertyEditor::slotEditorDestory(QObject * /*object*/) {
 /********************************************************************/
 QtIntSpinBoxEditor::QtIntSpinBoxEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toInt();
-    connect(property, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
+    connect(property, &QtProperty::signalAttributeChange, this, &QtIntSpinBoxEditor::slotSetAttribute);
 }
 
 
@@ -58,7 +58,7 @@ QWidget *QtIntSpinBoxEditor::createEditor(QWidget *parent, QtPropertyEditorFacto
 
         editor_->setValue(value_);
 
-        connect(editor_, SIGNAL(valueChanged(int)), this, SLOT(slotEditorValueChange(int)));
+        connect(editor_, &QSpinBox::valueChanged, this, &QtIntSpinBoxEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -107,7 +107,7 @@ void QtIntSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString &n
 /********************************************************************/
 QtDoubleSpinBoxEditor::QtDoubleSpinBoxEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toDouble();
-    connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
+    connect(property_, &QtProperty::signalAttributeChange, this, &QtDoubleSpinBoxEditor::slotSetAttribute);
 }
 
 
@@ -123,7 +123,7 @@ QWidget *QtDoubleSpinBoxEditor::createEditor(QWidget *parent, QtPropertyEditorFa
 
         editor_->setValue(value_);
 
-        connect(editor_, SIGNAL(valueChanged(double)), this, SLOT(slotEditorValueChange(double)));
+        connect(editor_, &QDoubleSpinBox::valueChanged, this, &QtDoubleSpinBoxEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -186,7 +186,7 @@ QWidget *QtStringEditor::createEditor(QWidget *parent, QtPropertyEditorFactory *
 
         slotSetAttribute(property_, QtAttributeName::ReadOnly);
 
-        connect(editor_, SIGNAL(editingFinished()), this, SLOT(slotEditFinished()));
+        connect(editor_, &QLineEdit::editingFinished, this, &QtStringEditor::slotEditFinished);
     }
     return editor_;
 }
@@ -230,7 +230,7 @@ void QtStringEditor::slotSetAttribute(QtProperty *property, const QString &name)
 /********************************************************************/
 QtEnumEditor::QtEnumEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toInt();
-    connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
+    connect(property_, &QtProperty::signalAttributeChange, this, &QtEnumEditor::slotSetAttribute);
 }
 
 
@@ -245,7 +245,7 @@ QWidget *QtEnumEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
 
         editor_->setCurrentIndex(value_);
 
-        connect(editor_, SIGNAL(currentIndexChanged(int)), this, SLOT(slotEditorValueChange(int)));
+        connect(editor_, &QComboBox::currentIndexChanged, this, &QtEnumEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -284,7 +284,7 @@ QtEnumPairEditor::QtEnumPairEditor(QtProperty *property) : QtPropertyEditor(prop
     enumValues_ = property_->getAttribute(QtAttributeName::EnumValues).toList();
     index_ = enumValues_.indexOf(property_->getValue());
 
-    connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
+    connect(property_, &QtProperty::signalAttributeChange, this, &QtEnumPairEditor::slotSetAttribute);
 }
 
 
@@ -299,7 +299,7 @@ QWidget *QtEnumPairEditor::createEditor(QWidget *parent, QtPropertyEditorFactory
 
         editor_->setCurrentIndex(index_);
 
-        connect(editor_, SIGNAL(currentIndexChanged(int)), this, SLOT(slotEditorValueChange(int)));
+        connect(editor_, &QComboBox::currentIndexChanged, this, &QtEnumPairEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -347,7 +347,7 @@ void QtEnumPairEditor::slotSetAttribute(QtProperty *property, const QString &nam
 /********************************************************************/
 QtFlagEditor::QtFlagEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toInt();
-    connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
+    connect(property_, &QtProperty::signalAttributeChange, this, &QtFlagEditor::slotSetAttribute);
 }
 
 
@@ -362,7 +362,7 @@ QWidget *QtFlagEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
         slotSetAttribute(property_, QtAttributeName::FlagName);
         setValueToEditor(value_);
 
-        connect(editor_, SIGNAL(checkedItemsChanged(QStringList)), this, SLOT(checkedItemsChanged(QStringList)));
+        connect(editor_, &QxtCheckComboBox::checkedItemsChanged, this, &QtFlagEditor::checkedItemsChanged);
     }
     return editor_;
 }
@@ -423,7 +423,7 @@ QWidget *QtBoolEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
         editor_ = new QtBoolEdit(parent);
         editor_->setChecked(value_);
 
-        connect(editor_, SIGNAL(toggled(bool)), this, SLOT(slotEditorValueChange(bool)));
+        connect(editor_, &QtBoolEdit::toggled, this, &QtBoolEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -458,7 +458,7 @@ QWidget *QtColorEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * 
         editor_ = new QtColorEditWidget(parent);
         editor_->setValue(value_);
 
-        connect(editor_, SIGNAL(valueChanged(QColor)), this, SLOT(slotEditorValueChange(QColor)));
+        connect(editor_, &QtColorEditWidget::valueChanged, this, &QtColorEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -485,7 +485,7 @@ void QtColorEditor::slotEditorValueChange(const QColor &color) {
 /********************************************************************/
 QtFileEditor::QtFileEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property->getValue().toString();
-    connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
+    connect(property_, &QtProperty::signalAttributeChange, this, &QtFileEditor::slotSetAttribute);
 }
 
 
@@ -504,7 +504,7 @@ QWidget *QtFileEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
     input_->setText(value_);
     input_->setAcceptDrops(true);
     input_->installEventFilter(this);
-    connect(input_, SIGNAL(editingFinished()), this, SLOT(slotEditingFinished()));
+    connect(input_, &QLineEdit::editingFinished, this, &QtFileEditor::slotEditingFinished);
     layout->addWidget(input_);
 
     button_ = new QToolButton();
@@ -513,7 +513,7 @@ QWidget *QtFileEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
     button_->setText(tr("..."));
     editor_->setFocusProxy(button_);
     editor_->setFocusPolicy(button_->focusPolicy());
-    connect(button_, SIGNAL(clicked()), this, SLOT(slotButtonClicked()));
+    connect(button_, &QToolButton::clicked, this, &QtFileEditor::slotButtonClicked);
     layout->addWidget(button_);
 
     slotSetAttribute(property_, QtAttributeName::FileDialogType);
@@ -698,9 +698,9 @@ QWidget *QtDynamicItemEditor::createEditor(QWidget *parent, QtPropertyEditorFact
     btnDel->setText(tr("X"));
     layout->addWidget(btnDel);
 
-    connect(btnMoveUp, SIGNAL(clicked()), this, SLOT(onBtnMoveUp()));
-    connect(btnMoveDown, SIGNAL(clicked()), this, SLOT(onBtnMoveDown()));
-    connect(btnDel, SIGNAL(clicked()), this, SLOT(onBtnDelete()));
+    connect(btnMoveUp, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnMoveUp);
+    connect(btnMoveDown, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnMoveDown);
+    connect(btnDel, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnDelete);
 
     return editor_;
 }
@@ -778,7 +778,7 @@ QWidget *QtFloatListEditor::createEditor(QWidget *parent, QtPropertyEditorFactor
         setEditorAttribute(edt, property_, QtAttributeName::ReadOnly);
 
         edt->setValue(values[i]);
-        connect(edt, SIGNAL(valueChanged(double)), this, SLOT(slotEditorValueChange(double)));
+        connect(edt, &QDoubleSpinBox::valueChanged, this, &QtFloatListEditor::slotEditorValueChange);
     }
 
     if(!editors_.empty()) {

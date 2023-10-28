@@ -45,7 +45,7 @@ bool QtButtonPropertyBrowser::init(QWidget *parent, QtPropertyEditorFactory *fac
     rootItem_ = new QtButtonPropertyItem();
     rootItem_->setLayout(mainLayout);
 
-    connect(mainView_, SIGNAL(destroyed(QObject*)), this, SLOT(slotViewDestroy(QObject*)));
+    connect(mainView_, &QWidget::destroyed, this, &QtButtonPropertyBrowser::slotViewDestroy);
     return true;
 }
 
@@ -83,10 +83,10 @@ void QtButtonPropertyBrowser::addProperty(QtProperty *property, QtButtonProperty
     }
     property2items_[property] = item;
 
-    connect(property, SIGNAL(signalPropertyInserted(QtProperty*,QtProperty*)), this, SLOT(slotPropertyInsert(QtProperty*,QtProperty*)));
-    connect(property, SIGNAL(signalPropertyRemoved(QtProperty*,QtProperty*)), this, SLOT(slotPropertyRemove(QtProperty*,QtProperty*)));
-    connect(property, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(slotPropertyValueChange(QtProperty*)));
-    connect(property, SIGNAL(signalPropertyChange(QtProperty*)), this, SLOT(slotPropertyPropertyChange(QtProperty*)));
+    connect(property, &QtProperty::signalPropertyInserted, this, &QtButtonPropertyBrowser::slotPropertyInsert);
+    connect(property, &QtProperty::signalPropertyRemoved, this, &QtButtonPropertyBrowser::slotPropertyRemove);
+    connect(property, &QtProperty::signalValueChange, this, &QtButtonPropertyBrowser::slotPropertyValueChange);
+    connect(property, &QtProperty::signalPropertyChange, this, &QtButtonPropertyBrowser::slotPropertyPropertyChange);
 
     // add it's children finaly.
     foreach(QtProperty *child, property->getChildren()) {

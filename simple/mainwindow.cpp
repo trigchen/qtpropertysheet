@@ -111,7 +111,7 @@ void MainWindow::createProperties() {
         group->setBackgroundColor(Qt::darkGray);
         group->setTitle("information");
         group->setMenuVisible(true);
-        connect(group, SIGNAL(signalPopupMenu(QtProperty*)), this, SLOT(onPopupMenu(QtProperty*)));
+        connect(group, &QtProperty::signalPopupMenu, this, &MainWindow::onPopupMenu);
 
         QtProperty *property = manager->createProperty(QtPropertyType::STRING);
         property->setName("name");
@@ -216,7 +216,7 @@ void MainWindow::createProperties() {
         root->addChild(prop);
     }
 
-    connect(root, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(onValueChanged(QtProperty*)));
+    connect(root, &QtProperty::signalValueChange, this, &MainWindow::onValueChanged);
 }
 
 

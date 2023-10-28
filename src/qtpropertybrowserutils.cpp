@@ -295,7 +295,7 @@ QtBoolEdit::QtBoolEdit(QWidget *parent) : QWidget(parent),
     lt->setContentsMargins(8, 1, 0, 1);
     setLayout(lt);
 
-    connect(checkBox_, SIGNAL(toggled(bool)), this, SLOT(slotToggle(bool)));
+    connect(checkBox_, &QCheckBox::toggled, this, &QtBoolEdit::slotToggle);
     setFocusProxy(checkBox_);
     checkBox_->setText(tr("True"));
 }
@@ -404,7 +404,7 @@ bool QtKeySequenceEdit::eventFilter(QObject *o, QEvent *e) {
         menu->insertAction(actionBefore, clearAction);
         menu->insertSeparator(actionBefore);
         clearAction->setEnabled(!keySequence_.isEmpty());
-        connect(clearAction, SIGNAL(triggered()), this, SLOT(slotClearShortcut()));
+        connect(clearAction, &QAction::triggered, this, &QtKeySequenceEdit::slotClearShortcut);
         menu->exec(c->globalPos());
         delete menu;
         e->accept();
@@ -557,7 +557,7 @@ QtColorEditWidget::QtColorEditWidget(QWidget *parent) : QWidget(parent), pixmapL
     setFocusPolicy(button_->focusPolicy());
     button_->setText(tr("..."));
     button_->installEventFilter(this);
-    connect(button_, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+    connect(button_, &QToolButton::clicked, this, &QtColorEditWidget::buttonClicked);
     lt->addWidget(button_);
     pixmapLabel_->setPixmap(QtPropertyBrowserUtils::brushValuePixmap(QBrush(color_)));
     label_->setText(QtPropertyBrowserUtils::colorValueText(color_));

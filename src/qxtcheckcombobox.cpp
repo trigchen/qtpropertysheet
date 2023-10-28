@@ -146,10 +146,10 @@ bool QxtCheckComboModel::setData(const QModelIndex &index, const QVariant &value
 QxtCheckComboBox::QxtCheckComboBox(QWidget *parent) : QComboBox(parent) {
     QXT_INIT_PRIVATE(QxtCheckComboBox);
     setModel(new QxtCheckComboModel(this));
-    connect(this, SIGNAL(activated(int)), &qxt_d(), SLOT(toggleCheckState(int)));
-    connect(model(), SIGNAL(checkStateChanged()), &qxt_d(), SLOT(updateCheckedItems()));
-    connect(model(), SIGNAL(rowsInserted(const QModelIndex&,int,int)), &qxt_d(), SLOT(updateCheckedItems()));
-    connect(model(), SIGNAL(rowsRemoved(const QModelIndex&,int,int)), &qxt_d(), SLOT(updateCheckedItems()));
+    connect(this, &QxtCheckComboBox::activated, &qxt_d(), &QxtCheckComboBoxPrivate::toggleCheckState);
+    connect((QxtCheckComboModel *)model(), &QxtCheckComboModel::checkStateChanged, &qxt_d(), &QxtCheckComboBoxPrivate::updateCheckedItems);
+    connect(model(), &QAbstractItemModel::rowsInserted, &qxt_d(), &QxtCheckComboBoxPrivate::updateCheckedItems);
+    connect(model(), &QAbstractItemModel::rowsRemoved, &qxt_d(), &QxtCheckComboBoxPrivate::updateCheckedItems);
 
     // read-only contents
     QLineEdit *lineEdit = new QLineEdit(this);

@@ -28,7 +28,7 @@ QWidget *QtPropertyEditorFactory::createEditor(QtProperty *property, QWidget *pa
     if(propertyEditor != nullptr) {
         QWidget *widget = propertyEditor->createEditor(parent, this);
         if(widget != nullptr) {
-            QObject::connect(widget, SIGNAL(destroyed(QObject*)), propertyEditor, SLOT(slotEditorDestory(QObject*)));
+            QObject::connect(widget, &QWidget::destroyed, propertyEditor, &QtPropertyEditor::slotEditorDestory);
         }
         return widget;
     }

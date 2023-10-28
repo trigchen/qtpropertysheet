@@ -58,8 +58,8 @@ bool QtTreePropertyBrowser::init(QWidget *parent, QtPropertyEditorFactory *facto
 
     expandIcon_ = QtPropertyBrowserUtils::drawIndicatorIcon(treeWidget_->palette(), treeWidget_->style());
 
-    connect(treeWidget_, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), this, SLOT(slotCurrentTreeItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
-    connect(treeWidget_, SIGNAL(destroyed(QObject*)), this, SLOT(slotTreeViewDestroy(QObject*)));
+    connect(treeWidget_, &QtPropertyTreeView::currentItemChanged, this, &QtTreePropertyBrowser::slotCurrentTreeItemChanged);
+    connect(treeWidget_, &QtPropertyTreeView::destroyed, this,  &QtTreePropertyBrowser::slotTreeViewDestroy);
     return true;
 }
 
@@ -153,10 +153,10 @@ void QtTreePropertyBrowser::addProperty(QtProperty *property, QTreeWidgetItem *p
     }
     property2items_[property] = item;
 
-    connect(property, SIGNAL(signalPropertyInserted(QtProperty*,QtProperty*)), this, SLOT(slotPropertyInsert(QtProperty*,QtProperty*)));
-    connect(property, SIGNAL(signalPropertyRemoved(QtProperty*,QtProperty*)), this, SLOT(slotPropertyRemove(QtProperty*,QtProperty*)));
-    connect(property, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(slotPropertyValueChange(QtProperty*)));
-    connect(property, SIGNAL(signalPropertyChange(QtProperty*)), this, SLOT(slotPropertyPropertyChange(QtProperty*)));
+    connect(property, &QtProperty::signalPropertyInserted, this, &QtTreePropertyBrowser::slotPropertyInsert);
+    connect(property, &QtProperty::signalPropertyRemoved, this, &QtTreePropertyBrowser::slotPropertyRemove);
+    connect(property, &QtProperty::signalValueChange, this, &QtTreePropertyBrowser::slotPropertyValueChange);
+    connect(property, &QtProperty::signalPropertyChange, this, &QtTreePropertyBrowser::slotPropertyPropertyChange);
 
     // add it's children finaly.
     foreach(QtProperty *child, property->getChildren()) {

@@ -15,7 +15,7 @@ namespace {
 }
 
 QtPropertyTreeView::QtPropertyTreeView(QWidget *parent) : QTreeWidget(parent) {
-    connect(header(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(resizeColumnToContents(int)));
+    connect(header(), &QHeaderView::sectionDoubleClicked, this, &QtPropertyTreeView::resizeColumnToContents);
 }
 
 

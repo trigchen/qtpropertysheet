@@ -162,12 +162,12 @@ QtContainerProperty::QtContainerProperty(Type type, QtPropertyFactory *factory) 
 
 
 void QtContainerProperty::onChildAdd(QtProperty *child) {
-    connect(child, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(slotChildValueChange(QtProperty*)));
+    connect(child, &QtProperty::signalValueChange, this, &QtContainerProperty::slotChildValueChange);
 }
 
 
 void QtContainerProperty::onChildRemove(QtProperty *child) {
-    disconnect(child, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(slotChildValueChange(QtProperty*)));
+    disconnect(child, &QtProperty::signalValueChange, this, nullptr);
 }
 
 
@@ -386,7 +386,7 @@ QtDynamicListProperty::QtDynamicListProperty(Type type, QtPropertyFactory *facto
     propLength_->setName("length");
     propLength_->setTitle(tr("Length"));
     addChild(propLength_);
-    connect(propLength_, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(slotLengthChange(QtProperty*)));
+    connect(propLength_, &QtProperty::signalValueChange, this, &QtDynamicListProperty::slotLengthChange);
 }
 
 
@@ -508,10 +508,10 @@ QtProperty *QtDynamicListProperty::appendItem() {
         prop->getImpl()->setAttribute(it.key(), it.value());
     }
 
-    connect(prop, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(slotItemValueChange(QtProperty*)));
-    connect(prop, SIGNAL(signalMoveUp(QtProperty*)), this, SLOT(slotItemMoveUp(QtProperty*)));
-    connect(prop, SIGNAL(signalMoveDown(QtProperty*)), this, SLOT(slotItemMoveDown(QtProperty*)));
-    connect(prop, SIGNAL(signalDelete(QtProperty*)), this, SLOT(slotItemDelete(QtProperty*)));
+    connect(prop, &QtDynamicItemProperty::signalValueChange, this, &QtDynamicListProperty::slotItemValueChange);
+    connect(prop, &QtDynamicItemProperty::signalMoveUp, this, &QtDynamicListProperty::slotItemMoveUp);
+    connect(prop, &QtDynamicItemProperty::signalMoveDown, this, &QtDynamicListProperty::slotItemMoveDown);
+    connect(prop, &QtDynamicItemProperty::signalDelete, this, &QtDynamicListProperty::slotItemDelete);
 
     valueList_.append(valueDefault);
     items_.append(prop);
@@ -553,7 +553,7 @@ void QtDynamicItemProperty::setValueType(Type type) {
     impl_ = factory_->createProperty(type);
     assert(impl_ != nullptr);
 
-    connect(impl_, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(onImplValueChange(QtProperty*)));
+    connect(impl_, &QtProperty::signalValueChange, this, &QtDynamicItemProperty::onImplValueChange);
 }
 
 

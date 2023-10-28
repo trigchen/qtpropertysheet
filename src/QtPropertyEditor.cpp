@@ -91,7 +91,7 @@ void QtIntSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString &n
         return;
     }
 
-    QVariant v = property->getAttribute(QtAttributeName::MaxValue);
+    QVariant v = property->getAttribute(name);
     if(name == QtAttributeName::MinValue) {
         int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
         editor_->setMinimum(minValue);

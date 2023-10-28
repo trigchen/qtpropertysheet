@@ -85,20 +85,20 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
 QtButtonPropertyItem::~QtButtonPropertyItem() {
     removeFromParent();
 
-    // for(QtButtonPropertyItem *item : children_) {
-    // if(item != nullptr) {
-    // item->parent_ = nullptr;
-    // delete item;
-    // item = nullptr;
-    // }
-    // }
+    for(QtButtonPropertyItem *item : children_) {
+        if(item != nullptr) {
+            item->parent_ = nullptr;
+            delete item;
+            item = nullptr;
+        }
+    }
     children_.clear();
-    // for(QObject *obj : QList<QObject *>({titleButton_, titleMenu_, label_, container_, editor_})) {
-    // if(obj != nullptr) {
-    // delete obj;
-    // obj = nullptr;
-    // }
-    // }
+    for(QObject *obj : QList<QObject *>({titleButton_, titleMenu_, label_, container_, editor_})) {
+        if(obj != nullptr) {
+            delete obj;
+            obj = nullptr;
+        }
+    }
 }
 
 

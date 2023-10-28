@@ -1,9 +1,9 @@
 
 SOURCES += $$PWD/main.cpp\
-        $$PWD/mainwindow.cpp
+        $$PWD/MainWindow.cpp
 
-HEADERS  += $$PWD/mainwindow.h
+HEADERS  += $$PWD/MainWindow.h
 
-FORMS    += $$PWD/mainwindow.ui
+FORMS    += $$PWD/MainWindow.ui
 
 INCLUDEPATH += $$PWD/../src

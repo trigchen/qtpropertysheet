@@ -104,6 +104,11 @@ class QtCursorDatabase {
 
 class QtPropertyBrowserUtils {
   public:
+    enum ButtonType {
+        MORE_BUTTON, UP_BUTTON, DOWN_BUTTON, DELETE_BUTTON
+    };
+
+  public:
     static QPixmap brushValuePixmap(const QBrush &b);
 
     static QIcon brushValueIcon(const QBrush &b);
@@ -125,6 +130,8 @@ class QtPropertyBrowserUtils {
     static QVariant color2variant(const QColor &color);
 
     static void setupTreeViewEditorMargin(QLayout *lt);
+
+    static QToolButton *specialButton(ButtonType buttonType);
 };
 
 

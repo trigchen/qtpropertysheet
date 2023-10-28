@@ -2,12 +2,12 @@
 SOURCES += \
     $$PWD/QtProperty.cpp \
     $$PWD/QtPropertyEditor.cpp \
-    $$PWD/QtPropertyEditorfactory.cpp \
+    $$PWD/QtPropertyEditorFactory.cpp \
     $$PWD/QtPropertyBrowser.cpp \
     $$PWD/QtTreePropertyBrowser.cpp \
     $$PWD/QtPropertyTreeView.cpp \
     $$PWD/QtPropertyTreeDelegate.cpp \
-    $$PWD/QtPropertyBrowserutils.cpp \
+    $$PWD/QtPropertyBrowserUtils.cpp \
     $$PWD/QxtCheckComboBox.cpp \
     $$PWD/QtAttributeName.cpp \
     $$PWD/QtPropertyFactory.cpp \
@@ -18,12 +18,12 @@ SOURCES += \
 HEADERS  += \
     $$PWD/QtProperty.h \
     $$PWD/QtPropertyEditor.h \
-    $$PWD/QtPropertyEditorfactory.h \
+    $$PWD/QtPropertyEditorFactory.h \
     $$PWD/QtPropertyBrowser.h \
     $$PWD/QtTreePropertyBrowser.h \
     $$PWD/QtPropertyTreeView.h \
     $$PWD/QtPropertyTreeDelegate.h \
-    $$PWD/QtPropertyBrowserutils.h \
+    $$PWD/QtPropertyBrowserUtils.h \
     $$PWD/QxtCheckComboBox_p.h \
     $$PWD/QxtCheckComboBox.h \
     $$PWD/QtAttributeName.h \

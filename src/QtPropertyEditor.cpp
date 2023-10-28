@@ -498,7 +498,8 @@ QWidget *QtFileEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
 
     QHBoxLayout *layout = new QHBoxLayout(editor_);
     QtPropertyBrowserUtils::setupTreeViewEditorMargin(layout);
-    layout->setSpacing(0);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(2);
 
     input_ = new QLineEdit();
     input_->setText(value_);
@@ -507,13 +508,10 @@ QWidget *QtFileEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
     connect(input_, &QLineEdit::editingFinished, this, &QtFileEditor::slotEditingFinished);
     layout->addWidget(input_);
 
-    button_ = new QToolButton();
-    button_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
-    button_->setFixedWidth(20);
-    button_->setText(tr("..."));
+    button_ = QtPropertyBrowserUtils::specialButton(QtPropertyBrowserUtils::MORE_BUTTON);
+    connect(button_, &QToolButton::clicked, this, &QtFileEditor::slotButtonClicked);
     editor_->setFocusProxy(button_);
     editor_->setFocusPolicy(button_->focusPolicy());
-    connect(button_, &QToolButton::clicked, this, &QtFileEditor::slotButtonClicked);
     layout->addWidget(button_);
 
     slotSetAttribute(property_, QtAttributeName::FileDialogType);
@@ -535,7 +533,6 @@ void QtFileEditor::onPropertyValueChange(QtProperty *property) {
 
 void QtFileEditor::slotEditorDestory(QObject *object) {
     QtPropertyEditor::slotEditorDestory(object);
-
     input_ = nullptr;
     button_ = nullptr;
 }
@@ -556,7 +553,7 @@ void QtFileEditor::slotSetAttribute(QtProperty *property, const QString &name) {
             relativePath_ = value.toString();
         }
     } else if(name == QtAttributeName::ReadOnly) {
-        if((editor_ != NULL) && (value.type() == QVariant::Bool)) {
+        if((editor_ != nullptr) && (value.type() == QVariant::Bool)) {
             input_->setReadOnly(value.toBool());
         }
     }
@@ -566,7 +563,7 @@ void QtFileEditor::slotSetAttribute(QtProperty *property, const QString &name) {
 void QtFileEditor::setValue(const QString &value) {
     value_ = value;
 
-    if(input_) {
+    if(input_ != nullptr) {
         input_->setText(value);
     }
 }
@@ -579,6 +576,7 @@ void QtFileEditor::onFileSeleted(const QString &fullPath) {
     }
 
     if(path != value_) {
+        path = QDir::toNativeSeparators(path);
         setValue(path);
         property_->setValue(path);
     }
@@ -666,8 +664,7 @@ QWidget *QtDynamicItemEditor::createEditor(QWidget *parent, QtPropertyEditorFact
 
     QHBoxLayout *layout = new QHBoxLayout(editor_);
     layout->setContentsMargins(0, 0, 0, 0);
-    layout->setSpacing(1);
-    editor_->setLayout(layout);
+    layout->setSpacing(2);
 
     QtDynamicItemProperty *property = dynamic_cast<QtDynamicItemProperty *>(property_);
     if((property != nullptr) && (property->getImpl() != nullptr)) {
@@ -679,28 +676,16 @@ QWidget *QtDynamicItemEditor::createEditor(QWidget *parent, QtPropertyEditorFact
             editor_->setFocusPolicy(subEditor->focusPolicy());
         }
     }
+    QToolButton *btnUp = QtPropertyBrowserUtils::specialButton(QtPropertyBrowserUtils::UP_BUTTON);
+    QToolButton *btnDown = QtPropertyBrowserUtils::specialButton(QtPropertyBrowserUtils::DOWN_BUTTON);
+    QToolButton *btnDelete = QtPropertyBrowserUtils::specialButton(QtPropertyBrowserUtils::DELETE_BUTTON);
 
-    QToolButton *btnMoveUp = new QToolButton();
-    btnMoveUp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
-    btnMoveUp->setFixedWidth(20);
-    btnMoveUp->setText(tr("↑"));
-    layout->addWidget(btnMoveUp);
-
-    QToolButton *btnMoveDown = new QToolButton();
-    btnMoveDown->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
-    btnMoveDown->setFixedWidth(20);
-    btnMoveDown->setText(tr("↓"));
-    layout->addWidget(btnMoveDown);
-
-    QToolButton *btnDel = new QToolButton();
-    btnDel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
-    btnDel->setFixedWidth(20);
-    btnDel->setText(tr("X"));
-    layout->addWidget(btnDel);
-
-    connect(btnMoveUp, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnMoveUp);
-    connect(btnMoveDown, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnMoveDown);
-    connect(btnDel, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnDelete);
+    layout->addWidget(btnUp);
+    layout->addWidget(btnDown);
+    layout->addWidget(btnDelete);
+    connect(btnUp, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnMoveUp);
+    connect(btnDown, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnMoveDown);
+    connect(btnDelete, &QToolButton::clicked, this, &QtDynamicItemEditor::onBtnDelete);
 
     return editor_;
 }
@@ -734,8 +719,7 @@ void QtDynamicItemEditor::onBtnDelete() {
 }
 
 
-QtFloatListEditor::QtFloatListEditor(QtProperty *property) : QtPropertyEditor(property)
-    , size_(0) {
+QtFloatListEditor::QtFloatListEditor(QtProperty *property) : QtPropertyEditor(property) {
     size_ = property->getAttribute(QtAttributeName::Size).toInt();
     variantList2Vector(property->getValue().toList(), values_);
 }

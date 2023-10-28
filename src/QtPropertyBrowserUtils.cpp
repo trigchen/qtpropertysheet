@@ -287,6 +287,25 @@ QVariant QtPropertyBrowserUtils::color2variant(const QColor &color) {
 }
 
 
+QToolButton *QtPropertyBrowserUtils::specialButton(ButtonType buttonType) {
+    QString txt = "";
+    if(buttonType == QtPropertyBrowserUtils::MORE_BUTTON) {
+        txt = QCoreApplication::translate("QtPropertyBrowserUtils", "…");
+    } else if(buttonType == QtPropertyBrowserUtils::UP_BUTTON) {
+        txt = QCoreApplication::translate("QtPropertyBrowserUtils", "↑");
+    } else if(buttonType == QtPropertyBrowserUtils::DOWN_BUTTON) {
+        txt = QCoreApplication::translate("QtPropertyBrowserUtils", "↓");
+    } else if(buttonType == QtPropertyBrowserUtils::DELETE_BUTTON) {
+        txt = QCoreApplication::translate("QtPropertyBrowserUtils", "X");
+    }
+    QToolButton *button = new QToolButton();
+    button->setText(txt);
+    button->setFixedSize(23, 23);
+    button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
+    return button;
+}
+
+
 QtBoolEdit::QtBoolEdit(QWidget *parent) : QWidget(parent),
     checkBox_(new QCheckBox(this)),
     textVisible_(true) {
@@ -532,7 +551,7 @@ bool QtKeySequenceEdit::event(QEvent *e) {
 }
 
 
-/*static*/ void QtPropertyBrowserUtils::setupTreeViewEditorMargin(QLayout *lt) {
+void QtPropertyBrowserUtils::setupTreeViewEditorMargin(QLayout *lt) {
     enum {DecorationMargin = 4};
 
     if(QApplication::layoutDirection() == Qt::LeftToRight) {
@@ -543,21 +562,20 @@ bool QtKeySequenceEdit::event(QEvent *e) {
 }
 
 
-QtColorEditWidget::QtColorEditWidget(QWidget *parent) : QWidget(parent), pixmapLabel_(new QLabel), label_(new QLabel), button_(new QToolButton) {
+QtColorEditWidget::QtColorEditWidget(QWidget *parent) : QWidget(parent), pixmapLabel_(new QLabel), label_(new QLabel) {
     QHBoxLayout *lt = new QHBoxLayout(this);
     QtPropertyBrowserUtils::setupTreeViewEditorMargin(lt);
-    lt->setSpacing(0);
+    lt->setContentsMargins(0, 0, 0, 0);
+    lt->setSpacing(2);
     lt->addWidget(pixmapLabel_);
     lt->addWidget(label_);
     lt->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored));
 
-    button_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
-    button_->setFixedWidth(20);
+    button_ = QtPropertyBrowserUtils::specialButton(QtPropertyBrowserUtils::MORE_BUTTON);
+    connect(button_, &QToolButton::clicked, this, &QtColorEditWidget::buttonClicked);
     setFocusProxy(button_);
     setFocusPolicy(button_->focusPolicy());
-    button_->setText(tr("..."));
     button_->installEventFilter(this);
-    connect(button_, &QToolButton::clicked, this, &QtColorEditWidget::buttonClicked);
     lt->addWidget(button_);
     pixmapLabel_->setPixmap(QtPropertyBrowserUtils::brushValuePixmap(QBrush(color_)));
     label_->setText(QtPropertyBrowserUtils::colorValueText(color_));

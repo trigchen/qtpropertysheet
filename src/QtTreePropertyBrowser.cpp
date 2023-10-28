@@ -70,7 +70,7 @@ bool QtTreePropertyBrowser::lastColumn(int column) {
 
 
 QColor QtTreePropertyBrowser::calculatedBackgroundColor(QtProperty *property) {
-    if(property->getParent() != NULL) {
+    if(property->getParent() != nullptr) {
         int index = property->getParent()->indexChild(property);
         return QColor(index % 2 ? Qt::blue : Qt::white);
     }
@@ -123,7 +123,7 @@ void QtTreePropertyBrowser::addProperty(QtProperty *property) {
         return;
     }
 
-    addProperty(property, NULL);
+    addProperty(property, nullptr);
 }
 
 
@@ -136,7 +136,7 @@ void QtTreePropertyBrowser::addProperty(QtProperty *property, QTreeWidgetItem *p
         item->setToolTip(0, property->getToolTip());
         item->setFlags(item->flags() | Qt::ItemIsEditable);
 
-        if(parentItem != NULL) {
+        if(parentItem != nullptr) {
             parentItem->addChild(item);
         } else {
             treeWidget_->addTopLevelItem(item);

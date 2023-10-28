@@ -5,6 +5,7 @@
 
 #include "QtButtonPropertyItem.h"
 #include "QtProperty.h"
+#include "QtPropertyBrowserUtils.h"
 #include "QtPropertyEditorFactory.h"
 
 QtButtonPropertyItem::QtButtonPropertyItem() {
@@ -34,10 +35,9 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
             titleButton_->setFont(font);
             titleButton_->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred));
 
-            titleMenu_ = new QToolButton();
-            titleMenu_->setText("...");
-            layout_->addWidget(titleMenu_, row, 1, Qt::AlignRight);
+            titleMenu_ = QtPropertyBrowserUtils::specialButton(QtPropertyBrowserUtils::MORE_BUTTON);
             connect(titleMenu_, &QToolButton::clicked, this, &QtButtonPropertyItem::onBtnMenu);
+            layout_->addWidget(titleMenu_, row, 1, Qt::AlignRight);
         } else {
             QFont font = titleButton_->font();
             font.setBold(true);
@@ -85,20 +85,20 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
 QtButtonPropertyItem::~QtButtonPropertyItem() {
     removeFromParent();
 
-    foreach(QtButtonPropertyItem *item, children_) {
-        if(item != nullptr) {
-            item->parent_ = nullptr;
-            delete item;
-            item = nullptr;
-        }
-    }
+    // for(QtButtonPropertyItem *item : children_) {
+    // if(item != nullptr) {
+    // item->parent_ = nullptr;
+    // delete item;
+    // item = nullptr;
+    // }
+    // }
     children_.clear();
-    for(QObject *obj : QList<QObject *>({titleButton_, titleMenu_, label_, container_, editor_})) {
-        if(obj != nullptr) {
-            delete obj;
-            obj = nullptr;
-        }
-    }
+    // for(QObject *obj : QList<QObject *>({titleButton_, titleMenu_, label_, container_, editor_})) {
+    // if(obj != nullptr) {
+    // delete obj;
+    // obj = nullptr;
+    // }
+    // }
 }
 
 

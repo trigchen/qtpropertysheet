@@ -14,7 +14,7 @@
 #include "QtTreePropertyBrowser.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), root_(NULL) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     createProperties();
@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     // 2. find property, then set value directly.
     QtProperty *addressProperty = root_->findChild("age");
-    if(addressProperty != NULL) {
+    if(addressProperty != nullptr) {
         addressProperty->setValue(18);
     }
 
@@ -231,7 +231,7 @@ void MainWindow::onValueChanged(QtProperty *property) {
 
     if(property->getName() == "show geometry") {
         QtProperty *geometry = root_->findChild("geometry");
-        if(geometry != NULL) {
+        if(geometry != nullptr) {
             geometry->setVisible(property->getValue().toBool());
         }
     }

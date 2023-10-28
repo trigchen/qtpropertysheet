@@ -131,7 +131,7 @@ class QtPropertyBrowserUtils {
 class QTPROPERTYSHEET_DLL QtBoolEdit : public QWidget {
     Q_OBJECT
   public:
-    QtBoolEdit(QWidget *parent = 0);
+    QtBoolEdit(QWidget *parent = nullptr);
 
     bool textVisible() const {
         return textVisible_;
@@ -169,7 +169,7 @@ class QTPROPERTYSHEET_DLL QtBoolEdit : public QWidget {
 class QTPROPERTYSHEET_DLL QtKeySequenceEdit : public QWidget {
     Q_OBJECT
   public:
-    QtKeySequenceEdit(QWidget *parent = 0);
+    QtKeySequenceEdit(QWidget *parent = nullptr);
 
     QKeySequence keySequence() const;
 
@@ -202,9 +202,9 @@ class QTPROPERTYSHEET_DLL QtKeySequenceEdit : public QWidget {
 
     int translateModifiers(Qt::KeyboardModifiers state, const QString &text) const;
 
-    int num_;
+    int num_ = 0;
     QKeySequence keySequence_;
-    QLineEdit *lineEdit_;
+    QLineEdit *lineEdit_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtColorEditWidget : public QWidget {

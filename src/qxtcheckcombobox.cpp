@@ -28,8 +28,7 @@
 #include "qxtcheckcombobox.h"
 #include "qxtcheckcombobox_p.h"
 
-QxtCheckComboBoxPrivate::QxtCheckComboBoxPrivate() : containerMousePress(false) {
-    separator = QLatin1String(",");
+QxtCheckComboBoxPrivate::QxtCheckComboBoxPrivate() {
 }
 
 
@@ -205,7 +204,7 @@ void QxtCheckComboBox::setItemCheckState(int index, Qt::CheckState state) {
  */
 QStringList QxtCheckComboBox::checkedItems() const {
     QStringList items;
-    if(model()) {
+    if(model() != nullptr) {
         QModelIndex index = model()->index(0, modelColumn(), rootModelIndex());
         QModelIndexList indexes = model()->match(index, Qt::CheckStateRole, Qt::Checked, -1, Qt::MatchExactly);
         foreach(const QModelIndex &index, indexes) {
@@ -218,7 +217,7 @@ QStringList QxtCheckComboBox::checkedItems() const {
 
 QIntList QxtCheckComboBox::checkedIndices() const {
     QIntList indices;
-    if(model()) {
+    if(model() != nullptr) {
         QModelIndex index = model()->index(0, modelColumn(), rootModelIndex());
         QModelIndexList indexes = model()->match(index, Qt::CheckStateRole, Qt::Checked, -1, Qt::MatchExactly);
         foreach(const QModelIndex &index, indexes) {

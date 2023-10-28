@@ -18,7 +18,7 @@ typedef QMap<QtProperty *, QTreeWidgetItem *> Property2ItemMap;
 class QTPROPERTYSHEET_DLL QtTreePropertyBrowser : public QtPropertyBrowser {
     Q_OBJECT
   public:
-    explicit QtTreePropertyBrowser(QObject *parent = 0);
+    explicit QtTreePropertyBrowser(QObject *parent = nullptr);
 
     ~QtTreePropertyBrowser();
 
@@ -81,9 +81,9 @@ class QTPROPERTYSHEET_DLL QtTreePropertyBrowser : public QtPropertyBrowser {
 
     void deleteTreeItem(QTreeWidgetItem *item);
 
-    QtPropertyEditorFactory *editorFactory_;
-    QtPropertyTreeView *treeWidget_;
-    QtPropertyTreeDelegate *delegate_;
+    QtPropertyEditorFactory *editorFactory_ = nullptr;
+    QtPropertyTreeView *treeWidget_ = nullptr;
+    QtPropertyTreeDelegate *delegate_ = nullptr;
     QIcon expandIcon_;
     Property2ItemMap property2items_;
 };

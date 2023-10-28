@@ -7,15 +7,14 @@
 #include "qtproperty.h"
 #include "qtpropertyeditorfactory.h"
 
-QtButtonPropertyItem::QtButtonPropertyItem() : property_(NULL), label_(NULL), editor_(NULL), valueLabel_(NULL),
-    titleButton_(NULL), titleMenu_(NULL), container_(NULL), layout_(NULL), parent_(NULL), bExpand_(true) {
+QtButtonPropertyItem::QtButtonPropertyItem() {
 }
 
 
-QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyItem *parent, QtPropertyEditorFactory *editorFactory) : property_(prop),
-    label_(NULL), editor_(NULL), valueLabel_(NULL), titleButton_(NULL), titleMenu_(NULL)
-    , container_(NULL), layout_(NULL), parent_(parent), bExpand_(true) {
-    layout_ = parent->layout_;
+QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyItem *parent, QtPropertyEditorFactory *editorFactory) : property_(prop) {
+    if(parent != nullptr) {
+        layout_ = parent->layout_;
+    }
 
     if(!property_->getChildren().empty()) {
         int row = layout_->rowCount();
@@ -67,7 +66,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
         label_->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
         layout_->addWidget(label_, row, 0);
 
-        editor_ = editorFactory->createEditor(prop, NULL);
+        editor_ = editorFactory->createEditor(prop, nullptr);
         if(editor_) {
             layout_->addWidget(editor_, row, 1);
         } else {
@@ -87,24 +86,18 @@ QtButtonPropertyItem::~QtButtonPropertyItem() {
     removeFromParent();
 
     foreach(QtButtonPropertyItem *item, children_) {
-        item->parent_ = NULL;
-        delete item;
+        if(item != nullptr) {
+            item->parent_ = nullptr;
+            delete item;
+            item = nullptr;
+        }
     }
-
-    if(titleButton_) {
-        delete titleButton_;
-    }
-    if(titleMenu_) {
-        delete titleMenu_;
-    }
-    if(label_) {
-        delete label_;
-    }
-    if(container_) {
-        delete container_;
-    }
-    if(editor_) {
-        delete editor_;
+    children_.clear();
+    for(QObject *obj : QList<QObject *>({titleButton_, titleMenu_, label_, container_, editor_})) {
+        if(obj != nullptr) {
+            delete obj;
+            obj = nullptr;
+        }
     }
 }
 
@@ -124,41 +117,31 @@ void QtButtonPropertyItem::removeChild(QtButtonPropertyItem *child) {
 
 
 void QtButtonPropertyItem::removeFromParent() {
-    if(parent_) {
+    if(parent_ != nullptr) {
         parent_->removeChild(this);
-        parent_ = NULL;
+        parent_ = nullptr;
     }
 }
 
 
 void QtButtonPropertyItem::setTitle(const QString &title) {
-    if(titleButton_) {
+    if(titleButton_ != nullptr) {
         titleButton_->setText(title);
     }
-    if(label_) {
+    if(label_ != nullptr) {
         label_->setText(title);
     }
 }
 
 
 void QtButtonPropertyItem::setVisible(bool visible) {
-    if(titleButton_) {
-        titleButton_->setVisible(visible);
+    for(QWidget *w : QList<QWidget *>({titleButton_, titleMenu_, label_, editor_, valueLabel_})) {
+        if(w != nullptr) {
+            w->setVisible(visible);
+        }
     }
-    if(titleMenu_) {
-        titleMenu_->setVisible(visible);
-    }
-    if(container_) {
+    if(container_ != nullptr) {
         container_->setVisible(visible && bExpand_);
-    }
-    if(label_) {
-        label_->setVisible(visible);
-    }
-    if(editor_) {
-        editor_->setVisible(visible);
-    }
-    if(valueLabel_) {
-        valueLabel_->setVisible(visible);
     }
 }
 

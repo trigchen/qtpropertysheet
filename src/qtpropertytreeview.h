@@ -9,7 +9,7 @@ class QtTreePropertyBrowser;
 class QTPROPERTYSHEET_DLL QtPropertyTreeView : public QTreeWidget {
     Q_OBJECT
   public:
-    explicit QtPropertyTreeView(QWidget *parent = 0);
+    explicit QtPropertyTreeView(QWidget *parent = nullptr);
 
     void setEditorPrivate(QtTreePropertyBrowser *editorPrivate) {
         editorPrivate_ = editorPrivate;
@@ -29,5 +29,5 @@ class QTPROPERTYSHEET_DLL QtPropertyTreeView : public QTreeWidget {
     void drawRow(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
   private:
-    QtTreePropertyBrowser *editorPrivate_;
+    QtTreePropertyBrowser *editorPrivate_ = nullptr;
 };

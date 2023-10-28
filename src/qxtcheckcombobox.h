@@ -39,7 +39,7 @@ class QXT_GUI_EXPORT QxtCheckComboBox : public QComboBox {
     Q_PROPERTY(QStringList checkedItems READ checkedItems WRITE setCheckedItems)
 
   public:
-    explicit QxtCheckComboBox(QWidget *parent = 0);
+    explicit QxtCheckComboBox(QWidget *parent = nullptr);
 
     virtual ~QxtCheckComboBox();
 

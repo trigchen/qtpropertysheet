@@ -14,7 +14,7 @@ namespace {
     }
 }
 
-QtPropertyTreeView::QtPropertyTreeView(QWidget *parent) : QTreeWidget(parent), editorPrivate_(0) {
+QtPropertyTreeView::QtPropertyTreeView(QWidget *parent) : QTreeWidget(parent) {
     connect(header(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(resizeColumnToContents(int)));
 }
 
@@ -22,7 +22,7 @@ QtPropertyTreeView::QtPropertyTreeView(QWidget *parent) : QTreeWidget(parent), e
 void QtPropertyTreeView::drawRow(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QStyleOptionViewItem opt = option;
     QColor bgColor;
-    if(editorPrivate_) {
+    if(editorPrivate_ != nullptr) {
         QtProperty *property = editorPrivate_->indexToProperty(index);
         if(property) {
             bgColor = property->getBackgroundColor();
@@ -48,7 +48,7 @@ void QtPropertyTreeView::keyPressEvent(QKeyEvent *event) {
     case Qt::Key_Return:
     case Qt::Key_Enter:
     case Qt::Key_Space:  // Trigger Edit
-        if(!editorPrivate_->getEditedItem()) {
+        if(editorPrivate_->getEditedItem() == nullptr) {
             const QTreeWidgetItem *item = currentItem();
             if(item && (item->columnCount() >= 2) && isItemEditable(item->flags())) {
                 event->accept();
@@ -77,12 +77,10 @@ void QtPropertyTreeView::mousePressEvent(QMouseEvent *event) {
     if(item) {
         QtProperty *property = editorPrivate_->itemToProperty(item);
 
-        if((item != editorPrivate_->getEditedItem()) &&
-           (event->button() == Qt::LeftButton) &&
-           (header()->logicalIndexAt(event->pos().x()) == 1) &&
-           isItemEditable(item->flags())) {
+        if((item != editorPrivate_->getEditedItem()) && (event->button() == Qt::LeftButton)
+           && (header()->logicalIndexAt(event->pos().x()) == 1) && isItemEditable(item->flags())) {
             editItem(item, 1);
-        } else if(property && !property->hasValue() && editorPrivate_->markPropertiesWithoutValue() && !rootIsDecorated()) {
+        } else if((property != nullptr) && !property->hasValue() && editorPrivate_->markPropertiesWithoutValue() && !rootIsDecorated()) {
             if(event->pos().x() + header()->offset() < 20) {
                 item->setExpanded(!item->isExpanded());
             }

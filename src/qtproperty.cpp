@@ -8,8 +8,7 @@
 #include "qtpropertyfactory.h"
 #include "qtpropertytype.h"
 
-QtProperty::QtProperty(Type type, QtPropertyFactory *factory) : QObject(factory), factory_(factory),
-    type_(type), parent_(NULL), visible_(true), selfVisible_(true), menuVisible_(false) {
+QtProperty::QtProperty(Type type, QtPropertyFactory *factory) : QObject(factory), factory_(factory), type_(type) {
 }
 
 
@@ -85,7 +84,7 @@ QVariant QtProperty::getAttribute(const QString &name) const {
 
 
 void QtProperty::addChild(QtProperty *child) {
-    assert(child->getParent() == NULL);
+    assert(child->getParent() == nullptr);
     children_.push_back(child);
     child->parent_ = this;
 
@@ -98,7 +97,7 @@ void QtProperty::removeChild(QtProperty *child) {
     assert(child->getParent() == this);
     QtPropertyList::iterator it = std::find(children_.begin(), children_.end(), child);
     if(it != children_.end()) {
-        child->parent_ = NULL;
+        child->parent_ = nullptr;
         children_.erase(it);
 
         onChildRemove(child);
@@ -108,7 +107,7 @@ void QtProperty::removeChild(QtProperty *child) {
 
 
 void QtProperty::removeFromParent() {
-    if(parent_ != NULL) {
+    if(parent_ != nullptr) {
         parent_->removeChild(this);
     }
 }
@@ -137,13 +136,13 @@ QtProperty *QtProperty::findChild(const QString &name) {
             return child;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 
 void QtProperty::setChildValue(const QString &name, const QVariant &value) {
     QtProperty *child = findChild(name);
-    if(child != NULL) {
+    if(child != nullptr) {
         child->setValue(value);
     }
 }
@@ -271,7 +270,7 @@ void QtGroupProperty::setValue(const QVariant & /*value*/) {
 
 
 QtProperty *QtGroupProperty::findChild(const QString &name) {
-    QtProperty *result = NULL;
+    QtProperty *result = nullptr;
     foreach(QtProperty *child, children_) {
         if(name == child->getName()) {
             result = child;
@@ -279,7 +278,7 @@ QtProperty *QtGroupProperty::findChild(const QString &name) {
             result = child->findChild(name);
         }
 
-        if(result != NULL) {
+        if(result != nullptr) {
             break;
         }
     }
@@ -382,8 +381,7 @@ QIcon QtColorProperty::getValueIcon() const {
 
 
 /********************************************************************/
-QtDynamicListProperty::QtDynamicListProperty(Type type, QtPropertyFactory *factory) : QtProperty(type, factory)
-    , length_(0) {
+QtDynamicListProperty::QtDynamicListProperty(Type type, QtPropertyFactory *factory) : QtProperty(type, factory) {
     propLength_ = factory_->createProperty(QtPropertyType::INT);
     propLength_->setName("length");
     propLength_->setTitle(tr("Length"));
@@ -534,27 +532,26 @@ void QtDynamicListProperty::popItem() {
 
 
 /********************************************************************/
-QtDynamicItemProperty::QtDynamicItemProperty(Type type, QtPropertyFactory *factory) : QtProperty(type, factory)
-    , impl_(NULL) {
+QtDynamicItemProperty::QtDynamicItemProperty(Type type, QtPropertyFactory *factory) : QtProperty(type, factory) {
 }
 
 
 QtDynamicItemProperty::~QtDynamicItemProperty() {
-    if(impl_ != NULL) {
+    if(impl_ != nullptr) {
         delete impl_;
     }
 }
 
 
 void QtDynamicItemProperty::setValueType(Type type) {
-    if(impl_ != NULL) {
+    if(impl_ != nullptr) {
         if(impl_->getType() == type) {
             return;
         }
         delete impl_;
     }
     impl_ = factory_->createProperty(type);
-    assert(impl_ != NULL);
+    assert(impl_ != nullptr);
 
     connect(impl_, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(onImplValueChange(QtProperty*)));
 }

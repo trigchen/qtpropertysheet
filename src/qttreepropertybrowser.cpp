@@ -20,8 +20,7 @@ namespace {
     const int PropertyDataIndex = Qt::UserRole + 1;
 }
 
-QtTreePropertyBrowser::QtTreePropertyBrowser(QObject *parent) : QtPropertyBrowser(parent)
-    , editorFactory_(NULL), treeWidget_(NULL), delegate_(NULL) {
+QtTreePropertyBrowser::QtTreePropertyBrowser(QObject *parent) : QtPropertyBrowser(parent) {
 }
 
 
@@ -76,7 +75,7 @@ QColor QtTreePropertyBrowser::calculatedBackgroundColor(QtProperty *property) {
         return QColor(index % 2 ? Qt::blue : Qt::white);
     }
 
-    if(dynamic_cast<QtGroupProperty *>(property) != 0) {
+    if(dynamic_cast<QtGroupProperty *>(property) != nullptr) {
         return QColor(Qt::gray);
     }
     return QColor(Qt::white);
@@ -84,10 +83,10 @@ QColor QtTreePropertyBrowser::calculatedBackgroundColor(QtProperty *property) {
 
 
 QWidget *QtTreePropertyBrowser::createEditor(QtProperty *property, QWidget *parent) {
-    if(editorFactory_ != NULL) {
+    if(editorFactory_ != nullptr) {
         return editorFactory_->createEditor(property, parent);
     }
-    return NULL;
+    return nullptr;
 }
 
 
@@ -111,11 +110,11 @@ QtProperty *QtTreePropertyBrowser::indexToProperty(const QModelIndex &index) {
 
 
 QtProperty *QtTreePropertyBrowser::itemToProperty(QTreeWidgetItem *item) {
-    if(item != NULL) {
+    if(item != nullptr) {
         quintptr ptr = item->data(0, PropertyDataIndex).value<quintptr>();
         return reinterpret_cast<QtProperty *>(ptr);
     }
-    return NULL;
+    return nullptr;
 }
 
 
@@ -129,7 +128,7 @@ void QtTreePropertyBrowser::addProperty(QtProperty *property) {
 
 
 void QtTreePropertyBrowser::addProperty(QtProperty *property, QTreeWidgetItem *parentItem) {
-    QTreeWidgetItem *item = NULL;
+    QTreeWidgetItem *item = nullptr;
     if(property->isSelfVisible()) {
         item = new QTreeWidgetItem();
         item->setText(0, property->getTitle());
@@ -206,7 +205,7 @@ void QtTreePropertyBrowser::slotPropertyRemove(QtProperty *property, QtProperty 
 
 void QtTreePropertyBrowser::slotPropertyValueChange(QtProperty *property) {
     QTreeWidgetItem *item = property2items_.value(property);
-    if(item != NULL) {
+    if(item != nullptr) {
         item->setText(1, property->getValueString());
         item->setIcon(1, property->getValueIcon());
     }
@@ -215,7 +214,7 @@ void QtTreePropertyBrowser::slotPropertyValueChange(QtProperty *property) {
 
 void QtTreePropertyBrowser::slotPropertyPropertyChange(QtProperty *property) {
     QTreeWidgetItem *item = property2items_.value(property);
-    if(item != NULL) {
+    if(item != nullptr) {
         item->setText(0, property->getTitle());
         item->setHidden(!property->isVisible());
     }
@@ -224,7 +223,7 @@ void QtTreePropertyBrowser::slotPropertyPropertyChange(QtProperty *property) {
 
 void QtTreePropertyBrowser::slotTreeViewDestroy(QObject *p) {
     if(treeWidget_ == p) {
-        treeWidget_ = NULL;
+        treeWidget_ = nullptr;
     }
 }
 
@@ -238,7 +237,7 @@ void QtTreePropertyBrowser::deleteTreeItem(QTreeWidgetItem *item) {
 
 bool QtTreePropertyBrowser::isExpanded(QtProperty *property) {
     QTreeWidgetItem *treeItem = property2items_.value(property);
-    if(treeItem != NULL) {
+    if(treeItem != nullptr) {
         return treeItem->isExpanded();
     }
     return false;
@@ -247,7 +246,7 @@ bool QtTreePropertyBrowser::isExpanded(QtProperty *property) {
 
 void QtTreePropertyBrowser::setExpanded(QtProperty *property, bool expand) {
     QTreeWidgetItem *treeItem = property2items_.value(property);
-    if(treeItem != NULL) {
+    if(treeItem != nullptr) {
         treeItem->setExpanded(expand);
     }
 }

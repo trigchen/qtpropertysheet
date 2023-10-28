@@ -3,8 +3,7 @@
 
 
 QtPropertyFactory::QtPropertyFactory(QObject *parent) : QObject(parent) {
-#define REGISTER_PROPERTY(TYPE, CLASS) \
-        registerCreator(TYPE, new QtSimplePropertyCreator<CLASS>(TYPE, this))
+#define REGISTER_PROPERTY(TYPE, CLASS)  registerCreator(TYPE, new QtSimplePropertyCreator<CLASS>(TYPE, this))
 
     REGISTER_PROPERTY(QtPropertyType::LIST, QtListProperty);
     REGISTER_PROPERTY(QtPropertyType::DICT, QtDictProperty);
@@ -31,7 +30,7 @@ QtPropertyFactory::~QtPropertyFactory() {
 
 QtProperty *QtPropertyFactory::createProperty(QtPropertyType::Type type) {
     QtPropertyCreator *method = propertyCreator_.value(type);
-    if(method != NULL) {
+    if(method != nullptr) {
         return method->create();
     }
 
@@ -42,7 +41,7 @@ QtProperty *QtPropertyFactory::createProperty(QtPropertyType::Type type) {
 
 void QtPropertyFactory::registerCreator(QtPropertyType::Type type, QtPropertyCreator *method) {
     QtPropertyCreator *p = propertyCreator_.value(type);
-    if(p != NULL) {
+    if(p != nullptr) {
         delete p;
     }
     propertyCreator_[type] = method;

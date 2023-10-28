@@ -30,7 +30,7 @@ QtPropertyEditor::~QtPropertyEditor() {
 
 
 void QtPropertyEditor::onPropertyDestory(QObject * /*object*/) {
-    property_ = NULL;
+    property_ = nullptr;
     delete this;
 }
 
@@ -41,15 +41,14 @@ void QtPropertyEditor::slotEditorDestory(QObject * /*object*/) {
 
 
 /********************************************************************/
-QtIntSpinBoxEditor::QtIntSpinBoxEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(0) {
+QtIntSpinBoxEditor::QtIntSpinBoxEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toInt();
     connect(property, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
 }
 
 
 QWidget *QtIntSpinBoxEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(editor_ == 0) {
+    if(editor_ == nullptr) {
         editor_ = new QSpinBox(parent);
         editor_->setKeyboardTracking(false);
 
@@ -71,7 +70,7 @@ void QtIntSpinBoxEditor::slotEditorValueChange(int value) {
     }
     value_ = value;
 
-    if(property_ != 0) {
+    if(property_ != nullptr) {
         property_->setValue(value);
     }
 }
@@ -79,7 +78,7 @@ void QtIntSpinBoxEditor::slotEditorValueChange(int value) {
 
 void QtIntSpinBoxEditor::onPropertyValueChange(QtProperty *property) {
     value_ = property->getValue().toInt();
-    if(editor_ != 0) {
+    if(editor_ != nullptr) {
         editor_->blockSignals(true);
         editor_->setValue(value_);
         editor_->blockSignals(false);
@@ -88,7 +87,7 @@ void QtIntSpinBoxEditor::onPropertyValueChange(QtProperty *property) {
 
 
 void QtIntSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString &name) {
-    if(NULL == editor_) {
+    if(editor_ == nullptr) {
         return;
     }
 
@@ -106,15 +105,14 @@ void QtIntSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString &n
 
 
 /********************************************************************/
-QtDoubleSpinBoxEditor::QtDoubleSpinBoxEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(0) {
+QtDoubleSpinBoxEditor::QtDoubleSpinBoxEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toDouble();
     connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
 }
 
 
 QWidget *QtDoubleSpinBoxEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(editor_ == 0) {
+    if(editor_ == nullptr) {
         editor_ = new QDoubleSpinBox(parent);
         editor_->setKeyboardTracking(false);
 
@@ -137,7 +135,7 @@ void QtDoubleSpinBoxEditor::slotEditorValueChange(double value) {
     }
     value_ = value;
 
-    if(property_ != 0) {
+    if(property_ != nullptr) {
         property_->setValue(value);
     }
 }
@@ -145,7 +143,7 @@ void QtDoubleSpinBoxEditor::slotEditorValueChange(double value) {
 
 void QtDoubleSpinBoxEditor::onPropertyValueChange(QtProperty *property) {
     value_ = property->getValue().toDouble();
-    if(editor_ != 0) {
+    if(editor_ != nullptr) {
         editor_->blockSignals(true);
         editor_->setValue(value_);
         editor_->blockSignals(false);
@@ -154,7 +152,7 @@ void QtDoubleSpinBoxEditor::onPropertyValueChange(QtProperty *property) {
 
 
 void QtDoubleSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString &name) {
-    if(NULL == editor_) {
+    if(editor_ == nullptr) {
         return;
     }
 
@@ -176,14 +174,13 @@ void QtDoubleSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString
 
 
 /********************************************************************/
-QtStringEditor::QtStringEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(NULL) {
+QtStringEditor::QtStringEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property->getValue().toString();
 }
 
 
 QWidget *QtStringEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(editor_ == NULL) {
+    if(editor_ == nullptr) {
         editor_ = new QLineEdit(parent);
         editor_->setText(value_);
 
@@ -197,7 +194,7 @@ QWidget *QtStringEditor::createEditor(QWidget *parent, QtPropertyEditorFactory *
 
 void QtStringEditor::onPropertyValueChange(QtProperty *property) {
     value_ = property->getValue().toString();
-    if(editor_ != NULL) {
+    if(editor_ != nullptr) {
         editor_->blockSignals(true);
         editor_->setText(value_);
         editor_->blockSignals(false);
@@ -209,7 +206,7 @@ void QtStringEditor::slotEditFinished() {
     QString text = editor_->text();
     if(value_ != text) {
         value_ = text;
-        if(property_ != 0) {
+        if(property_ != nullptr) {
             property_->setValue(value_);
         }
     }
@@ -217,7 +214,7 @@ void QtStringEditor::slotEditFinished() {
 
 
 void QtStringEditor::slotSetAttribute(QtProperty *property, const QString &name) {
-    if(!editor_) {
+    if(editor_ == nullptr) {
         return;
     }
 
@@ -231,15 +228,14 @@ void QtStringEditor::slotSetAttribute(QtProperty *property, const QString &name)
 
 
 /********************************************************************/
-QtEnumEditor::QtEnumEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(NULL) {
+QtEnumEditor::QtEnumEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toInt();
     connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
 }
 
 
 QWidget *QtEnumEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(editor_ == NULL) {
+    if(editor_ == nullptr) {
         editor_ = new QComboBox(parent);
         editor_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
         editor_->setMinimumContentsLength(1);
@@ -257,7 +253,7 @@ QWidget *QtEnumEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
 
 void QtEnumEditor::onPropertyValueChange(QtProperty *property) {
     value_ = property->getValue().toInt();
-    if(editor_ != NULL) {
+    if(editor_ != nullptr) {
         editor_->blockSignals(true);
         editor_->setCurrentIndex(value_);
         editor_->blockSignals(false);
@@ -284,8 +280,7 @@ void QtEnumEditor::slotSetAttribute(QtProperty *property, const QString &name) {
 
 
 /********************************************************************/
-QtEnumPairEditor::QtEnumPairEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(NULL) {
+QtEnumPairEditor::QtEnumPairEditor(QtProperty *property) : QtPropertyEditor(property) {
     enumValues_ = property_->getAttribute(QtAttributeName::EnumValues).toList();
     index_ = enumValues_.indexOf(property_->getValue());
 
@@ -294,7 +289,7 @@ QtEnumPairEditor::QtEnumPairEditor(QtProperty *property) : QtPropertyEditor(prop
 
 
 QWidget *QtEnumPairEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(editor_ == NULL) {
+    if(editor_ == nullptr) {
         editor_ = new QComboBox(parent);
         editor_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
         editor_->setMinimumContentsLength(1);
@@ -312,7 +307,7 @@ QWidget *QtEnumPairEditor::createEditor(QWidget *parent, QtPropertyEditorFactory
 
 void QtEnumPairEditor::onPropertyValueChange(QtProperty *property) {
     index_ = enumValues_.indexOf(property->getValue());
-    if(editor_ != NULL) {
+    if(editor_ != nullptr) {
         editor_->blockSignals(true);
         editor_->setCurrentIndex(index_);
         editor_->blockSignals(false);
@@ -341,7 +336,7 @@ void QtEnumPairEditor::slotSetAttribute(QtProperty *property, const QString &nam
 
         int index = qMax(0, enumValues_.indexOf(property->getValue()));
         if(index != index_) {
-            if(editor_ != NULL) {
+            if(editor_ != nullptr) {
                 editor_->setCurrentIndex(index);
             }
         }
@@ -350,15 +345,14 @@ void QtEnumPairEditor::slotSetAttribute(QtProperty *property, const QString &nam
 
 
 /********************************************************************/
-QtFlagEditor::QtFlagEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(NULL) {
+QtFlagEditor::QtFlagEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toInt();
     connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
 }
 
 
 QWidget *QtFlagEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(NULL == editor_) {
+    if(editor_ == nullptr) {
         editor_ = new QxtCheckComboBox(parent);
         editor_->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
         editor_->setMinimumContentsLength(1);
@@ -389,7 +383,7 @@ void QtFlagEditor::setValueToEditor(int value) {
 
 void QtFlagEditor::onPropertyValueChange(QtProperty *property) {
     value_ = property->getValue().toInt();
-    if(NULL != editor_) {
+    if(editor_ != nullptr) {
         setValueToEditor(value_);
     }
 }
@@ -419,14 +413,13 @@ void QtFlagEditor::slotSetAttribute(QtProperty *property, const QString &name) {
 
 
 /********************************************************************/
-QtBoolEditor::QtBoolEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(NULL) {
+QtBoolEditor::QtBoolEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property_->getValue().toBool();
 }
 
 
 QWidget *QtBoolEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(NULL == editor_) {
+    if(editor_ == nullptr) {
         editor_ = new QtBoolEdit(parent);
         editor_->setChecked(value_);
 
@@ -438,7 +431,7 @@ QWidget *QtBoolEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
 
 void QtBoolEditor::onPropertyValueChange(QtProperty *property) {
     value_ = property->getValue().toBool();
-    if(NULL != editor_) {
+    if(editor_ != nullptr) {
         editor_->blockSignals(true);
         editor_->setCheckState(value_ ? Qt::Checked : Qt::Unchecked);
         editor_->blockSignals(false);
@@ -455,14 +448,13 @@ void QtBoolEditor::slotEditorValueChange(bool value) {
 
 
 /********************************************************************/
-QtColorEditor::QtColorEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(NULL) {
+QtColorEditor::QtColorEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = QtPropertyBrowserUtils::variant2color(property->getValue());
 }
 
 
 QWidget *QtColorEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(NULL == editor_) {
+    if(editor_ == nullptr) {
         editor_ = new QtColorEditWidget(parent);
         editor_->setValue(value_);
 
@@ -474,7 +466,7 @@ QWidget *QtColorEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * 
 
 void QtColorEditor::onPropertyValueChange(QtProperty *property) {
     value_ = QtPropertyBrowserUtils::variant2color(property->getValue());
-    if(NULL != editor_) {
+    if(editor_ != nullptr) {
         editor_->blockSignals(true);
         editor_->setValue(value_);
         editor_->blockSignals(false);
@@ -491,18 +483,14 @@ void QtColorEditor::slotEditorValueChange(const QColor &color) {
 
 
 /********************************************************************/
-QtFileEditor::QtFileEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(NULL)
-    , input_(NULL)
-    , button_(NULL)
-    , dialogType_(READ_FILE) {
+QtFileEditor::QtFileEditor(QtProperty *property) : QtPropertyEditor(property) {
     value_ = property->getValue().toString();
     connect(property_, SIGNAL(signalAttributeChange(QtProperty*,QString)), this, SLOT(slotSetAttribute(QtProperty*,QString)));
 }
 
 
 QWidget *QtFileEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /*factory*/) {
-    if(NULL != editor_) {
+    if(editor_ != nullptr) {
         return editor_;
     }
 
@@ -539,7 +527,7 @@ QWidget *QtFileEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
 
 void QtFileEditor::onPropertyValueChange(QtProperty *property) {
     QString value = property->getValue().toString();
-    if(editor_ != NULL) {
+    if(editor_ != nullptr) {
         setValue(value);
     }
 }
@@ -548,8 +536,8 @@ void QtFileEditor::onPropertyValueChange(QtProperty *property) {
 void QtFileEditor::slotEditorDestory(QObject *object) {
     QtPropertyEditor::slotEditorDestory(object);
 
-    input_ = NULL;
-    button_ = NULL;
+    input_ = nullptr;
+    button_ = nullptr;
 }
 
 
@@ -601,15 +589,15 @@ void QtFileEditor::slotButtonClicked() {
     QString path;
     switch(dialogType_) {
     case READ_FILE:
-        path = QFileDialog::getOpenFileName(NULL, tr("open file"), value_, filter_);
+        path = QFileDialog::getOpenFileName(nullptr, tr("open file"), value_, filter_);
         break;
 
     case WRITE_FILE:
-        path = QFileDialog::getSaveFileName(NULL, tr("save file"), value_, filter_);
+        path = QFileDialog::getSaveFileName(nullptr, tr("save file"), value_, filter_);
         break;
 
     case DIRECTORY:
-        path = QFileDialog::getExistingDirectory(NULL, tr("open directory"), value_);
+        path = QFileDialog::getExistingDirectory(nullptr, tr("open directory"), value_);
         break;
 
     default:
@@ -665,14 +653,12 @@ bool QtFileEditor::eventFilter(QObject *obj, QEvent *event) {
 }
 
 
-QtDynamicItemEditor::QtDynamicItemEditor(QtProperty *property) : QtPropertyEditor(property)
-    , editor_(NULL)
-    , impl_(NULL) {
+QtDynamicItemEditor::QtDynamicItemEditor(QtProperty *property) : QtPropertyEditor(property) {
 }
 
 
 QWidget *QtDynamicItemEditor::createEditor(QWidget *parent, QtPropertyEditorFactory *factory) {
-    if(editor_ != NULL) {
+    if(editor_ != nullptr) {
         return editor_;
     }
 
@@ -684,10 +670,10 @@ QWidget *QtDynamicItemEditor::createEditor(QWidget *parent, QtPropertyEditorFact
     editor_->setLayout(layout);
 
     QtDynamicItemProperty *property = dynamic_cast<QtDynamicItemProperty *>(property_);
-    if((property != NULL) && (property->getImpl() != NULL)) {
+    if((property != nullptr) && (property->getImpl() != nullptr)) {
         impl_ = factory->createPropertyEditor(property->getImpl());
         QWidget *subEditor = impl_->createEditor(editor_, factory);
-        if(subEditor != NULL) {
+        if(subEditor != nullptr) {
             layout->addWidget(subEditor);
             editor_->setFocusProxy(subEditor);
             editor_->setFocusPolicy(subEditor->focusPolicy());
@@ -726,7 +712,7 @@ void QtDynamicItemEditor::onPropertyValueChange(QtProperty * /*property*/) {
 
 void QtDynamicItemEditor::onBtnMoveUp() {
     QtDynamicItemProperty *property = dynamic_cast<QtDynamicItemProperty *>(property_);
-    if(property != NULL) {
+    if(property != nullptr) {
         emit property->signalMoveUp(property);
     }
 }
@@ -734,7 +720,7 @@ void QtDynamicItemEditor::onBtnMoveUp() {
 
 void QtDynamicItemEditor::onBtnMoveDown() {
     QtDynamicItemProperty *property = dynamic_cast<QtDynamicItemProperty *>(property_);
-    if(property != NULL) {
+    if(property != nullptr) {
         emit property->signalMoveDown(property);
     }
 }
@@ -742,7 +728,7 @@ void QtDynamicItemEditor::onBtnMoveDown() {
 
 void QtDynamicItemEditor::onBtnDelete() {
     QtDynamicItemProperty *property = dynamic_cast<QtDynamicItemProperty *>(property_);
-    if(property != NULL) {
+    if(property != nullptr) {
         emit property->signalDelete(property);
     }
 }
@@ -827,7 +813,7 @@ void QtFloatListEditor::onPropertyValueChange(QtProperty *property) {
 
 void QtFloatListEditor::slotEditorValueChange(double value) {
     QDoubleSpinBox *edt = qobject_cast<QDoubleSpinBox *>(sender());
-    if(edt == NULL) {
+    if(edt == nullptr) {
         return;
     }
 
@@ -854,7 +840,7 @@ void QtFloatListEditor::slotSetAttribute(QtProperty *property, const QString &na
 
 
 void QtFloatListEditor::setEditorAttribute(QDoubleSpinBox *editor, QtProperty *property, const QString &name) {
-    if(NULL == editor) {
+    if(editor == nullptr) {
         return;
     }
 

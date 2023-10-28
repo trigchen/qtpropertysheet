@@ -65,15 +65,15 @@ class QTPROPERTYSHEET_DLL QtButtonPropertyItem : public QObject {
     void onPropertyValueChange(QtProperty *property);
 
   protected:
-    QtProperty *property_;
-    QLabel *label_;
-    QWidget *editor_;  // can be null
-    QLabel *valueLabel_;
-    QToolButton *titleButton_;
-    QToolButton *titleMenu_;
-    QWidget *container_;
-    QGridLayout *layout_;
-    QtButtonPropertyItem *parent_;
+    QtProperty *property_ = nullptr;
+    QLabel *label_ = nullptr;
+    QWidget *editor_ = nullptr;  // can be null
+    QLabel *valueLabel_ = nullptr;
+    QToolButton *titleButton_ = nullptr;
+    QToolButton *titleMenu_ = nullptr;
+    QWidget *container_ = nullptr;
+    QGridLayout *layout_ = nullptr;
+    QtButtonPropertyItem *parent_ = nullptr;
     QList<QtButtonPropertyItem *> children_;
-    bool bExpand_;
+    bool bExpand_ = true;
 };

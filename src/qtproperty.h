@@ -178,12 +178,12 @@ class QTPROPERTYSHEET_DLL QtProperty : public QObject {
     QString tips_;
     QVariant value_;
     QColor bgColor_;
-    QtProperty *parent_;
+    QtProperty *parent_ = nullptr;
     QtPropertyList children_;
     QMap<QString, QVariant> attributes_;
-    bool visible_;
-    bool selfVisible_;
-    bool menuVisible_;
+    bool visible_ = true;
+    bool selfVisible_ = true;
+    bool menuVisible_ = false;
 };
 
 /********************************************************************/
@@ -339,8 +339,8 @@ class QTPROPERTYSHEET_DLL QtDynamicListProperty : public QtProperty {
 
     void popItem();
 
-    int length_;
-    QtProperty *propLength_;
+    int length_ = 0;
+    QtProperty *propLength_ = nullptr;
     QtPropertyList items_;
     QVariantList valueList_;
 };
@@ -387,7 +387,7 @@ class QTPROPERTYSHEET_DLL QtDynamicItemProperty : public QtProperty {
     void onImplValueChange(QtProperty *property);
 
   protected:
-    QtProperty *impl_;
+    QtProperty *impl_ = nullptr;
 };
 
 /********************************************************************/

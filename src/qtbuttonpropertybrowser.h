@@ -16,7 +16,7 @@ class QTPROPERTYSHEET_DLL QtButtonPropertyBrowser : public QtPropertyBrowser {
   public:
     typedef QMap<QtProperty *, QtButtonPropertyItem *> Property2ItemMap;
 
-    explicit QtButtonPropertyBrowser(QObject *parent = 0);
+    explicit QtButtonPropertyBrowser(QObject *parent = nullptr);
 
     ~QtButtonPropertyBrowser();
 
@@ -57,8 +57,8 @@ class QTPROPERTYSHEET_DLL QtButtonPropertyBrowser : public QtPropertyBrowser {
 
     void deleteItem(QtButtonPropertyItem *item);
 
-    QtPropertyEditorFactory *editorFactory_;
-    QtButtonPropertyItem *rootItem_;
-    QWidget *mainView_;
+    QtPropertyEditorFactory *editorFactory_ = nullptr;
+    QtButtonPropertyItem *rootItem_ = nullptr;
+    QWidget *mainView_ = nullptr;
     Property2ItemMap property2items_;
 };

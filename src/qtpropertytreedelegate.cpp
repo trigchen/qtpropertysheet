@@ -7,13 +7,12 @@
 #include "qtpropertytreeview.h"
 #include "qttreepropertybrowser.h"
 
-QtPropertyTreeDelegate::QtPropertyTreeDelegate(QObject *parent) : QItemDelegate(parent)
-    , editorPrivate_(0), editedItem_(0), editedWidget_(0), disablePainting_(false) {
+QtPropertyTreeDelegate::QtPropertyTreeDelegate(QObject *parent) : QItemDelegate(parent) {
 }
 
 
 int QtPropertyTreeDelegate::indentation(const QModelIndex &index) const {
-    if(!editorPrivate_) {
+    if(editorPrivate_ == nullptr) {
         return 0;
     }
 
@@ -40,8 +39,8 @@ void QtPropertyTreeDelegate::slotEditorDestroyed(QObject *object) {
         }
 
         if(editedWidget_ == w) {
-            editedWidget_ = 0;
-            editedItem_ = 0;
+            editedWidget_ = nullptr;
+            editedItem_ = nullptr;
         }
     }
 }
@@ -54,9 +53,8 @@ void QtPropertyTreeDelegate::closeEditor(QtProperty *property) {
 }
 
 
-QWidget *QtPropertyTreeDelegate::createEditor(QWidget *parent,
-                                              const QStyleOptionViewItem &, const QModelIndex &index) const {
-    if((index.column() == 1) && editorPrivate_) {
+QWidget *QtPropertyTreeDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const {
+    if((index.column() == 1) && (editorPrivate_ != nullptr)) {
         QTreeWidgetItem *item = editorPrivate_->indexToItem(index);
         QtProperty *property = editorPrivate_->indexToProperty(index);
 
@@ -79,25 +77,23 @@ QWidget *QtPropertyTreeDelegate::createEditor(QWidget *parent,
 }
 
 
-void QtPropertyTreeDelegate::updateEditorGeometry(QWidget *editor,
-                                                  const QStyleOptionViewItem &option, const QModelIndex &index) const {
+void QtPropertyTreeDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     Q_UNUSED(index)
     editor->setGeometry(option.rect.adjusted(0, 0, 0, -1));
 }
 
 
-void QtPropertyTreeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
-                                   const QModelIndex &index) const {
+void QtPropertyTreeDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QtProperty *property = editorPrivate_->indexToProperty(index);
     bool hasValue = false;
-    if(editorPrivate_) {
+    if(editorPrivate_ != nullptr) {
         if(property) {
             hasValue = property->hasValue();
         }
     }
 
     QStyleOptionViewItem opt = option;
-    if((editorPrivate_ && (index.column() == 0)) || !hasValue) {
+    if(((editorPrivate_ != nullptr) && (index.column() == 0)) || !hasValue) {
         if(property && property->isModified()) {
             opt.font.setBold(true);
             opt.fontMetrics = QFontMetrics(opt.font);
@@ -111,7 +107,7 @@ void QtPropertyTreeDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     opt.state &= ~QStyle::State_HasFocus;
     if(index.column() == 1) {
         QTreeWidgetItem *item = editorPrivate_->indexToItem(index);
-        if(editedItem_ && (editedItem_ == item)) {
+        if((editedItem_ != nullptr) && (editedItem_ == item)) {
             disablePainting_ = true;
         }
     }
@@ -126,7 +122,7 @@ void QtPropertyTreeDelegate::paint(QPainter *painter, const QStyleOptionViewItem
     QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt));
     painter->save();
     painter->setPen(QPen(color));
-    if(!editorPrivate_ || (!editorPrivate_->lastColumn(index.column()) && hasValue)) {
+    if((editorPrivate_ == nullptr) || (!editorPrivate_->lastColumn(index.column()) && hasValue)) {
         int right = (option.direction == Qt::LeftToRight) ? option.rect.right() : option.rect.left();
         painter->drawLine(right, option.rect.y(), right, option.rect.bottom());
     }

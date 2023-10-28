@@ -9,15 +9,14 @@
 #include "qtpropertybrowserutils.h"
 #include "qtpropertyeditorfactory.h"
 
-QtButtonPropertyBrowser::QtButtonPropertyBrowser(QObject *parent) : QtPropertyBrowser(parent)
-    , editorFactory_(NULL), rootItem_(NULL), mainView_(NULL) {
+QtButtonPropertyBrowser::QtButtonPropertyBrowser(QObject *parent) : QtPropertyBrowser(parent) {
 }
 
 
 QtButtonPropertyBrowser::~QtButtonPropertyBrowser() {
     removeAllProperties();
 
-    if(rootItem_ != NULL) {
+    if(rootItem_ != nullptr) {
         delete rootItem_;
     }
 }
@@ -52,10 +51,10 @@ bool QtButtonPropertyBrowser::init(QWidget *parent, QtPropertyEditorFactory *fac
 
 
 QWidget *QtButtonPropertyBrowser::createEditor(QtProperty *property, QWidget *parent) {
-    if(editorFactory_ != NULL) {
+    if(editorFactory_ != nullptr) {
         return editorFactory_->createEditor(property, parent);
     }
-    return NULL;
+    return nullptr;
 }
 
 
@@ -74,9 +73,9 @@ void QtButtonPropertyBrowser::addProperty(QtProperty *property) {
 
 
 void QtButtonPropertyBrowser::addProperty(QtProperty *property, QtButtonPropertyItem *parentItem) {
-    assert(parentItem != NULL);
+    assert(parentItem != nullptr);
 
-    QtButtonPropertyItem *item = NULL;
+    QtButtonPropertyItem *item = nullptr;
     if(property->isSelfVisible()) {
         item = new QtButtonPropertyItem(property, parentItem, editorFactory_);
         parentItem->addChild(item);
@@ -100,7 +99,7 @@ void QtButtonPropertyBrowser::removeProperty(QtProperty *property) {
     Property2ItemMap::iterator it = property2items_.find(property);
     if(it != property2items_.end()) {
         QtButtonPropertyItem *item = it.value();
-        if(item != NULL) {
+        if(item != nullptr) {
             item->removeFromParent();
         }
 
@@ -113,7 +112,7 @@ void QtButtonPropertyBrowser::removeProperty(QtProperty *property) {
         }
 
         // then remove this QtButtonPropertyItem
-        if(item != NULL) {
+        if(item != nullptr) {
             deleteItem(item);
         }
     }
@@ -142,7 +141,7 @@ void QtButtonPropertyBrowser::slotPropertyRemove(QtProperty *property, QtPropert
 
 void QtButtonPropertyBrowser::slotPropertyValueChange(QtProperty *property) {
     // QtButtonPropertyItem *item = property2items_.value(property);
-    // if(item != NULL)
+    // if(item != nullptr)
     // {
     // item->setText(1, property->getValueString());
     // item->setIcon(1, property->getValueIcon());
@@ -152,7 +151,7 @@ void QtButtonPropertyBrowser::slotPropertyValueChange(QtProperty *property) {
 
 void QtButtonPropertyBrowser::slotPropertyPropertyChange(QtProperty *property) {
     QtButtonPropertyItem *item = property2items_.value(property);
-    if(item != NULL) {
+    if(item != nullptr) {
         item->setTitle(property->getTitle());
         item->setVisible(property->isVisible());
     }
@@ -171,7 +170,7 @@ void QtButtonPropertyBrowser::deleteItem(QtButtonPropertyItem *item) {
 
 bool QtButtonPropertyBrowser::isExpanded(QtProperty *property) {
     QtButtonPropertyItem *item = property2items_.value(property);
-    if(item != NULL) {
+    if(item != nullptr) {
         return item->isExpanded();
     }
     return false;
@@ -180,7 +179,7 @@ bool QtButtonPropertyBrowser::isExpanded(QtProperty *property) {
 
 void QtButtonPropertyBrowser::setExpanded(QtProperty *property, bool expand) {
     QtButtonPropertyItem *item = property2items_.value(property);
-    if(item != NULL) {
+    if(item != nullptr) {
         item->setExpanded(expand);
     }
 }

@@ -21,7 +21,7 @@ class QtPropertyCreator {
 class QTPROPERTYSHEET_DLL QtPropertyFactory : public QObject {
     Q_OBJECT
   public:
-    explicit QtPropertyFactory(QObject *parent = 0);
+    explicit QtPropertyFactory(QObject *parent = nullptr);
 
     virtual ~QtPropertyFactory();
 

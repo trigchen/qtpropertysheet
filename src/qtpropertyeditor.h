@@ -41,7 +41,7 @@ class QTPROPERTYSHEET_DLL QtPropertyEditor : public QObject {
     virtual void slotEditorDestory(QObject *object);
 
   protected:
-    QtProperty *property_;
+    QtProperty *property_ = nullptr;
 };
 
 
@@ -60,8 +60,8 @@ class QTPROPERTYSHEET_DLL QtIntSpinBoxEditor : public QtPropertyEditor {
     void slotSetAttribute(QtProperty *property, const QString &name);
 
   private:
-    int value_;
-    QSpinBox *editor_;
+    int value_ = 0;
+    QSpinBox *editor_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtDoubleSpinBoxEditor : public QtPropertyEditor {
@@ -79,8 +79,8 @@ class QTPROPERTYSHEET_DLL QtDoubleSpinBoxEditor : public QtPropertyEditor {
     void slotSetAttribute(QtProperty *property, const QString &name);
 
   private:
-    double value_;
-    QDoubleSpinBox *editor_;
+    double value_ = 0.0;
+    QDoubleSpinBox *editor_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtStringEditor : public QtPropertyEditor {
@@ -99,7 +99,7 @@ class QTPROPERTYSHEET_DLL QtStringEditor : public QtPropertyEditor {
 
   private:
     QString value_;
-    QLineEdit *editor_;
+    QLineEdit *editor_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtEnumEditor : public QtPropertyEditor {
@@ -117,8 +117,8 @@ class QTPROPERTYSHEET_DLL QtEnumEditor : public QtPropertyEditor {
     virtual void slotSetAttribute(QtProperty *property, const QString &name);
 
   private:
-    int value_;
-    QComboBox *editor_;
+    int value_ = 0;
+    QComboBox *editor_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtEnumPairEditor : public QtPropertyEditor {
@@ -136,9 +136,9 @@ class QTPROPERTYSHEET_DLL QtEnumPairEditor : public QtPropertyEditor {
     virtual void slotSetAttribute(QtProperty *property, const QString &name);
 
   protected:
-    int index_;
+    int index_ = 0;
     QVariantList enumValues_;
-    QComboBox *editor_;
+    QComboBox *editor_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtFlagEditor : public QtPropertyEditor {
@@ -158,8 +158,8 @@ class QTPROPERTYSHEET_DLL QtFlagEditor : public QtPropertyEditor {
     void slotSetAttribute(QtProperty *property, const QString &name);
 
   private:
-    int value_;
-    QxtCheckComboBox *editor_;
+    int value_ = 0;
+    QxtCheckComboBox *editor_ = nullptr;
     QStringList flagNames_;
 };
 
@@ -176,8 +176,8 @@ class QTPROPERTYSHEET_DLL QtBoolEditor : public QtPropertyEditor {
     virtual void slotEditorValueChange(bool value);
 
   protected:
-    bool value_;
-    QtBoolEdit *editor_;
+    bool value_ = false;
+    QtBoolEdit *editor_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtColorEditor : public QtPropertyEditor {
@@ -194,7 +194,7 @@ class QTPROPERTYSHEET_DLL QtColorEditor : public QtPropertyEditor {
 
   protected:
     QColor value_;
-    QtColorEditWidget *editor_;
+    QtColorEditWidget *editor_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtFileEditor : public QtPropertyEditor {
@@ -229,12 +229,12 @@ class QTPROPERTYSHEET_DLL QtFileEditor : public QtPropertyEditor {
     virtual void onFileSeleted(const QString &fullPath);
 
     QString value_;
-    QWidget *editor_;
-    QLineEdit *input_;
-    QToolButton *button_;
-    DialogType dialogType_;
     QString filter_;
     QString relativePath_;
+    QWidget *editor_ = nullptr;
+    QLineEdit *input_ = nullptr;
+    QToolButton *button_ = nullptr;
+    DialogType dialogType_ = READ_FILE;
 };
 
 class QTPROPERTYSHEET_DLL QtDynamicItemEditor : public QtPropertyEditor {
@@ -254,8 +254,8 @@ class QTPROPERTYSHEET_DLL QtDynamicItemEditor : public QtPropertyEditor {
     void onBtnDelete();
 
   private:
-    QWidget *editor_;
-    QtPropertyEditor *impl_;
+    QWidget *editor_ = nullptr;
+    QtPropertyEditor *impl_ = nullptr;
 };
 
 class QTPROPERTYSHEET_DLL QtFloatListEditor : public QtPropertyEditor {
@@ -277,7 +277,7 @@ class QTPROPERTYSHEET_DLL QtFloatListEditor : public QtPropertyEditor {
 
     void variantList2Vector(const QList<QVariant> &input, QVector<float> &output);
 
-    int size_;
-    QVector<float>      values_;
+    int size_ = 0;
+    QVector<float> values_;
     QVector<QDoubleSpinBox *> editors_;
 };

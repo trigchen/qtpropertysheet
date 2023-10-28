@@ -33,7 +33,7 @@ class QxtCheckComboModel : public QStandardItemModel {
     Q_OBJECT
 
   public:
-    explicit QxtCheckComboModel(QObject *parent = 0);
+    explicit QxtCheckComboModel(QObject *parent = nullptr);
 
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
@@ -53,9 +53,9 @@ class QxtCheckComboBoxPrivate : public QObject, public QxtPrivate<QxtCheckComboB
 
     bool eventFilter(QObject *receiver, QEvent *event);
 
-    QString separator;
+    QString separator = QLatin1String(",");
     QString defaultText;
-    bool containerMousePress;
+    bool containerMousePress = false;
 
   public Q_SLOTS:
     void updateCheckedItems();

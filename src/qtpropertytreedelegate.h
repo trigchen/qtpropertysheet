@@ -11,7 +11,7 @@ class QtTreePropertyBrowser;
 class QTPROPERTYSHEET_DLL QtPropertyTreeDelegate : public QItemDelegate {
     Q_OBJECT
   public:
-    explicit QtPropertyTreeDelegate(QObject *parent = 0);
+    explicit QtPropertyTreeDelegate(QObject *parent = nullptr);
 
     void setEditorPrivate(QtTreePropertyBrowser *editorPrivate) {
         editorPrivate_ = editorPrivate;
@@ -59,8 +59,8 @@ class QTPROPERTYSHEET_DLL QtPropertyTreeDelegate : public QItemDelegate {
 
     typedef QMap<QtProperty *, QWidget *> PropertyToEditorMap;
     mutable PropertyToEditorMap propertyToEditor_;
-    QtTreePropertyBrowser *editorPrivate_;
-    mutable QTreeWidgetItem *editedItem_;
-    mutable QWidget *editedWidget_;
-    mutable bool disablePainting_;
+    QtTreePropertyBrowser *editorPrivate_ = nullptr;
+    mutable QTreeWidgetItem *editedItem_ = nullptr;
+    mutable QWidget *editedWidget_ = nullptr;
+    mutable bool disablePainting_ = false;
 };

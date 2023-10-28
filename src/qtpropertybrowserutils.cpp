@@ -58,44 +58,25 @@ QT_BEGIN_NAMESPACE
 #endif
 
 QtCursorDatabase::QtCursorDatabase() {
-    appendCursor(Qt::ArrowCursor, QCoreApplication::translate("QtCursorDatabase", "Arrow"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-arrow.png")));
-    appendCursor(Qt::UpArrowCursor, QCoreApplication::translate("QtCursorDatabase", "Up Arrow"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-uparrow.png")));
-    appendCursor(Qt::CrossCursor, QCoreApplication::translate("QtCursorDatabase", "Cross"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-cross.png")));
-    appendCursor(Qt::WaitCursor, QCoreApplication::translate("QtCursorDatabase", "Wait"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-wait.png")));
-    appendCursor(Qt::IBeamCursor, QCoreApplication::translate("QtCursorDatabase", "IBeam"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-ibeam.png")));
-    appendCursor(Qt::SizeVerCursor, QCoreApplication::translate("QtCursorDatabase", "Size Vertical"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-sizev.png")));
-    appendCursor(Qt::SizeHorCursor, QCoreApplication::translate("QtCursorDatabase", "Size Horizontal"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-sizeh.png")));
-    appendCursor(Qt::SizeFDiagCursor, QCoreApplication::translate("QtCursorDatabase", "Size Backslash"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-sizef.png")));
-    appendCursor(Qt::SizeBDiagCursor, QCoreApplication::translate("QtCursorDatabase", "Size Slash"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-sizeb.png")));
-    appendCursor(Qt::SizeAllCursor, QCoreApplication::translate("QtCursorDatabase", "Size All"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-sizeall.png")));
-    appendCursor(Qt::BlankCursor, QCoreApplication::translate("QtCursorDatabase", "Blank"),
-                 QIcon());
-    appendCursor(Qt::SplitVCursor, QCoreApplication::translate("QtCursorDatabase", "Split Vertical"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-vsplit.png")));
-    appendCursor(Qt::SplitHCursor, QCoreApplication::translate("QtCursorDatabase", "Split Horizontal"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-hsplit.png")));
-    appendCursor(Qt::PointingHandCursor, QCoreApplication::translate("QtCursorDatabase", "Pointing Hand"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-hand.png")));
-    appendCursor(Qt::ForbiddenCursor, QCoreApplication::translate("QtCursorDatabase", "Forbidden"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-forbidden.png")));
-    appendCursor(Qt::OpenHandCursor, QCoreApplication::translate("QtCursorDatabase", "Open Hand"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-openhand.png")));
-    appendCursor(Qt::ClosedHandCursor, QCoreApplication::translate("QtCursorDatabase", "Closed Hand"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-closedhand.png")));
-    appendCursor(Qt::WhatsThisCursor, QCoreApplication::translate("QtCursorDatabase", "What's This"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-whatsthis.png")));
-    appendCursor(Qt::BusyCursor, QCoreApplication::translate("QtCursorDatabase", "Busy"),
-                 QIcon(QLatin1String(":/qt-project.org/qtpropertybrowser/images/cursor-busy.png")));
+    appendCursor(Qt::ArrowCursor, QCoreApplication::translate("QtCursorDatabase", "Arrow"), QIcon(QLatin1String(":/images/cursor-arrow.png")));
+    appendCursor(Qt::UpArrowCursor, QCoreApplication::translate("QtCursorDatabase", "Up Arrow"), QIcon(QLatin1String(":/images/cursor-uparrow.png")));
+    appendCursor(Qt::CrossCursor, QCoreApplication::translate("QtCursorDatabase", "Cross"), QIcon(QLatin1String(":/images/cursor-cross.png")));
+    appendCursor(Qt::WaitCursor, QCoreApplication::translate("QtCursorDatabase", "Wait"), QIcon(QLatin1String(":/images/cursor-wait.png")));
+    appendCursor(Qt::IBeamCursor, QCoreApplication::translate("QtCursorDatabase", "IBeam"), QIcon(QLatin1String(":/images/cursor-ibeam.png")));
+    appendCursor(Qt::SizeVerCursor, QCoreApplication::translate("QtCursorDatabase", "Size Vertical"), QIcon(QLatin1String(":/images/cursor-sizev.png")));
+    appendCursor(Qt::SizeHorCursor, QCoreApplication::translate("QtCursorDatabase", "Size Horizontal"), QIcon(QLatin1String(":/images/cursor-sizeh.png")));
+    appendCursor(Qt::SizeFDiagCursor, QCoreApplication::translate("QtCursorDatabase", "Size Backslash"), QIcon(QLatin1String(":/images/cursor-sizef.png")));
+    appendCursor(Qt::SizeBDiagCursor, QCoreApplication::translate("QtCursorDatabase", "Size Slash"), QIcon(QLatin1String(":/images/cursor-sizeb.png")));
+    appendCursor(Qt::SizeAllCursor, QCoreApplication::translate("QtCursorDatabase", "Size All"), QIcon(QLatin1String(":/images/cursor-sizeall.png")));
+    appendCursor(Qt::BlankCursor, QCoreApplication::translate("QtCursorDatabase", "Blank"), QIcon());
+    appendCursor(Qt::SplitVCursor, QCoreApplication::translate("QtCursorDatabase", "Split Vertical"), QIcon(QLatin1String(":/images/cursor-vsplit.png")));
+    appendCursor(Qt::SplitHCursor, QCoreApplication::translate("QtCursorDatabase", "Split Horizontal"), QIcon(QLatin1String(":/images/cursor-hsplit.png")));
+    appendCursor(Qt::PointingHandCursor, QCoreApplication::translate("QtCursorDatabase", "Pointing Hand"), QIcon(QLatin1String(":/images/cursor-hand.png")));
+    appendCursor(Qt::ForbiddenCursor, QCoreApplication::translate("QtCursorDatabase", "Forbidden"), QIcon(QLatin1String(":/images/cursor-forbidden.png")));
+    appendCursor(Qt::OpenHandCursor, QCoreApplication::translate("QtCursorDatabase", "Open Hand"), QIcon(QLatin1String(":/images/cursor-openhand.png")));
+    appendCursor(Qt::ClosedHandCursor, QCoreApplication::translate("QtCursorDatabase", "Closed Hand"), QIcon(QLatin1String(":/images/cursor-closedhand.png")));
+    appendCursor(Qt::WhatsThisCursor, QCoreApplication::translate("QtCursorDatabase", "What's This"), QIcon(QLatin1String(":/images/cursor-whatsthis.png")));
+    appendCursor(Qt::BusyCursor, QCoreApplication::translate("QtCursorDatabase", "Busy"), QIcon(QLatin1String(":/images/cursor-busy.png")));
 }
 
 
@@ -289,11 +270,7 @@ QColor QtPropertyBrowserUtils::variant2color(const QVariant &value) {
     } else if(value.type() == QVariant::List) {
         QVariantList val = value.toList();
         if(val.size() == 4) {
-            return QColor(val[0].toInt(),
-                          val[1].toInt(),
-                          val[2].toInt(),
-                          val[3].toInt()
-                          );
+            return QColor(val[0].toInt(), val[1].toInt(), val[2].toInt(), val[3].toInt());
         }
     }
     return QColor(0, 0, 0);
@@ -391,7 +368,7 @@ void QtBoolEdit::paintEvent(QPaintEvent *) {
 }
 
 
-QtKeySequenceEdit::QtKeySequenceEdit(QWidget *parent) : QWidget(parent), num_(0), lineEdit_(new QLineEdit(this)) {
+QtKeySequenceEdit::QtKeySequenceEdit(QWidget *parent) : QWidget(parent), lineEdit_(new QLineEdit(this)) {
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->addWidget(lineEdit_);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -419,7 +396,7 @@ bool QtKeySequenceEdit::eventFilter(QObject *o, QEvent *e) {
             }
             action->setText(actionString);
         }
-        QAction *actionBefore = 0;
+        QAction *actionBefore = nullptr;
         if(actions.count() > 0) {
             actionBefore = actions[0];
         }
@@ -566,10 +543,7 @@ bool QtKeySequenceEdit::event(QEvent *e) {
 }
 
 
-QtColorEditWidget::QtColorEditWidget(QWidget *parent) : QWidget(parent),
-    pixmapLabel_(new QLabel),
-    label_(new QLabel),
-    button_(new QToolButton) {
+QtColorEditWidget::QtColorEditWidget(QWidget *parent) : QWidget(parent), pixmapLabel_(new QLabel), label_(new QLabel), button_(new QToolButton) {
     QHBoxLayout *lt = new QHBoxLayout(this);
     QtPropertyBrowserUtils::setupTreeViewEditorMargin(lt);
     lt->setSpacing(0);

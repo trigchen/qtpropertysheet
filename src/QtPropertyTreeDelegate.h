@@ -13,10 +13,7 @@ class QTPROPERTYSHEET_DLL QtPropertyTreeDelegate : public QItemDelegate {
   public:
     explicit QtPropertyTreeDelegate(QObject *parent = nullptr);
 
-    void setEditorPrivate(QtTreePropertyBrowser *editorPrivate) {
-        editorPrivate_ = editorPrivate;
-    }
-
+    void setEditorPrivate(QtTreePropertyBrowser *editorPrivate);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
@@ -26,22 +23,15 @@ class QTPROPERTYSHEET_DLL QtPropertyTreeDelegate : public QItemDelegate {
 
     QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-    void setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const {
-    }
+    void setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const;
 
-
-    void setEditorData(QWidget *, const QModelIndex &) const {
-    }
-
+    void setEditorData(QWidget *, const QModelIndex &) const;
 
     bool eventFilter(QObject *object, QEvent *event);
 
     void closeEditor(QtProperty *property);
 
-    QTreeWidgetItem *editedItem() const {
-        return editedItem_;
-    }
-
+    QTreeWidgetItem *editedItem() const;
 
   protected:
     void drawDecoration(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QPixmap &pixmap) const;

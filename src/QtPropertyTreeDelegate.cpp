@@ -11,6 +11,11 @@ QtPropertyTreeDelegate::QtPropertyTreeDelegate(QObject *parent) : QItemDelegate(
 }
 
 
+void QtPropertyTreeDelegate::setEditorPrivate(QtTreePropertyBrowser *editorPrivate) {
+    editorPrivate_ = editorPrivate;
+}
+
+
 int QtPropertyTreeDelegate::indentation(const QModelIndex &index) const {
     if(editorPrivate_ == nullptr) {
         return 0;
@@ -50,6 +55,11 @@ void QtPropertyTreeDelegate::closeEditor(QtProperty *property) {
     if(QWidget *w = propertyToEditor_.value(property, 0)) {
         w->deleteLater();
     }
+}
+
+
+QTreeWidgetItem *QtPropertyTreeDelegate::editedItem() const {
+    return editedItem_;
 }
 
 
@@ -150,6 +160,14 @@ void QtPropertyTreeDelegate::drawDisplay(QPainter *painter, const QStyleOptionVi
 
 QSize QtPropertyTreeDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
     return QItemDelegate::sizeHint(option, index) + QSize(3, 4);
+}
+
+
+void QtPropertyTreeDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const {
+}
+
+
+void QtPropertyTreeDelegate::setEditorData(QWidget *, const QModelIndex &) const {
 }
 
 

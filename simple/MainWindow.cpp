@@ -23,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     popupMenu_->addAction(tr("Expand"));
     popupMenu_->addAction(tr("Remove"));
 
-
     QHBoxLayout *layout = new QHBoxLayout(ui->centralWidget);
     ui->centralWidget->setLayout(layout);
 
@@ -31,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     layout->addWidget(splitter);
 
     QtPropertyEditorFactory *editorFactory = new QtPropertyEditorFactory(this);
-
     {
         QScrollArea *scrollArea = new QScrollArea(ui->centralWidget);
         scrollArea->setWidgetResizable(true);
@@ -87,7 +85,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     values.push_back(QVariant(100.0f));
     root_->setChildValue("geometry", values);
 
-
 #if 0
     // test remove and add
     browser->removeProperty(root_);
@@ -105,7 +102,6 @@ void MainWindow::createProperties() {
     root->setName("root");
     root->setSelfVisible(false);
     root_ = root;
-
     {
         QtProperty *group = manager->createProperty(QtPropertyType::GROUP);
         group->setBackgroundColor(Qt::darkGray);
@@ -216,7 +212,6 @@ void MainWindow::createProperties() {
         prop->setValue(values);
         root->addChild(prop);
     }
-
     connect(root, &QtProperty::signalValueChange, this, &MainWindow::onValueChanged);
 }
 

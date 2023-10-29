@@ -128,6 +128,11 @@ void QtButtonPropertyBrowser::removeAllProperties() {
 }
 
 
+QtButtonPropertyBrowser::Property2ItemMap &QtButtonPropertyBrowser::properties() {
+    return property2items_;
+}
+
+
 void QtButtonPropertyBrowser::slotPropertyInsert(QtProperty *property, QtProperty *parent) {
     QtButtonPropertyItem *parentItem = property2items_.value(parent);
     addProperty(property, parentItem);

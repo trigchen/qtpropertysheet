@@ -146,6 +146,21 @@ void QtButtonPropertyItem::setVisible(bool visible) {
 }
 
 
+QtButtonPropertyItem *QtButtonPropertyItem::parent() {
+    return parent_;
+}
+
+
+QtProperty *QtButtonPropertyItem::property() {
+    return property_;
+}
+
+
+void QtButtonPropertyItem::setLayout(QGridLayout *layout) {
+    layout_ = layout;
+}
+
+
 void QtButtonPropertyItem::setExpanded(bool expand) {
     if(bExpand_ == expand) {
         return;
@@ -159,6 +174,11 @@ void QtButtonPropertyItem::setExpanded(bool expand) {
     if(container_) {
         container_->setVisible(expand);
     }
+}
+
+
+bool QtButtonPropertyItem::isExpanded() const {
+    return bExpand_;
 }
 
 

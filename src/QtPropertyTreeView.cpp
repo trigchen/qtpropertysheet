@@ -19,6 +19,16 @@ QtPropertyTreeView::QtPropertyTreeView(QWidget *parent) : QTreeWidget(parent) {
 }
 
 
+void QtPropertyTreeView::setEditorPrivate(QtTreePropertyBrowser *editorPrivate) {
+    editorPrivate_ = editorPrivate;
+}
+
+
+QTreeWidgetItem *QtPropertyTreeView::indexToItem(const QModelIndex &index) {
+    return itemFromIndex(index);
+}
+
+
 void QtPropertyTreeView::drawRow(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     QStyleOptionViewItem opt = option;
     QColor bgColor;

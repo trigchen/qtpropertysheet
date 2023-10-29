@@ -320,6 +320,11 @@ QtBoolEdit::QtBoolEdit(QWidget *parent) : QWidget(parent),
 }
 
 
+bool QtBoolEdit::textVisible() const {
+    return textVisible_;
+}
+
+
 void QtBoolEdit::setTextVisible(bool textVisible) {
     if(textVisible_ == textVisible) {
         return;

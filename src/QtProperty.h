@@ -51,7 +51,6 @@ class QTPROPERTYSHEET_DLL QtProperty : public QObject {
 
     virtual QIcon valueIcon() const;
 
-
     QVariant attribute(const QString &attributeName) const;
 
     virtual void setAttribute(const QString &attributeName, const QVariant &value);

@@ -11,15 +11,9 @@ class QTPROPERTYSHEET_DLL QtPropertyTreeView : public QTreeWidget {
   public:
     explicit QtPropertyTreeView(QWidget *parent = nullptr);
 
-    void setEditorPrivate(QtTreePropertyBrowser *editorPrivate) {
-        editorPrivate_ = editorPrivate;
-    }
+    void setEditorPrivate(QtTreePropertyBrowser *editorPrivate);
 
-
-    QTreeWidgetItem *indexToItem(const QModelIndex &index) {
-        return itemFromIndex(index);
-    }
-
+    QTreeWidgetItem *indexToItem(const QModelIndex &index);
 
   protected:
     void keyPressEvent(QKeyEvent *event);

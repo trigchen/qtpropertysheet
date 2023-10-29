@@ -24,10 +24,7 @@ class QTPROPERTYSHEET_DLL QtTreePropertyBrowser : public QtPropertyBrowser {
 
     virtual bool init(QWidget *parent, QtPropertyEditorFactory *factory);
 
-    bool markPropertiesWithoutValue() {
-        return true;
-    }
-
+    bool markPropertiesWithoutValue();
 
     bool lastColumn(int column);
 
@@ -43,10 +40,7 @@ class QTPROPERTYSHEET_DLL QtTreePropertyBrowser : public QtPropertyBrowser {
 
     QTreeWidgetItem *getEditedItem();
 
-    QtPropertyTreeView *getTreeWidget() {
-        return treeWidget_;
-    }
-
+    QtPropertyTreeView *getTreeWidget();
 
     virtual void addProperty(QtProperty *property);
 
@@ -54,10 +48,7 @@ class QTPROPERTYSHEET_DLL QtTreePropertyBrowser : public QtPropertyBrowser {
 
     virtual void removeAllProperties();
 
-    Property2ItemMap &getProperties() {
-        return property2items_;
-    }
-
+    Property2ItemMap &properties();
 
     virtual bool isExpanded(QtProperty *property);
 

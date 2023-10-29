@@ -61,7 +61,6 @@ class QXT_GUI_EXPORT QxtCheckComboBox : public QComboBox {
 
     QIntList checkedIndices() const;
 
-
   public Q_SLOTS:
     void setCheckedItems(const QStringList &items);
 

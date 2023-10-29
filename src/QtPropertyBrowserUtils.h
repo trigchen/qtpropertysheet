@@ -140,10 +140,7 @@ class QTPROPERTYSHEET_DLL QtBoolEdit : public QWidget {
   public:
     QtBoolEdit(QWidget *parent = nullptr);
 
-    bool textVisible() const {
-        return textVisible_;
-    }
-
+    bool textVisible() const;
 
     void setTextVisible(bool textVisible);
 

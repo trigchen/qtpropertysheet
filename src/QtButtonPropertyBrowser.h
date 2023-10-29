@@ -32,10 +32,7 @@ class QTPROPERTYSHEET_DLL QtButtonPropertyBrowser : public QtPropertyBrowser {
 
     virtual void removeAllProperties();
 
-    Property2ItemMap &getProperties() {
-        return property2items_;
-    }
-
+    Property2ItemMap &properties();
 
     virtual bool isExpanded(QtProperty *property);
 

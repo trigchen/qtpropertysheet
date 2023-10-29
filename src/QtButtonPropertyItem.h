@@ -35,27 +35,15 @@ class QTPROPERTYSHEET_DLL QtButtonPropertyItem : public QObject {
 
     void setVisible(bool visible);
 
-    QtButtonPropertyItem *parent() {
-        return parent_;
-    }
+    QtButtonPropertyItem *parent();
 
+    QtProperty *property();
 
-    QtProperty *property() {
-        return property_;
-    }
-
-
-    void setLayout(QGridLayout *layout) {
-        layout_ = layout;
-    }
-
+    void setLayout(QGridLayout *layout);
 
     void setExpanded(bool expand);
 
-    bool isExpanded() const {
-        return bExpand_;
-    }
-
+    bool isExpanded() const;
 
   protected slots:
     void onBtnExpand();

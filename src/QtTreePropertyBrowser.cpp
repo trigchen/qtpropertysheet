@@ -64,6 +64,11 @@ bool QtTreePropertyBrowser::init(QWidget *parent, QtPropertyEditorFactory *facto
 }
 
 
+bool QtTreePropertyBrowser::markPropertiesWithoutValue() {
+    return true;
+}
+
+
 bool QtTreePropertyBrowser::lastColumn(int column) {
     return treeWidget_->header()->visualIndex(column) == treeWidget_->columnCount() - 1;
 }
@@ -92,6 +97,11 @@ QWidget *QtTreePropertyBrowser::createEditor(QtProperty *property, QWidget *pare
 
 QTreeWidgetItem *QtTreePropertyBrowser::getEditedItem() {
     return delegate_->editedItem();
+}
+
+
+QtPropertyTreeView *QtTreePropertyBrowser::getTreeWidget() {
+    return treeWidget_;
 }
 
 
@@ -189,6 +199,11 @@ void QtTreePropertyBrowser::removeAllProperties() {
         removeProperty(property);
     }
     property2items_.clear();
+}
+
+
+Property2ItemMap &QtTreePropertyBrowser::properties() {
+    return property2items_;
 }
 
 

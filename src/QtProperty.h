@@ -23,39 +23,40 @@ class QTPROPERTYSHEET_DLL QtProperty : public QObject {
 
     virtual ~QtProperty();
 
-    Type getType() const;
+    Type type() const;
 
-    QtProperty *getParent();
+    QtProperty *parent();
+
+    const QString &name() const;
 
     void setName(const QString &name);
 
-    const QString &getName() const;
+    const QString &title() const;
 
     void setTitle(const QString &title);
 
-    const QString &getTitle() const;
+    const QString &toolTip() const;
 
     void setToolTip(const QString &tip);
 
-    const QString &getToolTip() const;
+    const QColor &backgroundColor() const;
 
     void setBackgroundColor(const QColor &cr);
 
-    const QColor &getBackgroundColor() const;
+    virtual const QVariant &value() const;
 
     virtual void setValue(const QVariant &value);
 
-    virtual const QVariant &getValue() const;
+    virtual QString valueString() const;
 
-    virtual QString getValueString() const;
+    virtual QIcon valueIcon() const;
 
-    virtual QIcon getValueIcon() const;
+
+    QVariant attribute(const QString &attributeName) const;
 
     virtual void setAttribute(const QString &attributeName, const QVariant &value);
 
-    QVariant getAttribute(const QString &attributeName) const;
-
-    QtPropertyAttributes &getAttributes();
+    QtPropertyAttributes &attributes();
 
     /** 添加子属性，由属性树负责delete child。*/
     void addChild(QtProperty *child);
@@ -71,15 +72,15 @@ class QTPROPERTYSHEET_DLL QtProperty : public QObject {
      */
     void removeAllChildren(bool clean);
 
-    QtPropertyList &getChildren();
+    QtPropertyList &children();
 
-    const QtPropertyList &getChildren() const;
+    const QtPropertyList &children() const;
 
     int indexChild(const QtProperty *child) const;
 
     virtual QtProperty *findChild(const QString &name);
 
-    virtual void setChildValue(const QString &name, const QVariant &value);
+    virtual void setChildValue(const QString &childName, const QVariant &value);
 
     virtual bool hasValue() const;
 
@@ -158,7 +159,7 @@ class QTPROPERTYSHEET_DLL QtListProperty : public QtContainerProperty {
 
     virtual void setValue(const QVariant &value);
 
-    virtual QString getValueString() const;
+    virtual QString valueString() const;
 
   protected slots:
     virtual void slotChildValueChange(QtProperty *property);
@@ -211,7 +212,7 @@ class QTPROPERTYSHEET_DLL QtEnumProperty : public QtProperty {
   public:
     QtEnumProperty(Type type, QtPropertyFactory *factory);
 
-    virtual QString getValueString() const;
+    virtual QString valueString() const;
 };
 
 /********************************************************************/
@@ -220,7 +221,7 @@ class QTPROPERTYSHEET_DLL QtFlagProperty : public QtProperty {
   public:
     QtFlagProperty(Type type, QtPropertyFactory *factory);
 
-    virtual QString getValueString() const;
+    virtual QString valueString() const;
 
   private:
     const QString separator = " | ";
@@ -232,9 +233,9 @@ class QTPROPERTYSHEET_DLL QtBoolProperty : public QtProperty {
   public:
     QtBoolProperty(Type type, QtPropertyFactory *factory);
 
-    virtual QString getValueString() const;
+    virtual QString valueString() const;
 
-    virtual QIcon getValueIcon() const;
+    virtual QIcon valueIcon() const;
 };
 
 /********************************************************************/
@@ -243,7 +244,7 @@ class QTPROPERTYSHEET_DLL QtDoubleProperty : public QtProperty {
   public:
     QtDoubleProperty(Type type, QtPropertyFactory *factory);
 
-    virtual QString getValueString() const;
+    virtual QString valueString() const;
 };
 
 /********************************************************************/
@@ -252,9 +253,9 @@ class QTPROPERTYSHEET_DLL QtColorProperty : public QtProperty {
   public:
     QtColorProperty(Type type, QtPropertyFactory *factory);
 
-    virtual QString getValueString() const;
+    virtual QString valueString() const;
 
-    virtual QIcon getValueIcon() const;
+    virtual QIcon valueIcon() const;
 };
 
 /********************************************************************/
@@ -267,7 +268,7 @@ class QTPROPERTYSHEET_DLL QtDynamicListProperty : public QtProperty {
 
     virtual void setValue(const QVariant &value);
 
-    virtual QString getValueString() const;
+    virtual QString valueString() const;
 
   protected slots:
     void slotItemValueChange(QtProperty *item);
@@ -309,11 +310,11 @@ class QTPROPERTYSHEET_DLL QtDynamicItemProperty : public QtProperty {
 
     virtual void setValue(const QVariant &value) override;
 
-    virtual const QVariant &getValue() const override;
+    virtual const QVariant &value() const override;
 
-    virtual QString getValueString() const override;
+    virtual QString valueString() const override;
 
-    virtual QIcon getValueIcon() const override;
+    virtual QIcon valueIcon() const override;
 
   signals:
     void signalMoveUp(QtProperty *property);
@@ -337,7 +338,7 @@ class QTPROPERTYSHEET_DLL QtFloatListProperty : public QtProperty {
 
     ~QtFloatListProperty();
 
-    virtual QString getValueString() const;
+    virtual QString valueString() const;
 
   private:
     const QString separator = ", ";

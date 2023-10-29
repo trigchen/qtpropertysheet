@@ -17,11 +17,11 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
         layout_ = parent->layout_;
     }
 
-    if(!property_->getChildren().empty()) {
+    if(!property_->children().empty()) {
         int row = layout_->rowCount();
 
         titleButton_ = new QToolButton();
-        titleButton_->setText(property_->getTitle());
+        titleButton_->setText(property_->title());
         titleButton_->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         titleButton_->setArrowType(Qt::UpArrow);
         titleButton_->setIconSize(QSize(16, 16));
@@ -43,7 +43,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
             font.setBold(true);
             titleButton_->setFont(font);
 
-            valueLabel_ = new QLabel(property_->getValueString());
+            valueLabel_ = new QLabel(property_->valueString());
             valueLabel_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
             layout_->addWidget(valueLabel_, row, 1, Qt::AlignLeft);
         }
@@ -62,7 +62,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
     } else {
         int row = layout_->rowCount();
 
-        label_ = new QLabel(property_->getTitle());
+        label_ = new QLabel(property_->title());
         label_->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
         layout_->addWidget(label_, row, 0);
 
@@ -70,7 +70,7 @@ QtButtonPropertyItem::QtButtonPropertyItem(QtProperty *prop, QtButtonPropertyIte
         if(editor_) {
             layout_->addWidget(editor_, row, 1);
         } else {
-            valueLabel_ = new QLabel(property_->getValueString());
+            valueLabel_ = new QLabel(property_->valueString());
             valueLabel_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
             layout_->addWidget(valueLabel_, row, 1, Qt::AlignLeft);
         }
@@ -174,7 +174,7 @@ void QtButtonPropertyItem::onBtnMenu() {
 
 void QtButtonPropertyItem::onPropertyValueChange(QtProperty *property) {
     Q_UNUSED(property)
-    QString text = property_->getValueString();
+    QString text = property_->valueString();
     int width = qMax(200, valueLabel_->width());
     valueLabel_->setText(valueLabel_->fontMetrics().elidedText(text, Qt::ElideRight, width));
 }

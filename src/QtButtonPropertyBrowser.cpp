@@ -89,7 +89,7 @@ void QtButtonPropertyBrowser::addProperty(QtProperty *property, QtButtonProperty
     connect(property, &QtProperty::signalPropertyChange, this, &QtButtonPropertyBrowser::slotPropertyPropertyChange);
 
     // add it's children finaly.
-    foreach(QtProperty *child, property->getChildren()) {
+    foreach(QtProperty *child, property->children()) {
         addProperty(child, parentItem);
     }
 }
@@ -107,7 +107,7 @@ void QtButtonPropertyBrowser::removeProperty(QtProperty *property) {
         disconnect(property, 0, this, 0);
 
         // remove it's children first.
-        foreach(QtProperty *child, property->getChildren()) {
+        foreach(QtProperty *child, property->children()) {
             removeProperty(child);
         }
 
@@ -152,7 +152,7 @@ void QtButtonPropertyBrowser::slotPropertyValueChange(QtProperty *property) {
 void QtButtonPropertyBrowser::slotPropertyPropertyChange(QtProperty *property) {
     QtButtonPropertyItem *item = property2items_.value(property);
     if(item != nullptr) {
-        item->setTitle(property->getTitle());
+        item->setTitle(property->title());
         item->setVisible(property->isVisible());
     }
 }

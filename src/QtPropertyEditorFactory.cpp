@@ -24,7 +24,7 @@ QtPropertyEditorFactory::QtPropertyEditorFactory(QObject *parent) : QObject(pare
 
 
 QWidget *QtPropertyEditorFactory::createEditor(QtProperty *property, QWidget *parent) {
-    QtPropertyEditor *propertyEditor = createPropertyEditor(property, property->getType());
+    QtPropertyEditor *propertyEditor = createPropertyEditor(property, property->type());
     if(propertyEditor != nullptr) {
         QWidget *widget = propertyEditor->createEditor(parent, this);
         if(widget != nullptr) {
@@ -38,7 +38,7 @@ QWidget *QtPropertyEditorFactory::createEditor(QtProperty *property, QWidget *pa
 
 QtPropertyEditor *QtPropertyEditorFactory::createPropertyEditor(QtProperty *property, QtPropertyType::Type type) {
     if(type == QtPropertyType::NONE) {
-        type = property->getType();
+        type = property->type();
     }
 
     QtPropertyEditorCreator method = creators_.value(type);

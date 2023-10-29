@@ -20,12 +20,12 @@ QtProperty::~QtProperty() {
 }
 
 
-QtProperty::Type QtProperty::getType() const {
+QtProperty::Type QtProperty::type() const {
     return type_;
 }
 
 
-QtProperty *QtProperty::getParent() {
+QtProperty *QtProperty::parent() {
     return parent_;
 }
 
@@ -38,12 +38,12 @@ void QtProperty::setName(const QString &name) {
 }
 
 
-const QString &QtProperty::getName() const {
+const QString &QtProperty::name() const {
     return name_;
 }
 
 
-const QString &QtProperty::getTitle() const {
+const QString &QtProperty::title() const {
     return title_.isEmpty() ? name_ : title_;
 }
 
@@ -53,7 +53,7 @@ void QtProperty::setToolTip(const QString &tip) {
 }
 
 
-const QString &QtProperty::getToolTip() const {
+const QString &QtProperty::toolTip() const {
     return tips_;
 }
 
@@ -63,7 +63,7 @@ void QtProperty::setBackgroundColor(const QColor &cr) {
 }
 
 
-const QColor &QtProperty::getBackgroundColor() const {
+const QColor &QtProperty::backgroundColor() const {
     return bgColor_;
 }
 
@@ -84,7 +84,7 @@ void QtProperty::setValue(const QVariant &value) {
 }
 
 
-const QVariant &QtProperty::getValue() const {
+const QVariant &QtProperty::value() const {
     return value_;
 }
 
@@ -122,12 +122,12 @@ bool QtProperty::isMenuVisible() const {
 }
 
 
-QString QtProperty::getValueString() const {
+QString QtProperty::valueString() const {
     return value_.toString();
 }
 
 
-QIcon QtProperty::getValueIcon() const {
+QIcon QtProperty::valueIcon() const {
     return QIcon();
 }
 
@@ -139,7 +139,7 @@ void QtProperty::setAttribute(const QString &name, const QVariant &value) {
 }
 
 
-QVariant QtProperty::getAttribute(const QString &name) const {
+QVariant QtProperty::attribute(const QString &name) const {
     QtPropertyAttributes::const_iterator it = attributes_.constFind(name);
     if(it != attributes_.constEnd()) {
         return *it;
@@ -148,13 +148,13 @@ QVariant QtProperty::getAttribute(const QString &name) const {
 }
 
 
-QtPropertyAttributes &QtProperty::getAttributes() {
+QtPropertyAttributes &QtProperty::attributes() {
     return attributes_;
 }
 
 
 void QtProperty::addChild(QtProperty *child) {
-    assert(child->getParent() == nullptr);
+    assert(child->parent() == nullptr);
     children_.push_back(child);
     child->parent_ = this;
 
@@ -164,7 +164,7 @@ void QtProperty::addChild(QtProperty *child) {
 
 
 void QtProperty::removeChild(QtProperty *child) {
-    assert(child->getParent() == this);
+    assert(child->parent() == this);
     QtPropertyList::iterator it = std::find(children_.begin(), children_.end(), child);
     if(it != children_.end()) {
         child->parent_ = nullptr;
@@ -195,12 +195,12 @@ void QtProperty::removeAllChildren(bool clean) {
 }
 
 
-QtPropertyList &QtProperty::getChildren() {
+QtPropertyList &QtProperty::children() {
     return children_;
 }
 
 
-const QtPropertyList &QtProperty::getChildren() const {
+const QtPropertyList &QtProperty::children() const {
     return children_;
 }
 
@@ -212,7 +212,7 @@ int QtProperty::indexChild(const QtProperty *child) const {
 
 QtProperty *QtProperty::findChild(const QString &name) {
     foreach(QtProperty *child, children_) {
-        if(child->getName() == name) {
+        if(child->name() == name) {
             return child;
         }
     }
@@ -294,11 +294,11 @@ void QtListProperty::setValue(const QVariant &value) {
 }
 
 
-QString QtListProperty::getValueString() const {
+QString QtListProperty::valueString() const {
     QString text;
     text += "[";
     foreach(QtProperty *child, children_) {
-        text += child->getValueString();
+        text += child->valueString();
         text += ", ";
     }
     text += "]";
@@ -312,8 +312,8 @@ void QtListProperty::slotChildValueChange(QtProperty *child) {
         QVariantList valueList = value_.toList();
         ensureSize(valueList, children_.size());
 
-        if(valueList[i] != child->getValue()) {
-            valueList[i] = child->getValue();
+        if(valueList[i] != child->value()) {
+            valueList[i] = child->value();
 
             value_ = valueList;
             emit signalValueChange(this);
@@ -335,7 +335,7 @@ void QtDictProperty::setValue(const QVariant &value) {
 
     QVariantMap valueMap = value_.toMap();
     foreach(QtProperty *child, children_) {
-        QVariant value = valueMap.value(child->getName());
+        QVariant value = valueMap.value(child->name());
         child->setValue(value);
     }
 
@@ -345,9 +345,9 @@ void QtDictProperty::setValue(const QVariant &value) {
 
 void QtDictProperty::slotChildValueChange(QtProperty *property) {
     QVariantMap valueMap = value_.toMap();
-    QVariant oldValue = valueMap.value(property->getName());
-    if(property->getValue() != oldValue) {
-        valueMap[property->getName()] = property->getValue();
+    QVariant oldValue = valueMap.value(property->name());
+    if(property->value() != oldValue) {
+        valueMap[property->name()] = property->value();
 
         value_ = valueMap;
         emit signalValueChange(this);
@@ -372,9 +372,9 @@ void QtGroupProperty::setValue(const QVariant & /*value*/) {
 QtProperty *QtGroupProperty::findChild(const QString &name) {
     QtProperty *result = nullptr;
     foreach(QtProperty *child, children_) {
-        if(name == child->getName()) {
+        if(name == child->name()) {
             result = child;
-        } else if(child->getType() == QtPropertyType::GROUP) {
+        } else if(child->type() == QtPropertyType::GROUP) {
             result = child->findChild(name);
         }
 
@@ -388,9 +388,9 @@ QtProperty *QtGroupProperty::findChild(const QString &name) {
 
 void QtGroupProperty::setChildValue(const QString &name, const QVariant &value) {
     foreach(QtProperty *child, children_) {
-        if(child->getType() ==  QtPropertyType::GROUP) {
+        if(child->type() ==  QtPropertyType::GROUP) {
             child->setChildValue(name, value);
-        } else if(name == child->getName()) {
+        } else if(name == child->name()) {
             child->setValue(value);
         }
     }
@@ -408,7 +408,7 @@ QtEnumProperty::QtEnumProperty(Type type, QtPropertyFactory *factory) : QtProper
 }
 
 
-QString QtEnumProperty::getValueString() const {
+QString QtEnumProperty::valueString() const {
     int index = value_.toInt();
     QStringList enumNames = attributes_.value(QtAttributeName::EnumName).toStringList();
     if((index >= 0) && (index < enumNames.size())) {
@@ -423,7 +423,7 @@ QtFlagProperty::QtFlagProperty(Type type, QtPropertyFactory *factory) : QtProper
 }
 
 
-QString QtFlagProperty::getValueString() const {
+QString QtFlagProperty::valueString() const {
     int value = value_.toInt();
     QStringList enumNames = attributes_.value(QtAttributeName::FlagName).toStringList();
     QStringList selected;
@@ -441,12 +441,12 @@ QtBoolProperty::QtBoolProperty(Type type, QtPropertyFactory *factory) : QtProper
 }
 
 
-QString QtBoolProperty::getValueString() const {
+QString QtBoolProperty::valueString() const {
     return value_.toBool() ? "True" : "False";
 }
 
 
-QIcon QtBoolProperty::getValueIcon() const {
+QIcon QtBoolProperty::valueIcon() const {
     return QtPropertyBrowserUtils::drawCheckBox(value_.toBool());
 }
 
@@ -456,8 +456,8 @@ QtDoubleProperty::QtDoubleProperty(Type type, QtPropertyFactory *factory) : QtPr
 }
 
 
-QString QtDoubleProperty::getValueString() const {
-    QVariant v = getAttribute(QtAttributeName::Decimals);
+QString QtDoubleProperty::valueString() const {
+    QVariant v = attribute(QtAttributeName::Decimals);
     int decimals = v.typeId() == QVariant::Int ? v.toInt() : 2;
     return QLocale::system().toString(value_.toDouble(), 'f', decimals);
 }
@@ -468,13 +468,13 @@ QtColorProperty::QtColorProperty(Type type, QtPropertyFactory *factory) : QtProp
 }
 
 
-QString QtColorProperty::getValueString() const {
+QString QtColorProperty::valueString() const {
     QColor color = QtPropertyBrowserUtils::variant2color(value_);
     return QtPropertyBrowserUtils::colorValueText(color);
 }
 
 
-QIcon QtColorProperty::getValueIcon() const {
+QIcon QtColorProperty::valueIcon() const {
     QColor color = QtPropertyBrowserUtils::variant2color(value_);
     return QtPropertyBrowserUtils::brushValueIcon(QBrush(color));
 }
@@ -513,10 +513,10 @@ void QtDynamicListProperty::setValue(const QVariant &value) {
 }
 
 
-QString QtDynamicListProperty::getValueString() const {
+QString QtDynamicListProperty::valueString() const {
     QString ret = "[";
     foreach(QtProperty *item, items_) {
-        ret += item->getValueString();
+        ret += item->valueString();
         ret += separator;
     }
     ret += "]";
@@ -526,8 +526,8 @@ QString QtDynamicListProperty::getValueString() const {
 
 void QtDynamicListProperty::slotItemValueChange(QtProperty *item) {
     int i = items_.indexOf(item);
-    if(valueList_[i] != item->getValue()) {
-        valueList_[i] = item->getValue();
+    if(valueList_[i] != item->value()) {
+        valueList_[i] = item->value();
         value_ = valueList_;
 
         emit signalValueChange(this);
@@ -541,8 +541,8 @@ void QtDynamicListProperty::slotItemMoveUp(QtProperty *item) {
         return;
     }
     QtProperty *prev = items_[i - 1];
-    QVariant value = prev->getValue();
-    prev->setValue(item->getValue());
+    QVariant value = prev->value();
+    prev->setValue(item->value());
     item->setValue(value);
 }
 
@@ -553,8 +553,8 @@ void QtDynamicListProperty::slotItemMoveDown(QtProperty *item) {
         return;
     }
     QtProperty *next = items_[i + 1];
-    QVariant value = next->getValue();
-    next->setValue(item->getValue());
+    QVariant value = next->value();
+    next->setValue(item->value());
     item->setValue(value);
 }
 
@@ -562,7 +562,7 @@ void QtDynamicListProperty::slotItemMoveDown(QtProperty *item) {
 void QtDynamicListProperty::slotItemDelete(QtProperty *item) {
     int i = items_.indexOf(item);
     for( ; i < items_.size() - 1; ++i) {
-        items_[i]->setValue(items_[i + 1]->getValue());
+        items_[i]->setValue(items_[i + 1]->value());
     }
 
     setLength(length_ - 1);
@@ -570,7 +570,7 @@ void QtDynamicListProperty::slotItemDelete(QtProperty *item) {
 
 
 void QtDynamicListProperty::slotLengthChange(QtProperty *property) {
-    int length = property->getValue().toInt();
+    int length = property->value().toInt();
     setLength(length);
 
     emit signalValueChange(this);
@@ -598,12 +598,12 @@ void QtDynamicListProperty::setLength(int length) {
 
 QtProperty *QtDynamicListProperty::appendItem() {
     QtDynamicItemProperty *prop = dynamic_cast<QtDynamicItemProperty *>(factory_->createProperty(QtPropertyType::DYNAMIC_ITEM));
-    prop->setValueType(getAttribute("valueType").toString());
+    prop->setValueType(attribute("valueType").toString());
 
-    QVariant valueDefault = getAttribute("valueDefault");
+    QVariant valueDefault = attribute("valueDefault");
     prop->setValue(valueDefault);
 
-    QVariantMap attr = getAttribute("valueAttributes").toMap();
+    QVariantMap attr = attribute("valueAttributes").toMap();
     for(QVariantMap::iterator it = attr.begin(); it != attr.end(); ++it) {
         prop->getImpl()->setAttribute(it.key(), it.value());
     }
@@ -645,7 +645,7 @@ QtDynamicItemProperty::~QtDynamicItemProperty() {
 
 void QtDynamicItemProperty::setValueType(Type type) {
     if(impl_ != nullptr) {
-        if(impl_->getType() == type) {
+        if(impl_->type() == type) {
             return;
         }
         delete impl_;
@@ -667,18 +667,18 @@ void QtDynamicItemProperty::setValue(const QVariant &value) {
 }
 
 
-const QVariant &QtDynamicItemProperty::getValue() const {
-    return impl_->getValue();
+const QVariant &QtDynamicItemProperty::value() const {
+    return impl_->value();
 }
 
 
-QString QtDynamicItemProperty::getValueString() const {
-    return impl_->getValueString();
+QString QtDynamicItemProperty::valueString() const {
+    return impl_->valueString();
 }
 
 
-QIcon QtDynamicItemProperty::getValueIcon() const {
-    return impl_->getValueIcon();
+QIcon QtDynamicItemProperty::valueIcon() const {
+    return impl_->valueIcon();
 }
 
 
@@ -696,8 +696,8 @@ QtFloatListProperty::~QtFloatListProperty() {
 }
 
 
-QString QtFloatListProperty::getValueString() const {
-    int size = getAttribute(QtAttributeName::Size).toInt();
+QString QtFloatListProperty::valueString() const {
+    int size = attribute(QtAttributeName::Size).toInt();
     QString ret;
     ret += "[";
 

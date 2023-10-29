@@ -70,8 +70,8 @@ bool QtTreePropertyBrowser::lastColumn(int column) {
 
 
 QColor QtTreePropertyBrowser::calculatedBackgroundColor(QtProperty *property) {
-    if(property->getParent() != nullptr) {
-        int index = property->getParent()->indexChild(property);
+    if(property->parent() != nullptr) {
+        int index = property->parent()->indexChild(property);
         return QColor(index % 2 ? Qt::blue : Qt::white);
     }
 
@@ -131,9 +131,9 @@ void QtTreePropertyBrowser::addProperty(QtProperty *property, QTreeWidgetItem *p
     QTreeWidgetItem *item = nullptr;
     if(property->isSelfVisible()) {
         item = new QTreeWidgetItem();
-        item->setText(0, property->getTitle());
+        item->setText(0, property->title());
         item->setData(0, PropertyDataIndex, QVariant::fromValue<quintptr>(reinterpret_cast<quintptr>(property)));
-        item->setToolTip(0, property->getToolTip());
+        item->setToolTip(0, property->toolTip());
         item->setFlags(item->flags() | Qt::ItemIsEditable);
 
         if(parentItem != nullptr) {
@@ -143,8 +143,8 @@ void QtTreePropertyBrowser::addProperty(QtProperty *property, QTreeWidgetItem *p
         }
 
         if(property->hasValue()) {
-            item->setIcon(1, property->getValueIcon());
-            item->setText(1, property->getValueString());
+            item->setIcon(1, property->valueIcon());
+            item->setText(1, property->valueString());
         } else {
             item->setFirstColumnSpanned(true);
         }
@@ -159,7 +159,7 @@ void QtTreePropertyBrowser::addProperty(QtProperty *property, QTreeWidgetItem *p
     connect(property, &QtProperty::signalPropertyChange, this, &QtTreePropertyBrowser::slotPropertyPropertyChange);
 
     // add it's children finaly.
-    foreach(QtProperty *child, property->getChildren()) {
+    foreach(QtProperty *child, property->children()) {
         addProperty(child, parentItem);
     }
 }
@@ -173,7 +173,7 @@ void QtTreePropertyBrowser::removeProperty(QtProperty *property) {
         disconnect(property, 0, this, 0);
 
         // remove it's children first.
-        foreach(QtProperty *child, property->getChildren()) {
+        foreach(QtProperty *child, property->children()) {
             removeProperty(child);
         }
 
@@ -206,8 +206,8 @@ void QtTreePropertyBrowser::slotPropertyRemove(QtProperty *property, QtProperty 
 void QtTreePropertyBrowser::slotPropertyValueChange(QtProperty *property) {
     QTreeWidgetItem *item = property2items_.value(property);
     if(item != nullptr) {
-        item->setText(1, property->getValueString());
-        item->setIcon(1, property->getValueIcon());
+        item->setText(1, property->valueString());
+        item->setIcon(1, property->valueIcon());
     }
 }
 
@@ -215,7 +215,7 @@ void QtTreePropertyBrowser::slotPropertyValueChange(QtProperty *property) {
 void QtTreePropertyBrowser::slotPropertyPropertyChange(QtProperty *property) {
     QTreeWidgetItem *item = property2items_.value(property);
     if(item != nullptr) {
-        item->setText(0, property->getTitle());
+        item->setText(0, property->title());
         item->setHidden(!property->isVisible());
     }
 }

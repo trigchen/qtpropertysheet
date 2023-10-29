@@ -25,7 +25,7 @@ void QtPropertyTreeView::drawRow(QPainter *painter, const QStyleOptionViewItem &
     if(editorPrivate_ != nullptr) {
         QtProperty *property = editorPrivate_->indexToProperty(index);
         if(property) {
-            bgColor = property->getBackgroundColor();
+            bgColor = property->backgroundColor();
         }
     }
 

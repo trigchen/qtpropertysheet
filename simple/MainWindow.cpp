@@ -227,13 +227,13 @@ MainWindow::~MainWindow() {
 
 
 void MainWindow::onValueChanged(QtProperty *property) {
-    QString msg = QString("property change: %1 = %2").arg(property->getName(), property->getValueString());
+    QString msg = QString("property change: %1 = %2").arg(property->name(), property->valueString());
     txtOutput->appendPlainText(msg);
 
-    if(property->getName() == "show geometry") {
+    if(property->name() == "show geometry") {
         QtProperty *geometry = root_->findChild("geometry");
         if(geometry != nullptr) {
-            geometry->setVisible(property->getValue().toBool());
+            geometry->setVisible(property->value().toBool());
         }
     }
 }

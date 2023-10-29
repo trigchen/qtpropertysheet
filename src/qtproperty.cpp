@@ -452,6 +452,7 @@ QtDynamicListProperty::QtDynamicListProperty(Type type, QtPropertyFactory *facto
     propLength_ = factory_->createProperty(QtPropertyType::INT);
     propLength_->setName("length");
     propLength_->setTitle(tr("Length"));
+    propLength_->setAttribute(QtAttributeName::MinValue, 0);
     addChild(propLength_);
     connect(propLength_, SIGNAL(signalValueChange(QtProperty*)), this, SLOT(slotLengthChange(QtProperty*)));
 }

@@ -101,7 +101,7 @@ void QtIntSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString &n
         return;
     }
 
-    QVariant v = property->getAttribute(QtAttributeName::MaxValue);
+    QVariant v = property->getAttribute(name);
     if(name == QtAttributeName::MinValue)
     {
         int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
@@ -178,15 +178,15 @@ void QtDoubleSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString
         return;
     }
 
-    QVariant v = property->getAttribute(QtAttributeName::MinValue);
+    QVariant v = property->getAttribute(name);
     if(name == QtAttributeName::MinValue)
     {
-        int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
+        double minValue = (v.type() == QVariant::Double) ? v.toDouble() : std::numeric_limits<double>::min();
         editor_->setMinimum(minValue);
     }
     else if(name == QtAttributeName::MaxValue)
     {
-        int maxValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
+        double maxValue = (v.type() == QVariant::Double) ? v.toDouble() : std::numeric_limits<double>::max();
         editor_->setMaximum(maxValue);
     }
     else if(name == QtAttributeName::Decimals)
@@ -981,15 +981,15 @@ void QtFloatListEditor::setEditorAttribute(QDoubleSpinBox *editor, QtProperty *p
         return;
     }
 
-    QVariant v = property->getAttribute(QtAttributeName::MinValue);
+    QVariant v = property->getAttribute(name);
     if(name == QtAttributeName::MinValue)
     {
-        int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
+        double minValue = (v.type() == QVariant::Double) ? v.toDouble() : std::numeric_limits<double>::min();
         editor->setMinimum(minValue);
     }
     else if(name == QtAttributeName::MaxValue)
     {
-        int maxValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
+        double maxValue = (v.type() == QVariant::Double) ? v.toDouble() : std::numeric_limits<double>::max();
         editor->setMaximum(maxValue);
     }
     else if(name == QtAttributeName::Decimals)

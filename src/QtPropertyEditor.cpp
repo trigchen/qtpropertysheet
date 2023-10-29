@@ -51,14 +51,12 @@ QWidget *QtIntSpinBoxEditor::createEditor(QWidget *parent, QtPropertyEditorFacto
     if(editor_ == nullptr) {
         editor_ = new QSpinBox(parent);
         editor_->setKeyboardTracking(false);
-
         slotSetAttribute(property_, QtAttributeName::MinValue);
         slotSetAttribute(property_, QtAttributeName::MaxValue);
         slotSetAttribute(property_, QtAttributeName::ReadOnly);
-
         editor_->setValue(value_);
 
-        connect(editor_, &QSpinBox::valueChanged, this, &QtIntSpinBoxEditor::slotEditorValueChange);
+        connect(editor_, qOverload<int>(&QSpinBox::valueChanged), this, &QtIntSpinBoxEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -93,13 +91,13 @@ void QtIntSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString &n
 
     QVariant v = property->getAttribute(name);
     if(name == QtAttributeName::MinValue) {
-        int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
+        int minValue = (v.typeId() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
         editor_->setMinimum(minValue);
     } else if(name == QtAttributeName::MaxValue) {
-        int maxValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
+        int maxValue = (v.typeId() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
         editor_->setMaximum(maxValue);
     } else if(name == QtAttributeName::ReadOnly) {
-        editor_->setReadOnly(v.type() == QVariant::Bool && v.toBool());
+        editor_->setReadOnly(v.typeId() == QVariant::Bool && v.toBool());
     }
 }
 
@@ -115,15 +113,13 @@ QWidget *QtDoubleSpinBoxEditor::createEditor(QWidget *parent, QtPropertyEditorFa
     if(editor_ == nullptr) {
         editor_ = new QDoubleSpinBox(parent);
         editor_->setKeyboardTracking(false);
-
         slotSetAttribute(property_, QtAttributeName::MinValue);
         slotSetAttribute(property_, QtAttributeName::MaxValue);
         slotSetAttribute(property_, QtAttributeName::Decimals);
         slotSetAttribute(property_, QtAttributeName::ReadOnly);
-
         editor_->setValue(value_);
 
-        connect(editor_, &QDoubleSpinBox::valueChanged, this, &QtDoubleSpinBoxEditor::slotEditorValueChange);
+        connect(editor_, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &QtDoubleSpinBoxEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -156,19 +152,19 @@ void QtDoubleSpinBoxEditor::slotSetAttribute(QtProperty *property, const QString
         return;
     }
 
-    QVariant v = property->getAttribute(QtAttributeName::MinValue);
+    QVariant v = property->getAttribute(name);
     if(name == QtAttributeName::MinValue) {
-        int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
+        double minValue = (v.typeId() == QVariant::Double) ? v.toDouble() : std::numeric_limits<double>::min();
         editor_->setMinimum(minValue);
     } else if(name == QtAttributeName::MaxValue) {
-        int maxValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
+        double maxValue = (v.typeId() == QVariant::Double) ? v.toDouble() : std::numeric_limits<double>::max();
         editor_->setMaximum(maxValue);
     } else if(name == QtAttributeName::Decimals) {
-        if(v.type() == QVariant::Int) {
+        if(v.typeId() == QVariant::Int) {
             editor_->setDecimals(v.toInt());
         }
     } else if(name == QtAttributeName::ReadOnly) {
-        editor_->setReadOnly(v.type() == QVariant::Bool && v.toBool());
+        editor_->setReadOnly(v.typeId() == QVariant::Bool && v.toBool());
     }
 }
 
@@ -183,7 +179,6 @@ QWidget *QtStringEditor::createEditor(QWidget *parent, QtPropertyEditorFactory *
     if(editor_ == nullptr) {
         editor_ = new QLineEdit(parent);
         editor_->setText(value_);
-
         slotSetAttribute(property_, QtAttributeName::ReadOnly);
 
         connect(editor_, &QLineEdit::editingFinished, this, &QtStringEditor::slotEditFinished);
@@ -220,7 +215,7 @@ void QtStringEditor::slotSetAttribute(QtProperty *property, const QString &name)
 
     QVariant value = property->getAttribute(name);
     if(name == QtAttributeName::ReadOnly) {
-        if(value.type() == QVariant::Bool) {
+        if(value.typeId() == QVariant::Bool) {
             editor_->setReadOnly(value.toBool());
         }
     }
@@ -245,7 +240,7 @@ QWidget *QtEnumEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
 
         editor_->setCurrentIndex(value_);
 
-        connect(editor_, &QComboBox::currentIndexChanged, this, &QtEnumEditor::slotEditorValueChange);
+        connect(editor_, qOverload<int>(&QComboBox::currentIndexChanged), this, &QtEnumEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -299,7 +294,7 @@ QWidget *QtEnumPairEditor::createEditor(QWidget *parent, QtPropertyEditorFactory
 
         editor_->setCurrentIndex(index_);
 
-        connect(editor_, &QComboBox::currentIndexChanged, this, &QtEnumPairEditor::slotEditorValueChange);
+        connect(editor_, qOverload<int>(&QComboBox::currentIndexChanged), this, &QtEnumPairEditor::slotEditorValueChange);
     }
     return editor_;
 }
@@ -358,7 +353,6 @@ QWidget *QtFlagEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
         editor_->setMinimumContentsLength(1);
         editor_->view()->setTextElideMode(Qt::ElideRight);
         editor_->setSeparator(separator);
-
         slotSetAttribute(property_, QtAttributeName::FlagName);
         setValueToEditor(value_);
 
@@ -513,7 +507,6 @@ QWidget *QtFileEditor::createEditor(QWidget *parent, QtPropertyEditorFactory * /
     editor_->setFocusProxy(button_);
     editor_->setFocusPolicy(button_->focusPolicy());
     layout->addWidget(button_);
-
     slotSetAttribute(property_, QtAttributeName::FileDialogType);
     slotSetAttribute(property_, QtAttributeName::FileDialogFilter);
     slotSetAttribute(property_, QtAttributeName::FileRelativePath);
@@ -541,19 +534,19 @@ void QtFileEditor::slotEditorDestory(QObject *object) {
 void QtFileEditor::slotSetAttribute(QtProperty *property, const QString &name) {
     QVariant value = property->getAttribute(name);
     if(name == QtAttributeName::FileDialogType) {
-        if(value.type() == QVariant::Int) {
+        if(value.typeId() == QVariant::Int) {
             dialogType_ = (DialogType)value.toInt();
         }
     } else if(name == QtAttributeName::FileDialogFilter) {
-        if(value.type() == QVariant::String) {
+        if(value.typeId() == QVariant::String) {
             filter_ = value.toString();
         }
     } else if(name == QtAttributeName::FileRelativePath) {
-        if(value.type() == QVariant::String) {
+        if(value.typeId() == QVariant::String) {
             relativePath_ = value.toString();
         }
     } else if(name == QtAttributeName::ReadOnly) {
-        if((editor_ != nullptr) && (value.type() == QVariant::Bool)) {
+        if((editor_ != nullptr) && (value.typeId() == QVariant::Bool)) {
             input_->setReadOnly(value.toBool());
         }
     }
@@ -739,6 +732,7 @@ void QtFloatListEditor::variantList2Vector(const QList<QVariant> &input, QVector
 
 
 QWidget *QtFloatListEditor::createEditor(QWidget *parent, QtPropertyEditorFactory *factory) {
+    Q_UNUSED(factory)
     QWidget *editor = new QWidget(parent);
     QHBoxLayout *layout = new QHBoxLayout(editor);
     layout->setSpacing(2);
@@ -755,14 +749,13 @@ QWidget *QtFloatListEditor::createEditor(QWidget *parent, QtPropertyEditorFactor
         edt->setButtonSymbols(QDoubleSpinBox::NoButtons);
         layout->addWidget(edt);
         editors_.push_back(edt);
-
         setEditorAttribute(edt, property_, QtAttributeName::MinValue);
         setEditorAttribute(edt, property_, QtAttributeName::MaxValue);
         setEditorAttribute(edt, property_, QtAttributeName::Decimals);
         setEditorAttribute(edt, property_, QtAttributeName::ReadOnly);
 
         edt->setValue(values[i]);
-        connect(edt, &QDoubleSpinBox::valueChanged, this, &QtFloatListEditor::slotEditorValueChange);
+        connect(edt, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &QtFloatListEditor::slotEditorValueChange);
     }
 
     if(!editors_.empty()) {
@@ -828,18 +821,18 @@ void QtFloatListEditor::setEditorAttribute(QDoubleSpinBox *editor, QtProperty *p
         return;
     }
 
-    QVariant v = property->getAttribute(QtAttributeName::MinValue);
+    QVariant v = property->getAttribute(name);
     if(name == QtAttributeName::MinValue) {
-        int minValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::min();
+        double minValue = (v.typeId() == QVariant::Double) ? v.toDouble() : std::numeric_limits<double>::min();
         editor->setMinimum(minValue);
     } else if(name == QtAttributeName::MaxValue) {
-        int maxValue = (v.type() == QVariant::Int) ? v.toInt() : std::numeric_limits<int>::max();
+        double maxValue = (v.typeId() == QVariant::Double) ? v.toDouble() : std::numeric_limits<double>::max();
         editor->setMaximum(maxValue);
     } else if(name == QtAttributeName::Decimals) {
-        if(v.type() == QVariant::Int) {
+        if(v.typeId() == QVariant::Int) {
             editor->setDecimals(v.toInt());
         }
     } else if(name == QtAttributeName::ReadOnly) {
-        editor->setReadOnly(v.type() == QVariant::Bool && v.toBool());
+        editor->setReadOnly(v.typeId() == QVariant::Bool && v.toBool());
     }
 }

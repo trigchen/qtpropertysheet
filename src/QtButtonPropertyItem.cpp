@@ -173,10 +173,8 @@ void QtButtonPropertyItem::onBtnMenu() {
 
 
 void QtButtonPropertyItem::onPropertyValueChange(QtProperty *property) {
+    Q_UNUSED(property)
     QString text = property_->getValueString();
-    if(text.size() > 20) {
-        text.remove(20, text.size() - 20);
-        text += "...";
-    }
-    valueLabel_->setText(text);
+    int width = qMax(200, valueLabel_->width());
+    valueLabel_->setText(valueLabel_->fontMetrics().elidedText(text, Qt::ElideRight, width));
 }

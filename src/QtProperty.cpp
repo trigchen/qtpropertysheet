@@ -20,6 +20,16 @@ QtProperty::~QtProperty() {
 }
 
 
+QtProperty::Type QtProperty::getType() const {
+    return type_;
+}
+
+
+QtProperty *QtProperty::getParent() {
+    return parent_;
+}
+
+
 void QtProperty::setName(const QString &name) {
     if(name != name_) {
         name_ = name;
@@ -28,8 +38,33 @@ void QtProperty::setName(const QString &name) {
 }
 
 
+const QString &QtProperty::getName() const {
+    return name_;
+}
+
+
 const QString &QtProperty::getTitle() const {
     return title_.isEmpty() ? name_ : title_;
+}
+
+
+void QtProperty::setToolTip(const QString &tip) {
+    tips_ = tip;
+}
+
+
+const QString &QtProperty::getToolTip() const {
+    return tips_;
+}
+
+
+void QtProperty::setBackgroundColor(const QColor &cr) {
+    bgColor_ = cr;
+}
+
+
+const QColor &QtProperty::getBackgroundColor() const {
+    return bgColor_;
 }
 
 
@@ -49,11 +84,41 @@ void QtProperty::setValue(const QVariant &value) {
 }
 
 
+const QVariant &QtProperty::getValue() const {
+    return value_;
+}
+
+
 void QtProperty::setVisible(bool visible) {
     if(visible != visible_) {
         visible_ = visible;
         emit signalPropertyChange(this);
     }
+}
+
+
+bool QtProperty::isVisible() const {
+    return visible_;
+}
+
+
+void QtProperty::setSelfVisible(bool visible) {
+    selfVisible_ = visible;
+}
+
+
+bool QtProperty::isSelfVisible() const {
+    return selfVisible_;
+}
+
+
+void QtProperty::setMenuVisible(bool visible) {
+    menuVisible_ = visible;
+}
+
+
+bool QtProperty::isMenuVisible() const {
+    return menuVisible_;
 }
 
 
@@ -80,6 +145,11 @@ QVariant QtProperty::getAttribute(const QString &name) const {
         return *it;
     }
     return QVariant();
+}
+
+
+QtPropertyAttributes &QtProperty::getAttributes() {
+    return attributes_;
 }
 
 
@@ -125,6 +195,16 @@ void QtProperty::removeAllChildren(bool clean) {
 }
 
 
+QtPropertyList &QtProperty::getChildren() {
+    return children_;
+}
+
+
+const QtPropertyList &QtProperty::getChildren() const {
+    return children_;
+}
+
+
 int QtProperty::indexChild(const QtProperty *child) const {
     return children_.indexOf(const_cast<QtProperty *>(child));
 }
@@ -145,6 +225,21 @@ void QtProperty::setChildValue(const QString &name, const QVariant &value) {
     if(child != nullptr) {
         child->setValue(value);
     }
+}
+
+
+bool QtProperty::hasValue() const {
+    return true;
+}
+
+
+bool QtProperty::hasAttribute(const QString &name) {
+    return attributes_.contains(name) && attributes_[name].isValid();
+}
+
+
+bool QtProperty::isModified() const {
+    return false;
 }
 
 
@@ -265,6 +360,11 @@ QtGroupProperty::QtGroupProperty(Type type, QtPropertyFactory *factory) : QtCont
 }
 
 
+bool QtGroupProperty::hasValue() const {
+    return false;
+}
+
+
 void QtGroupProperty::setValue(const QVariant & /*value*/) {
 }
 
@@ -358,7 +458,7 @@ QtDoubleProperty::QtDoubleProperty(Type type, QtPropertyFactory *factory) : QtPr
 
 QString QtDoubleProperty::getValueString() const {
     QVariant v = getAttribute(QtAttributeName::Decimals);
-    int decimals = v.type() == QVariant::Int ? v.toInt() : 2;
+    int decimals = v.typeId() == QVariant::Int ? v.toInt() : 2;
     return QLocale::system().toString(value_.toDouble(), 'f', decimals);
 }
 
@@ -498,7 +598,6 @@ void QtDynamicListProperty::setLength(int length) {
 
 QtProperty *QtDynamicListProperty::appendItem() {
     QtDynamicItemProperty *prop = dynamic_cast<QtDynamicItemProperty *>(factory_->createProperty(QtPropertyType::DYNAMIC_ITEM));
-    prop->setName(QString::number(items_.size()));
     prop->setValueType(getAttribute("valueType").toString());
 
     QVariant valueDefault = getAttribute("valueDefault");
@@ -516,7 +615,7 @@ QtProperty *QtDynamicListProperty::appendItem() {
 
     valueList_.append(valueDefault);
     items_.append(prop);
-
+    prop->setName(QString::number(items_.size()));
     this->addChild(prop);
     return prop;
 }
@@ -558,8 +657,28 @@ void QtDynamicItemProperty::setValueType(Type type) {
 }
 
 
+QtProperty *QtDynamicItemProperty::getImpl() {
+    return impl_;
+}
+
+
 void QtDynamicItemProperty::setValue(const QVariant &value) {
     impl_->setValue(value);
+}
+
+
+const QVariant &QtDynamicItemProperty::getValue() const {
+    return impl_->getValue();
+}
+
+
+QString QtDynamicItemProperty::getValueString() const {
+    return impl_->getValueString();
+}
+
+
+QIcon QtDynamicItemProperty::getValueIcon() const {
+    return impl_->getValueIcon();
 }
 
 

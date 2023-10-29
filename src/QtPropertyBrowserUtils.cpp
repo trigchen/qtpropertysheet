@@ -265,9 +265,9 @@ QIcon QtPropertyBrowserUtils::drawIndicatorIcon(const QPalette &palette, QStyle 
 
 
 QColor QtPropertyBrowserUtils::variant2color(const QVariant &value) {
-    if(value.type() == QVariant::Color) {
+    if(value.typeId() == QVariant::Color) {
         return value.value<QColor>();
-    } else if(value.type() == QVariant::List) {
+    } else if(value.typeId() == QVariant::List) {
         QVariantList val = value.toList();
         if(val.size() == 4) {
             return QColor(val[0].toInt(), val[1].toInt(), val[2].toInt(), val[3].toInt());

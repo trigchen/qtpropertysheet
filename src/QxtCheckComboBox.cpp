@@ -40,9 +40,7 @@ bool QxtCheckComboBoxPrivate::eventFilter(QObject *receiver, QEvent *event) {
         if((receiver == &qxt_p()) && ((keyEvent->key() == Qt::Key_Up) || (keyEvent->key() == Qt::Key_Down))) {
             qxt_p().showPopup();
             return true;
-        } else if((keyEvent->key() == Qt::Key_Enter) ||
-                  (keyEvent->key() == Qt::Key_Return) ||
-                  (keyEvent->key() == Qt::Key_Escape)) {
+        } else if((keyEvent->key() == Qt::Key_Enter) || (keyEvent->key() == Qt::Key_Return) || (keyEvent->key() == Qt::Key_Escape)) {
             // it is important to call QComboBox implementation
             qxt_p().QComboBox::hidePopup();
             if(keyEvent->key() != Qt::Key_Escape) {
@@ -50,6 +48,7 @@ bool QxtCheckComboBoxPrivate::eventFilter(QObject *receiver, QEvent *event) {
             }
         }
     }
+    break;
     case QEvent::MouseButtonPress:
         containerMousePress = (receiver == qxt_p().view()->window());
         break;
@@ -146,7 +145,7 @@ bool QxtCheckComboModel::setData(const QModelIndex &index, const QVariant &value
 QxtCheckComboBox::QxtCheckComboBox(QWidget *parent) : QComboBox(parent) {
     QXT_INIT_PRIVATE(QxtCheckComboBox);
     setModel(new QxtCheckComboModel(this));
-    connect(this, &QxtCheckComboBox::activated, &qxt_d(), &QxtCheckComboBoxPrivate::toggleCheckState);
+    connect(this, qOverload<int>(&QxtCheckComboBox::activated), &qxt_d(), &QxtCheckComboBoxPrivate::toggleCheckState);
     connect((QxtCheckComboModel *)model(), &QxtCheckComboModel::checkStateChanged, &qxt_d(), &QxtCheckComboBoxPrivate::updateCheckedItems);
     connect(model(), &QAbstractItemModel::rowsInserted, &qxt_d(), &QxtCheckComboBoxPrivate::updateCheckedItems);
     connect(model(), &QAbstractItemModel::rowsRemoved, &qxt_d(), &QxtCheckComboBoxPrivate::updateCheckedItems);

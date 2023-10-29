@@ -5,13 +5,13 @@
 #include <QSplitter>
 #include <QTreeWidget>
 
-#include "mainwindow.h"
 #include "QtAttributeName.h"
 #include "QtButtonPropertyBrowser.h"
 #include "QtProperty.h"
 #include "QtPropertyEditorFactory.h"
 #include "QtPropertyFactory.h"
 #include "QtTreePropertyBrowser.h"
+#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -120,6 +120,7 @@ void MainWindow::createProperties() {
 
         QtProperty *property2 = manager->createProperty(QtPropertyType::INT);
         property2->setName("age");
+        property2->setAttribute(QtAttributeName::ReadOnly, true);
         group->addChild(property2);
 
         QtProperty *property3 = manager->createProperty(QtPropertyType::FLOAT);
